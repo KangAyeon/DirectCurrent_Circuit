@@ -18,11 +18,11 @@ ui=Frame(tk, relief = "solid", width = 300, height = 600)
 ui.place(x = 900, y = 0)
 
 
-display = Canvas(dp, bd=0, bg='whitesmoke')             #make display(canvas)
+display = Canvas(dp, bd=0, bg='whitesmoke')             #make display(canvas) Disupulayee Saing Seong
 display.place(x = 0, y = 0, width = 600, height = 600)
 
 
-rows = 20                #Making maplist
+rows = 20                #Making maplist Maeb Risutu Saing Seong
 cols = 20 
 mapl = []
 
@@ -31,6 +31,16 @@ for i in range(rows):
     for j in range(cols):
         row.append(0)
     mapl.append(row)
+
+rows1 = 20                #Making electron list
+cols1 = 20 
+electron = []
+
+for i in range(rows1):
+    rowa = []
+    for j in range(cols1):
+        rowa.append(0)
+    electron.append(rowa)
 
 
 userx = 0          #func
@@ -97,6 +107,16 @@ def MAKE_VOID():
     mapl[usery][userx] = 0
     display.create_rectangle(userx*30, usery*30, userx*30+30, usery*30+30,outline='gray', fill='whitesmoke')
 
+# 저항값 설정
+def SELECT_RESISTANCE():
+    global mapl, userx, usery
+    if mapl[usery][userx] == 'Rlr' or 'Rud':
+        if R1spinbox == 0: 
+
+
+            print('')
+
+
 
 def doit():
     print('TRUELY')
@@ -108,7 +128,6 @@ def ROTATE():
         MAKE_VOID()
         MAKE_WIRE_UD()
     elif mapl[usery][userx] == 'ud' :
-        print('again??')
         MAKE_VOID()
         MAKE_WIRE_LR()
 
@@ -298,25 +317,25 @@ def keypressed(event):        #when keypressed ~~
     elif event.keysym == 'Escape' :
         closewarn()
 
-    elif event.keysym == 'space' :
+    elif event.keysym == 'space' : # 회전
         ROTATE()
 
-    elif event.keysym == 'w' :
+    elif event.keysym == 'm' : # 'ㅡ'자
         MAKE_WIRE_LR()
 
-    elif event.keysym == 'c' :
-        MAKE_WIRE_LU()
+    elif event.keysym == 's' : # 'ㄴ'자
+        MAKE_WIRE_RU()
 
-    elif event.keysym == 't' :
-        MAKE_WIRE_LUR()
+    elif event.keysym == 'n' : # 'ㅜ'자
+        MAKE_WIRE_LDR()
 
-    elif event.keysym == 'q' :
+    elif event.keysym == 'equal' : # '+'자
         MAKE_WIRE_LRUD()
 
-    elif event.keysym == 'b' :
+    elif event.keysym == 'b' : # 밧데리
         MAKE_BATTERY()
 
-    elif event.keysym == 'r' :
+    elif event.keysym == 'r' : # 저항
         MAKE_RESISTOR_LR()
 
     elif event.keysym == 'e' : # erase
@@ -325,22 +344,22 @@ def keypressed(event):        #when keypressed ~~
     # elif event.keysym == 'r' : # start(run) module
     #     amugeona()
 
-    # else:                      #Lee Sang Han Button Press >>> 비정의 커맨드 경고 창
-    #     unknowntext = event.keysym,'is not a valid key'  #  위쪽에 정의되지 않은 키 입력들을 unknowntext로 간주, <입력된 키값, 'is not a valid key'>로써 나타냄
-    #     toplevel = Toplevel(tk)
-    #     toplevel.geometry("320x200+820+100")
-    #     toplevel.resizable(False, False)
-    #     toplevel.title("ERROR: not a valid key")  # 창 이름
-    #     label = Label(toplevel, text = unknowntext, width = 200, height = 50, fg = "red", relief = "solid", bitmap = "error", compound = "top")  #  unknowntext출력, i마크 표시(붉은색) 할 창 생성
-    #     label.pack()
+    else:                      #Lee Sang Han Button Press >>> 비정의 커맨드 경고 창
+        unknowntext = event.keysym,'is not a valid key'  #  위쪽에 정의되지 않은 키 입력들을 unknowntext로 간주, <입력된 키값, 'is not a valid key'>로써 나타냄
+        toplevel = Toplevel(tk)
+        toplevel.geometry("320x200+820+100")
+        toplevel.resizable(False, False)
+        toplevel.title("ERROR: not a valid key")  # 창 이름
+        label = Label(toplevel, text = unknowntext, width = 200, height = 50, fg = "red", relief = "solid", bitmap = "error", compound = "top")  #  unknowntext출력, i마크 표시(붉은색) 할 창 생성
+        label.pack()
 
-    #     button = Button(toplevel, width = 10, text = "ok", overrelief = "solid", command = toplevel.destroy)  #  ok버튼 누르면 경고 창 삭제
-    #     button.pack()
+        button = Button(toplevel, width = 10, text = "ok", overrelief = "solid", command = toplevel.destroy)  #  ok버튼 누르면 경고 창 삭제
+        button.pack()
     # if event.keysym == 'z' + 'ctrl' :  
     #     undo()
 
 def clear():           # 19   clear the window
-    global userx, usery, mapl, mapltf
+    global userx, usery, mapl
 
     dehighlight()
     userx = 0
@@ -390,7 +409,7 @@ def closewarn():       # 00   close the window with warnning window \ tempwarn �
     yescbutton.pack()
     noescbutton.pack()
 # def redo():
-# def undo():
+# def undo(): 응~ 어차피 지우기 기능 있으니 안 할꺼야~
 
 def aboutlc():
     AYOE = "About DirectCurrent Circuit \n Visualizing DirectCurrent Circuit And Experience It \n \n \n Editors: JunSeok.S HyunJune.J \n email: rkddkdus05@gmail.com"
@@ -404,7 +423,7 @@ def aboutlc():
     lcbutton.pack()
 
 def lchelp():
-    AYOE = "DirectCurrent Circuit Help \n Commands \n \n \n [w] > [fill wire] \n [Esc] > [Exit] \n [Enter] > [Clear] \n [e] > [Erase]"
+    AYOE = "DirectCurrent Circuit Help \n Commands \n \n \n [m] > [fill 'ㅡ'wire] \n [n] > [fill 'ㅜ'wire] \n [s] > [fill 'ㄴ'wire] \n [+] > [fill '+'wire] \n [b] > [set battery]  \n [r] > [set resistance]  \n [space] > [rotate wire] \n [Esc] > [Exit] \n [Enter] > [Clear] \n [e] > [Erase]"
     LCHelp = Toplevel(tk)
     LCHelp.geometry("320x500+820+100")
     LCHelp.resizable(False, False)
@@ -511,7 +530,7 @@ Button(ui, text = "WIRE[w]", command = MAKE_WIRE_LR).place(x = 30, y= 400, width
 
 # R1 = ttk.Combobox(inputjeo1, width = 10, height = 10, values = Resistance)
 # R1.pack(padx=4)
-# R1.set("첫 번째 저항 값 설정")
+# R1.set("첫 번째 저항 값 설정") 대충 이거 쓰는 것 보다 훨씬 좋은거 찾았다는 내용~
 
 # I will make a MenuBar and Menu fuction
 explanationresistance = Label(inputjeo1, text = "▼저항값을 입력하거나 선택▼", height = 3)
@@ -544,7 +563,7 @@ R9spinbox = Spinbox(inputjeo1, width=10, from_=0, to=100, validate = 'all', vali
 R9spinbox.pack(padx=4)
 R10spinbox = Spinbox(inputjeo1, width=10, from_=0, to=100, validate = 'all', validatecommand=validate_command, invalidcommand=invalid_command)
 R10spinbox.pack(padx=4)
-
+# 그 더 좋은 방법은 하드코딩을 말하는 것입니다!!  하하하하....
 
 
 
@@ -591,9 +610,105 @@ menubar.add_cascade(label = "Help", menu = menu4)
 
 tk.config(menu = menubar)
 
-# def whiletrue():                 #while True: 대신해줄것 아마 다른게더나을수도잇음ㅇㅇㅇㅇㅇㅇ
-#     print(mapl[usery][userx])
-#     tk.after(1000, whiletrue)
+def whiletrue():                 #while True 마춤뻡좀지켜주새요;; 엊절
+    global mapl, electron
 
-# tk.after(1000, whiletrue)
-tk.mainloop()    #mainloop is gooo
+    for garo in range(20):       #allocate new electron     //     list : [receive1, receive2, electron1, electron2(if exists)]
+        for sero in range(20):   #   zz;                           receive : 1-right 2-up 3-left 4-down
+            if mapl[garo][sero] != 0 and electron[garo][sero] == 0 :
+                electron[garo][sero] = [0, 0, 1]
+
+
+    for x in range(20):
+        for y in range(20):
+            if mapl[y][x] == 'B' :
+                electron[y][x-1][0] = 1
+                del electron[y][x][3]
+                electron[y][x-1].append(1)
+
+                isThisDone = False
+                ex = x-1
+                ey = y
+
+                while isThisDone == False:  #눈앞이아득해진다눈앞이아득해진다눈앞이아득해진다눈앞이아득
+                    if mapl[ey][ex] == 'lr' :
+                        if electron[ey][ex][0] == 3 :
+                            del electron[ey][ex][len(electron[ey][ex])-1]
+                            ex+=1
+                            electron[ey][ex].append(1)
+                            electron[ey][ex][0] = 3
+                        if electron[ey][ex][0] == 1 :
+                            del electron[ey][ex][len(electron[ey][ex])-1]
+                            ex-=1
+                            electron[ey][ex].append(1)
+                            electron[ey][ex][0] = 1
+
+                    if mapl[ey][ex] == 'ud' :
+                        if electron[ey][ex][0] == 4 :
+                            del electron[ey][ex][len(electron[ey][ex])-1]
+                            ey-=1
+                            electron[ey][ex].append(1)
+                            electron[ey][ex][0] = 4
+                        if electron[ey][ex][0] == 2 :
+                            del electron[ey][ex][len(electron[ey][ex])-1]
+                            ey+=1
+                            electron[ey][ex].append(1)
+                            electron[ey][ex][0] = 2
+
+
+                    if mapl[ey][ex] == 'lu' :
+                        if electron[ey][ex][0] == 3 :
+                            del electron[ey][ex][len(electron[ey][ex])-1]
+                            ey-=1
+                            electron[ey][ex].append(1)
+                            electron[ey][ex][0] = 4
+                        if electron[ey][ex][0] == 2 :
+                            del electron[ey][ex][len(electron[ey][ex])-1]
+                            ex-=1
+                            electron[ey][ex].append(1)
+                            electron[ey][ex][0] = 1
+
+                    if mapl[ey][ex] == 'ru' :
+                        if electron[ey][ex][0] == 1 :
+                            del electron[ey][ex][len(electron[ey][ex])-1]
+                            ey-=1
+                            electron[ey][ex].append(1)
+                            electron[ey][ex][0] = 4 #오늘은여기까지
+                        if electron[ey][ex][0] == 2 :
+                            del electron[ey][ex][len(electron[ey][ex])-1]
+                            ex+=1
+                            electron[ey][ex].append(1)
+                            electron[ey][ex][0] = 4
+
+                    if mapl[ey][ex] == 'rd' :
+                        if electron[ey][ex][0] == 1 :
+                            del electron[ey][ex][len(electron[ey][ex])-1]
+                            ex-=1
+                            electron[ey][ex].append(1)
+                            electron[ey][ex][0] = 1
+                        if electron[ey][ex][0] == 4 :
+                            del electron[ey][ex][len(electron[ey][ex])-1]
+                            ey+=1
+                            electron[ey][ex].append(1)
+                            electron[ey][ex][0] = 4
+
+                    if mapl[ey][ex] == 'ld' :
+                        if electron[ey][ex][0] == 1 :
+                            del electron[ey][ex][len(electron[ey][ex])-1]
+                            ex-=1
+                            electron[ey][ex].append(1)
+                            electron[ey][ex][0] = 1
+                        if electron[ey][ex][0] == 4 :
+                            del electron[ey][ex][len(electron[ey][ex])-1]
+                            ey+=1
+                            electron[ey][ex].append(1)
+                            electron[ey][ex][0] = 4
+
+
+
+
+    tk.after(1000, whiletrue)
+
+tk.after(1000, whiletrue)
+
+tk.mainloop()    #i like thi
