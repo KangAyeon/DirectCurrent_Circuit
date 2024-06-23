@@ -445,6 +445,24 @@ def MAKE_BATTERY():
         display.create_line(userx*30+19, usery*30+20, userx*30+19, usery*30+11, width=3)
         display.create_line(userx*30+19, usery*30+15, userx*30+30, usery*30+15)
 
+# 실행
+def OPERATE():
+    global batteryspinbox
+    # 전압 0이면 실행 안되게.
+    if batteryspinbox == 0:
+        toplevel = Toplevel(tk)
+        toplevel.geometry("320x200+820+100")
+        toplevel.resizable(False, False)
+        toplevel.title("ERROR: not a valid battery값")  # 창 이름
+        label = Label(toplevel, text = "battery is 0 please set battery값", width = 200, height = 50, fg = "red", relief = "solid", bitmap = "error", compound = "top")  #  unknowntext출력, i마크 표시(붉은색) 할 창 생성
+        label.pack()
+
+        button = Button(toplevel, width = 10, text = "ok", overrelief = "solid", command = toplevel.destroy)  #  ok버튼 누르면 경고 창 삭제
+        button.pack()
+    else:
+        print("앞으로 더 추가")
+        print(batteryspinbox)
+
 #나중에할거있으면여기다추가하기
 def 나중에할거있으면여기다추가():
     NONE
@@ -511,6 +529,10 @@ def keypressed(event):        #when keypressed ~~
 
     elif event.keysym == '6' :
         SELECT_RESISTANCE6()
+
+    elif event.keysym == 'o' :
+        OPERATE()
+    # 당신의 아무거나. 스타트로 대체되다. 불만 있습니까? Korean Heroes?
 
     # elif event.keysym == 'r' : # start(run) module
     #     amugeona()
@@ -679,7 +701,7 @@ def errorsetresistance(self):
 display.bind_all('<KeyPress>', keypressed)   #when keypressed >> call keypressed()
 
 def setbattery(self):
-    explanationbattery.config(text = '|전지 값을 선택| \n |입력 도움 박스|')
+    explanationbattery.config(text = '|전지 값을 선택|& \n |입력 도움 박스|')
     if self == '':
         return True
     
@@ -718,6 +740,8 @@ Button(ui, text = 'EXIT[Esc]', command = closewarn).place(x = 120 , y = 500, wid
 
 Button(ui, text = "CLEAR[Enter]", command = tempwarn).place(x = 190, y= 400, width = 80, height = 40)
 
+Button(ui, text = "OPERATE[o]", command = OPERATE).place(x = 190, y= 350, width = 100, height = 40)
+
 # Button(ui, text = "RUN[r]", command = amugeona).place(x = 190, y= 350, width = 100, height = 40)
 
 Button(ui, text = "WIRE[w]", command = MAKE_WIRE_LR).place(x = 30, y= 400, width = 80, height = 40)
@@ -744,17 +768,17 @@ invalid_command = (inputjeo1.register(errorsetresistance), '%P')
     
     # m.pack(padx=4)
 R1spinbox = Spinbox(inputjeo1, width=10, from_=0, to=100, validate = 'all', validatecommand=validate_command, invalidcommand=invalid_command)
-R1spinbox.pack(padx=4)
+R1spinbox.pack(padx=4) 
 R2spinbox = Spinbox(inputjeo1, width=10, from_=0, to=100, validate = 'all', validatecommand=validate_command, invalidcommand=invalid_command)
-R2spinbox.pack(padx=4)
+R2spinbox.pack(padx=4) 
 R3spinbox = Spinbox(inputjeo1, width=10, from_=0, to=100, validate = 'all', validatecommand=validate_command, invalidcommand=invalid_command)
-R3spinbox.pack(padx=4)
+R3spinbox.pack(padx=4) 
 R4spinbox = Spinbox(inputjeo1, width=10, from_=0, to=100, validate = 'all', validatecommand=validate_command, invalidcommand=invalid_command)
-R4spinbox.pack(padx=4)
+R4spinbox.pack(padx=4) 
 R5spinbox = Spinbox(inputjeo1, width=10, from_=0, to=100, validate = 'all', validatecommand=validate_command, invalidcommand=invalid_command)
-R5spinbox.pack(padx=4)
+R5spinbox.pack(padx=4) 
 R6spinbox = Spinbox(inputjeo1, width=10, from_=0, to=100, validate = 'all', validatecommand=validate_command, invalidcommand=invalid_command)
-R6spinbox.pack(padx=4)
+R6spinbox.pack(padx=4) 
 # R7spinbox = Spinbox(inputjeo1, width=10, from_=0, to=100, validate = 'all', validatecommand=validate_command, invalidcommand=invalid_command)
 # R7spinbox.pack(padx=4)
 # R8spinbox = Spinbox(inputjeo1, width=10, from_=0, to=100, validate = 'all', validatecommand=validate_command, invalidcommand=invalid_command)
