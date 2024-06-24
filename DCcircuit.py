@@ -108,161 +108,161 @@ def MAKE_VOID():
     display.create_rectangle(userx*30, usery*30, userx*30+30, usery*30+30,outline='gray', fill='whitesmoke')
 
 # 저항값 설정
-def SELECT_RESISTANCE1():
-    global mapl, userx, usery
-    if mapl[usery][userx] == 'Rlr':
-        mapl[usery][userx] = 'R1'
-        display.create_line(userx*30, usery*30+15, userx*30+3, usery*30+15, fill='red')
-        display.create_line(userx*30+3, usery*30+15, userx*30+5, usery*30+25, fill='red')
-        display.create_line(userx*30+5, usery*30+25, userx*30+9, usery*30+5, fill='red')
-        display.create_line(userx*30+9, usery*30+5, userx*30+13, usery*30+25, fill='red')
-        display.create_line(userx*30+13, usery*30+25, userx*30+17, usery*30+5, fill='red')
-        display.create_line(userx*30+17, usery*30+5, userx*30+21, usery*30+25, fill='red')
-        display.create_line(userx*30+21, usery*30+25, userx*30+25, usery*30+5, fill='red')
-        display.create_line(userx*30+25, usery*30+5, userx*30+27, usery*30+15, fill='red')
-        display.create_line(userx*30+27, usery*30+15, userx*30+30, usery*30+15, fill='red')
+def SELECT_RESISTANCE1(): 
+    global mapl, userx, usery 
+    if mapl[usery][userx] == 'Rlr': 
+        mapl[usery][userx] = 'R1' 
+        display.create_line(userx*30, usery*30+15, userx*30+3, usery*30+15, fill='red') 
+        display.create_line(userx*30+3, usery*30+15, userx*30+5, usery*30+25, fill='red') 
+        display.create_line(userx*30+5, usery*30+25, userx*30+9, usery*30+5, fill='red') 
+        display.create_line(userx*30+9, usery*30+5, userx*30+13, usery*30+25, fill='red') 
+        display.create_line(userx*30+13, usery*30+25, userx*30+17, usery*30+5, fill='red') 
+        display.create_line(userx*30+17, usery*30+5, userx*30+21, usery*30+25, fill='red') 
+        display.create_line(userx*30+21, usery*30+25, userx*30+25, usery*30+5, fill='red') 
+        display.create_line(userx*30+25, usery*30+5, userx*30+27, usery*30+15, fill='red') 
+        display.create_line(userx*30+27, usery*30+15, userx*30+30, usery*30+15, fill='red') 
 
-    elif mapl[usery][userx] == 'Rud':
-        mapl[usery][userx] = 'R1ud'
-        display.create_line(userx*30+15, usery*30, userx*30+15, usery*30+3, fill='red')
-        display.create_line(userx*30+15, usery*30+3, userx*30+25, usery*30+5, fill='red')
-        display.create_line(userx*30+25, usery*30+5, userx*30+5, usery*30+9, fill='red')
-        display.create_line(userx*30+5, usery*30+9, userx*30+25, usery*30+13, fill='red')
-        display.create_line(userx*30+25, usery*30+13, userx*30+5, usery*30+17, fill='red')
-        display.create_line(userx*30+5, usery*30+17, userx*30+25, usery*30+21, fill='red')
-        display.create_line(userx*30+25, usery*30+21, userx*30+5, usery*30+25, fill='red')
-        display.create_line(userx*30+5, usery*30+25, userx*30+15, usery*30+27, fill='red')
-        display.create_line(userx*30+15, usery*30+27, userx*30+15, usery*30+30, fill='red')
+    elif mapl[usery][userx] == 'Rud': 
+        mapl[usery][userx] = 'R1ud' 
+        display.create_line(userx*30+15, usery*30, userx*30+15, usery*30+3, fill='red') 
+        display.create_line(userx*30+15, usery*30+3, userx*30+25, usery*30+5, fill='red') 
+        display.create_line(userx*30+25, usery*30+5, userx*30+5, usery*30+9, fill='red') 
+        display.create_line(userx*30+5, usery*30+9, userx*30+25, usery*30+13, fill='red') 
+        display.create_line(userx*30+25, usery*30+13, userx*30+5, usery*30+17, fill='red') 
+        display.create_line(userx*30+5, usery*30+17, userx*30+25, usery*30+21, fill='red') 
+        display.create_line(userx*30+25, usery*30+21, userx*30+5, usery*30+25, fill='red') 
+        display.create_line(userx*30+5, usery*30+25, userx*30+15, usery*30+27, fill='red') 
+        display.create_line(userx*30+15, usery*30+27, userx*30+15, usery*30+30, fill='red') 
 
-def SELECT_RESISTANCE2():
-    global mapl, userx, usery
-    if mapl[usery][userx] == 'Rlr':
-        mapl[usery][userx] = 'R2lr'
-        display.create_line(userx*30, usery*30+15, userx*30+3, usery*30+15, fill='DarkOrange1')
-        display.create_line(userx*30+3, usery*30+15, userx*30+5, usery*30+25, fill='DarkOrange1')
-        display.create_line(userx*30+5, usery*30+25, userx*30+9, usery*30+5, fill='DarkOrange1')
-        display.create_line(userx*30+9, usery*30+5, userx*30+13, usery*30+25, fill='DarkOrange1')
-        display.create_line(userx*30+13, usery*30+25, userx*30+17, usery*30+5, fill='DarkOrange1')
-        display.create_line(userx*30+17, usery*30+5, userx*30+21, usery*30+25, fill='DarkOrange1')
-        display.create_line(userx*30+21, usery*30+25, userx*30+25, usery*30+5, fill='DarkOrange1')
-        display.create_line(userx*30+25, usery*30+5, userx*30+27, usery*30+15, fill='DarkOrange1')
-        display.create_line(userx*30+27, usery*30+15, userx*30+30, usery*30+15, fill='DarkOrange1')
+def SELECT_RESISTANCE2(): 
+    global mapl, userx, usery 
+    if mapl[usery][userx] == 'Rlr': 
+        mapl[usery][userx] = 'R2lr' 
+        display.create_line(userx*30, usery*30+15, userx*30+3, usery*30+15, fill='DarkOrange1') 
+        display.create_line(userx*30+3, usery*30+15, userx*30+5, usery*30+25, fill='DarkOrange1') 
+        display.create_line(userx*30+5, usery*30+25, userx*30+9, usery*30+5, fill='DarkOrange1') 
+        display.create_line(userx*30+9, usery*30+5, userx*30+13, usery*30+25, fill='DarkOrange1') 
+        display.create_line(userx*30+13, usery*30+25, userx*30+17, usery*30+5, fill='DarkOrange1') 
+        display.create_line(userx*30+17, usery*30+5, userx*30+21, usery*30+25, fill='DarkOrange1') 
+        display.create_line(userx*30+21, usery*30+25, userx*30+25, usery*30+5, fill='DarkOrange1') 
+        display.create_line(userx*30+25, usery*30+5, userx*30+27, usery*30+15, fill='DarkOrange1') 
+        display.create_line(userx*30+27, usery*30+15, userx*30+30, usery*30+15, fill='DarkOrange1') 
 
-    elif mapl[usery][userx] == 'Rud':
-        mapl[usery][userx] = 'R2ud'
-        display.create_line(userx*30+15, usery*30, userx*30+15, usery*30+3, fill='DarkOrange1')
-        display.create_line(userx*30+15, usery*30+3, userx*30+25, usery*30+5, fill='DarkOrange1')
-        display.create_line(userx*30+25, usery*30+5, userx*30+5, usery*30+9, fill='DarkOrange1')
-        display.create_line(userx*30+5, usery*30+9, userx*30+25, usery*30+13, fill='DarkOrange1')
-        display.create_line(userx*30+25, usery*30+13, userx*30+5, usery*30+17, fill='DarkOrange1')
-        display.create_line(userx*30+5, usery*30+17, userx*30+25, usery*30+21, fill='DarkOrange1')
-        display.create_line(userx*30+25, usery*30+21, userx*30+5, usery*30+25, fill='DarkOrange1')
-        display.create_line(userx*30+5, usery*30+25, userx*30+15, usery*30+27, fill='DarkOrange1')
-        display.create_line(userx*30+15, usery*30+27, userx*30+15, usery*30+30, fill='DarkOrange1')
+    elif mapl[usery][userx] == 'Rud': 
+        mapl[usery][userx] = 'R2ud' 
+        display.create_line(userx*30+15, usery*30, userx*30+15, usery*30+3, fill='DarkOrange1') 
+        display.create_line(userx*30+15, usery*30+3, userx*30+25, usery*30+5, fill='DarkOrange1') 
+        display.create_line(userx*30+25, usery*30+5, userx*30+5, usery*30+9, fill='DarkOrange1') 
+        display.create_line(userx*30+5, usery*30+9, userx*30+25, usery*30+13, fill='DarkOrange1') 
+        display.create_line(userx*30+25, usery*30+13, userx*30+5, usery*30+17, fill='DarkOrange1') 
+        display.create_line(userx*30+5, usery*30+17, userx*30+25, usery*30+21, fill='DarkOrange1') 
+        display.create_line(userx*30+25, usery*30+21, userx*30+5, usery*30+25, fill='DarkOrange1') 
+        display.create_line(userx*30+5, usery*30+25, userx*30+15, usery*30+27, fill='DarkOrange1') 
+        display.create_line(userx*30+15, usery*30+27, userx*30+15, usery*30+30, fill='DarkOrange1') 
 
-def SELECT_RESISTANCE3():
-    global mapl, userx, usery
-    if mapl[usery][userx] == 'Rlr':
-        mapl[usery][userx] = 'R3lr'
-        display.create_line(userx*30, usery*30+15, userx*30+3, usery*30+15, fill='gold')
-        display.create_line(userx*30+3, usery*30+15, userx*30+5, usery*30+25, fill='gold')
-        display.create_line(userx*30+5, usery*30+25, userx*30+9, usery*30+5, fill='gold')
-        display.create_line(userx*30+9, usery*30+5, userx*30+13, usery*30+25, fill='gold')
-        display.create_line(userx*30+13, usery*30+25, userx*30+17, usery*30+5, fill='gold')
-        display.create_line(userx*30+17, usery*30+5, userx*30+21, usery*30+25, fill='gold')
-        display.create_line(userx*30+21, usery*30+25, userx*30+25, usery*30+5, fill='gold')
-        display.create_line(userx*30+25, usery*30+5, userx*30+27, usery*30+15, fill='gold')
-        display.create_line(userx*30+27, usery*30+15, userx*30+30, usery*30+15, fill='gold')
+def SELECT_RESISTANCE3(): 
+    global mapl, userx, usery 
+    if mapl[usery][userx] == 'Rlr': 
+        mapl[usery][userx] = 'R3lr' 
+        display.create_line(userx*30, usery*30+15, userx*30+3, usery*30+15, fill='gold') 
+        display.create_line(userx*30+3, usery*30+15, userx*30+5, usery*30+25, fill='gold') 
+        display.create_line(userx*30+5, usery*30+25, userx*30+9, usery*30+5, fill='gold') 
+        display.create_line(userx*30+9, usery*30+5, userx*30+13, usery*30+25, fill='gold') 
+        display.create_line(userx*30+13, usery*30+25, userx*30+17, usery*30+5, fill='gold') 
+        display.create_line(userx*30+17, usery*30+5, userx*30+21, usery*30+25, fill='gold') 
+        display.create_line(userx*30+21, usery*30+25, userx*30+25, usery*30+5, fill='gold') 
+        display.create_line(userx*30+25, usery*30+5, userx*30+27, usery*30+15, fill='gold') 
+        display.create_line(userx*30+27, usery*30+15, userx*30+30, usery*30+15, fill='gold') 
 
-    elif mapl[usery][userx] == 'Rud':
-        mapl[usery][userx] = 'R3ud'
-        display.create_line(userx*30+15, usery*30, userx*30+15, usery*30+3, fill='gold')
-        display.create_line(userx*30+15, usery*30+3, userx*30+25, usery*30+5, fill='gold')
-        display.create_line(userx*30+25, usery*30+5, userx*30+5, usery*30+9, fill='gold')
-        display.create_line(userx*30+5, usery*30+9, userx*30+25, usery*30+13, fill='gold')
-        display.create_line(userx*30+25, usery*30+13, userx*30+5, usery*30+17, fill='gold')
-        display.create_line(userx*30+5, usery*30+17, userx*30+25, usery*30+21, fill='gold')
-        display.create_line(userx*30+25, usery*30+21, userx*30+5, usery*30+25, fill='gold')
-        display.create_line(userx*30+5, usery*30+25, userx*30+15, usery*30+27, fill='gold')
-        display.create_line(userx*30+15, usery*30+27, userx*30+15, usery*30+30, fill='gold')
+    elif mapl[usery][userx] == 'Rud': 
+        mapl[usery][userx] = 'R3ud' 
+        display.create_line(userx*30+15, usery*30, userx*30+15, usery*30+3, fill='gold') 
+        display.create_line(userx*30+15, usery*30+3, userx*30+25, usery*30+5, fill='gold') 
+        display.create_line(userx*30+25, usery*30+5, userx*30+5, usery*30+9, fill='gold') 
+        display.create_line(userx*30+5, usery*30+9, userx*30+25, usery*30+13, fill='gold') 
+        display.create_line(userx*30+25, usery*30+13, userx*30+5, usery*30+17, fill='gold') 
+        display.create_line(userx*30+5, usery*30+17, userx*30+25, usery*30+21, fill='gold') 
+        display.create_line(userx*30+25, usery*30+21, userx*30+5, usery*30+25, fill='gold') 
+        display.create_line(userx*30+5, usery*30+25, userx*30+15, usery*30+27, fill='gold') 
+        display.create_line(userx*30+15, usery*30+27, userx*30+15, usery*30+30, fill='gold') 
 
-def SELECT_RESISTANCE4():
-    global mapl, userx, usery
-    if mapl[usery][userx] == 'Rlr':
-        mapl[usery][userx] = 'R4lr'
-        display.create_line(userx*30, usery*30+15, userx*30+3, usery*30+15, fill='green2')
-        display.create_line(userx*30+3, usery*30+15, userx*30+5, usery*30+25, fill='green2')
-        display.create_line(userx*30+5, usery*30+25, userx*30+9, usery*30+5, fill='green2')
-        display.create_line(userx*30+9, usery*30+5, userx*30+13, usery*30+25, fill='green2')
-        display.create_line(userx*30+13, usery*30+25, userx*30+17, usery*30+5, fill='green2')
-        display.create_line(userx*30+17, usery*30+5, userx*30+21, usery*30+25, fill='green2')
-        display.create_line(userx*30+21, usery*30+25, userx*30+25, usery*30+5, fill='green2')
-        display.create_line(userx*30+25, usery*30+5, userx*30+27, usery*30+15, fill='green2')
-        display.create_line(userx*30+27, usery*30+15, userx*30+30, usery*30+15, fill='green2')
+def SELECT_RESISTANCE4(): 
+    global mapl, userx, usery 
+    if mapl[usery][userx] == 'Rlr': 
+        mapl[usery][userx] = 'R4lr' 
+        display.create_line(userx*30, usery*30+15, userx*30+3, usery*30+15, fill='green2') 
+        display.create_line(userx*30+3, usery*30+15, userx*30+5, usery*30+25, fill='green2') 
+        display.create_line(userx*30+5, usery*30+25, userx*30+9, usery*30+5, fill='green2') 
+        display.create_line(userx*30+9, usery*30+5, userx*30+13, usery*30+25, fill='green2') 
+        display.create_line(userx*30+13, usery*30+25, userx*30+17, usery*30+5, fill='green2') 
+        display.create_line(userx*30+17, usery*30+5, userx*30+21, usery*30+25, fill='green2') 
+        display.create_line(userx*30+21, usery*30+25, userx*30+25, usery*30+5, fill='green2') 
+        display.create_line(userx*30+25, usery*30+5, userx*30+27, usery*30+15, fill='green2') 
+        display.create_line(userx*30+27, usery*30+15, userx*30+30, usery*30+15, fill='green2') 
 
-    elif mapl[usery][userx] == 'Rud':
-        mapl[usery][userx] = 'R4ud'
-        display.create_line(userx*30+15, usery*30, userx*30+15, usery*30+3, fill='green2')
-        display.create_line(userx*30+15, usery*30+3, userx*30+25, usery*30+5, fill='green2')
-        display.create_line(userx*30+25, usery*30+5, userx*30+5, usery*30+9, fill='green2')
-        display.create_line(userx*30+5, usery*30+9, userx*30+25, usery*30+13, fill='green2')
-        display.create_line(userx*30+25, usery*30+13, userx*30+5, usery*30+17, fill='green2')
-        display.create_line(userx*30+5, usery*30+17, userx*30+25, usery*30+21, fill='green2')
-        display.create_line(userx*30+25, usery*30+21, userx*30+5, usery*30+25, fill='green2')
-        display.create_line(userx*30+5, usery*30+25, userx*30+15, usery*30+27, fill='green2')
-        display.create_line(userx*30+15, usery*30+27, userx*30+15, usery*30+30, fill='green2')
+    elif mapl[usery][userx] == 'Rud': 
+        mapl[usery][userx] = 'R4ud' 
+        display.create_line(userx*30+15, usery*30, userx*30+15, usery*30+3, fill='green2') 
+        display.create_line(userx*30+15, usery*30+3, userx*30+25, usery*30+5, fill='green2') 
+        display.create_line(userx*30+25, usery*30+5, userx*30+5, usery*30+9, fill='green2') 
+        display.create_line(userx*30+5, usery*30+9, userx*30+25, usery*30+13, fill='green2') 
+        display.create_line(userx*30+25, usery*30+13, userx*30+5, usery*30+17, fill='green2') 
+        display.create_line(userx*30+5, usery*30+17, userx*30+25, usery*30+21, fill='green2') 
+        display.create_line(userx*30+25, usery*30+21, userx*30+5, usery*30+25, fill='green2') 
+        display.create_line(userx*30+5, usery*30+25, userx*30+15, usery*30+27, fill='green2') 
+        display.create_line(userx*30+15, usery*30+27, userx*30+15, usery*30+30, fill='green2') 
 
-def SELECT_RESISTANCE5():
-    global mapl, userx, usery
-    if mapl[usery][userx] == 'Rlr':
-        mapl[usery][userx] = 'R5lr'
-        display.create_line(userx*30, usery*30+15, userx*30+3, usery*30+15, fill='RoyalBlue4')
-        display.create_line(userx*30+3, usery*30+15, userx*30+5, usery*30+25, fill='RoyalBlue4')
-        display.create_line(userx*30+5, usery*30+25, userx*30+9, usery*30+5, fill='RoyalBlue4')
-        display.create_line(userx*30+9, usery*30+5, userx*30+13, usery*30+25, fill='RoyalBlue4')
-        display.create_line(userx*30+13, usery*30+25, userx*30+17, usery*30+5, fill='RoyalBlue4')
-        display.create_line(userx*30+17, usery*30+5, userx*30+21, usery*30+25, fill='RoyalBlue4')
-        display.create_line(userx*30+21, usery*30+25, userx*30+25, usery*30+5, fill='RoyalBlue4')
-        display.create_line(userx*30+25, usery*30+5, userx*30+27, usery*30+15, fill='RoyalBlue4')
-        display.create_line(userx*30+27, usery*30+15, userx*30+30, usery*30+15, fill='RoyalBlue4')
+def SELECT_RESISTANCE5(): 
+    global mapl, userx, usery 
+    if mapl[usery][userx] == 'Rlr': 
+        mapl[usery][userx] = 'R5lr' 
+        display.create_line(userx*30, usery*30+15, userx*30+3, usery*30+15, fill='RoyalBlue4') 
+        display.create_line(userx*30+3, usery*30+15, userx*30+5, usery*30+25, fill='RoyalBlue4') 
+        display.create_line(userx*30+5, usery*30+25, userx*30+9, usery*30+5, fill='RoyalBlue4') 
+        display.create_line(userx*30+9, usery*30+5, userx*30+13, usery*30+25, fill='RoyalBlue4') 
+        display.create_line(userx*30+13, usery*30+25, userx*30+17, usery*30+5, fill='RoyalBlue4') 
+        display.create_line(userx*30+17, usery*30+5, userx*30+21, usery*30+25, fill='RoyalBlue4') 
+        display.create_line(userx*30+21, usery*30+25, userx*30+25, usery*30+5, fill='RoyalBlue4') 
+        display.create_line(userx*30+25, usery*30+5, userx*30+27, usery*30+15, fill='RoyalBlue4') 
+        display.create_line(userx*30+27, usery*30+15, userx*30+30, usery*30+15, fill='RoyalBlue4') 
 
-    elif mapl[usery][userx] == 'Rud':
-        mapl[usery][userx] = 'R5ud'
-        display.create_line(userx*30+15, usery*30, userx*30+15, usery*30+3, fill='RoyalBlue4')
-        display.create_line(userx*30+15, usery*30+3, userx*30+25, usery*30+5, fill='RoyalBlue4')
-        display.create_line(userx*30+25, usery*30+5, userx*30+5, usery*30+9, fill='RoyalBlue4')
-        display.create_line(userx*30+5, usery*30+9, userx*30+25, usery*30+13, fill='RoyalBlue4')
-        display.create_line(userx*30+25, usery*30+13, userx*30+5, usery*30+17, fill='RoyalBlue4')
-        display.create_line(userx*30+5, usery*30+17, userx*30+25, usery*30+21, fill='RoyalBlue4')
-        display.create_line(userx*30+25, usery*30+21, userx*30+5, usery*30+25, fill='RoyalBlue4')
-        display.create_line(userx*30+5, usery*30+25, userx*30+15, usery*30+27, fill='RoyalBlue4')
-        display.create_line(userx*30+15, usery*30+27, userx*30+15, usery*30+30, fill='RoyalBlue4')
+    elif mapl[usery][userx] == 'Rud': 
+        mapl[usery][userx] = 'R5ud' 
+        display.create_line(userx*30+15, usery*30, userx*30+15, usery*30+3, fill='RoyalBlue4') 
+        display.create_line(userx*30+15, usery*30+3, userx*30+25, usery*30+5, fill='RoyalBlue4') 
+        display.create_line(userx*30+25, usery*30+5, userx*30+5, usery*30+9, fill='RoyalBlue4') 
+        display.create_line(userx*30+5, usery*30+9, userx*30+25, usery*30+13, fill='RoyalBlue4') 
+        display.create_line(userx*30+25, usery*30+13, userx*30+5, usery*30+17, fill='RoyalBlue4') 
+        display.create_line(userx*30+5, usery*30+17, userx*30+25, usery*30+21, fill='RoyalBlue4') 
+        display.create_line(userx*30+25, usery*30+21, userx*30+5, usery*30+25, fill='RoyalBlue4') 
+        display.create_line(userx*30+5, usery*30+25, userx*30+15, usery*30+27, fill='RoyalBlue4') 
+        display.create_line(userx*30+15, usery*30+27, userx*30+15, usery*30+30, fill='RoyalBlue4') 
 
-def SELECT_RESISTANCE6():
-    global mapl, userx, usery
-    if mapl[usery][userx] == 'Rlr':
-        mapl[usery][userx] = 'R6lr'
-        display.create_line(userx*30, usery*30+15, userx*30+3, usery*30+15, fill='purple3')
-        display.create_line(userx*30+3, usery*30+15, userx*30+5, usery*30+25, fill='purple3')
-        display.create_line(userx*30+5, usery*30+25, userx*30+9, usery*30+5, fill='purple3')
-        display.create_line(userx*30+9, usery*30+5, userx*30+13, usery*30+25, fill='purple3')
-        display.create_line(userx*30+13, usery*30+25, userx*30+17, usery*30+5, fill='purple3')
-        display.create_line(userx*30+17, usery*30+5, userx*30+21, usery*30+25, fill='purple3')
-        display.create_line(userx*30+21, usery*30+25, userx*30+25, usery*30+5, fill='purple3')
-        display.create_line(userx*30+25, usery*30+5, userx*30+27, usery*30+15, fill='purple3')
-        display.create_line(userx*30+27, usery*30+15, userx*30+30, usery*30+15, fill='purple3')
+def SELECT_RESISTANCE6(): 
+    global mapl, userx, usery 
+    if mapl[usery][userx] == 'Rlr': 
+        mapl[usery][userx] = 'R6lr' 
+        display.create_line(userx*30, usery*30+15, userx*30+3, usery*30+15, fill='purple3') 
+        display.create_line(userx*30+3, usery*30+15, userx*30+5, usery*30+25, fill='purple3') 
+        display.create_line(userx*30+5, usery*30+25, userx*30+9, usery*30+5, fill='purple3') 
+        display.create_line(userx*30+9, usery*30+5, userx*30+13, usery*30+25, fill='purple3') 
+        display.create_line(userx*30+13, usery*30+25, userx*30+17, usery*30+5, fill='purple3') 
+        display.create_line(userx*30+17, usery*30+5, userx*30+21, usery*30+25, fill='purple3') 
+        display.create_line(userx*30+21, usery*30+25, userx*30+25, usery*30+5, fill='purple3') 
+        display.create_line(userx*30+25, usery*30+5, userx*30+27, usery*30+15, fill='purple3') 
+        display.create_line(userx*30+27, usery*30+15, userx*30+30, usery*30+15, fill='purple3') 
 
-    elif mapl[usery][userx] == 'Rud':
-        mapl[usery][userx] = 'R6ud'
-        display.create_line(userx*30+15, usery*30, userx*30+15, usery*30+3, fill='purple3')
-        display.create_line(userx*30+15, usery*30+3, userx*30+25, usery*30+5, fill='purple3')
-        display.create_line(userx*30+25, usery*30+5, userx*30+5, usery*30+9, fill='purple3')
-        display.create_line(userx*30+5, usery*30+9, userx*30+25, usery*30+13, fill='purple3')
-        display.create_line(userx*30+25, usery*30+13, userx*30+5, usery*30+17, fill='purple3')
-        display.create_line(userx*30+5, usery*30+17, userx*30+25, usery*30+21, fill='purple3')
-        display.create_line(userx*30+25, usery*30+21, userx*30+5, usery*30+25, fill='purple3')
-        display.create_line(userx*30+5, usery*30+25, userx*30+15, usery*30+27, fill='purple3')
-        display.create_line(userx*30+15, usery*30+27, userx*30+15, usery*30+30, fill='purple3')
+    elif mapl[usery][userx] == 'Rud': 
+        mapl[usery][userx] = 'R6ud' 
+        display.create_line(userx*30+15, usery*30, userx*30+15, usery*30+3, fill='purple3') 
+        display.create_line(userx*30+15, usery*30+3, userx*30+25, usery*30+5, fill='purple3') 
+        display.create_line(userx*30+25, usery*30+5, userx*30+5, usery*30+9, fill='purple3') 
+        display.create_line(userx*30+5, usery*30+9, userx*30+25, usery*30+13, fill='purple3') 
+        display.create_line(userx*30+25, usery*30+13, userx*30+5, usery*30+17, fill='purple3') 
+        display.create_line(userx*30+5, usery*30+17, userx*30+25, usery*30+21, fill='purple3') 
+        display.create_line(userx*30+25, usery*30+21, userx*30+5, usery*30+25, fill='purple3') 
+        display.create_line(userx*30+5, usery*30+25, userx*30+15, usery*30+27, fill='purple3') 
+        display.create_line(userx*30+15, usery*30+27, userx*30+15, usery*30+30, fill='purple3') 
 
 
 
@@ -393,14 +393,50 @@ def MAKE_WIRE_ULD():
         display.create_line(userx*30+15, usery*30+15, userx*30+15, usery*30, fill="black") #UP
         display.create_line(userx*30+15, usery*30+15, userx*30+15, usery*30+30, fill="black") #DOWN
 
-def MAKE_WIRE_LRUD():
+def MAKE_WIRE_LUR1():
     global mapl, userx, usery
     if mapl[usery][userx] == 0 :
-        mapl[usery][userx] = 'quad'
+        mapl[usery][userx] = 'lur1'
         display.create_line(userx*30, usery*30+15, userx*30+15, usery*30+15, fill="black") #LEFT
         display.create_line(userx*30+15, usery*30+15, userx*30+15, usery*30, fill="black") #UP
         display.create_line(userx*30+30, usery*30+15, userx*30+15, usery*30+15, fill="black") #RIGHT
+        display.create_oval(userx*30+12, usery*30+12, userx*30+18, usery*30+18)
+        
+def MAKE_WIRE_URD1():
+    global mapl, userx, usery
+    if mapl[usery][userx] == 0 :
+        mapl[usery][userx] = 'urd1'
+        display.create_line(userx*30+15, usery*30+15, userx*30+15, usery*30, fill="black") #UP
+        display.create_line(userx*30+30, usery*30+15, userx*30+15, usery*30+15, fill="black") #RIGHT
         display.create_line(userx*30+15, usery*30+15, userx*30+15, usery*30+30, fill="black") #DOWN
+        display.create_oval(userx*30+12, usery*30+12, userx*30+18, usery*30+18)
+
+def MAKE_WIRE_LDR1():
+    global mapl, userx, usery
+    if mapl[usery][userx] == 0 :
+        mapl[usery][userx] = 'ldr1'
+        display.create_line(userx*30, usery*30+15, userx*30+15, usery*30+15, fill="black") #LEFT
+        display.create_line(userx*30+30, usery*30+15, userx*30+15, usery*30+15, fill="black") #RIGHT
+        display.create_line(userx*30+15, usery*30+15, userx*30+15, usery*30+30, fill="black") #DOWN
+        display.create_oval(userx*30+12, usery*30+12, userx*30+18, usery*30+18)
+
+def MAKE_WIRE_ULD1():
+    global mapl, userx, usery
+    if mapl[usery][userx] == 0 :
+        mapl[usery][userx] = 'uld1'
+        display.create_line(userx*30, usery*30+15, userx*30+15, usery*30+15, fill="black") #LEFT
+        display.create_line(userx*30+15, usery*30+15, userx*30+15, usery*30, fill="black") #UP
+        display.create_line(userx*30+15, usery*30+15, userx*30+15, usery*30+30, fill="black") #DOWN
+        display.create_oval(userx*30+12, usery*30+12, userx*30+18, usery*30+18)
+
+# def MAKE_WIRE_LRUD():
+#     global mapl, userx, usery
+#     if mapl[usery][userx] == 0 :
+#         mapl[usery][userx] = 'quad'
+#         display.create_line(userx*30, usery*30+15, userx*30+15, usery*30+15, fill="black") #LEFT
+#         display.create_line(userx*30+15, usery*30+15, userx*30+15, usery*30, fill="black") #UP
+#         display.create_line(userx*30+30, usery*30+15, userx*30+15, usery*30+15, fill="black") #RIGHT
+#         display.create_line(userx*30+15, usery*30+15, userx*30+15, usery*30+30, fill="black") #DOWN
 
 #저항 놓기
 def MAKE_RESISTOR_LR():
@@ -500,8 +536,8 @@ def keypressed(event):        #when keypressed ~~
     elif event.keysym == 'n' : # 'ㅜ'자
         MAKE_WIRE_LDR()
 
-    elif event.keysym == 'equal' : # '+'자
-        MAKE_WIRE_LRUD()
+    # elif event.keysym == 'equal' : # '+'자
+    #     MAKE_WIRE_LRUD()
 
     elif event.keysym == 'b' : # 밧데리
         MAKE_BATTERY()
@@ -532,7 +568,7 @@ def keypressed(event):        #when keypressed ~~
 
     elif event.keysym == 'o' :
         OPERATE()
-    # 당신의 아무거나. 스타트로 대체되다. 불만 있습니까? Korean Heroes?
+    # 당신의 아무거나. 스타트로 대체되다. 불만 있습니까? Korean Heroes? !!!!!!!
 
     # elif event.keysym == 'r' : # start(run) module
     #     amugeona()
@@ -616,7 +652,7 @@ def aboutlc():
     lcbutton.pack()
 
 def lchelp():
-    AYOE = "DirectCurrent Circuit Help \n Commands \n \n \n [m] > [fill 'ㅡ'wire] \n [n] > [fill 'ㅜ'wire] \n [s] > [fill 'ㄴ'wire] \n [+] > [fill '+'wire] \n [b] > [set battery]  \n [r] > [set resistance]  \n [space] > [rotate wire] \n [Esc] > [Exit] \n [Enter] > [Clear] \n [e] > [Erase]"
+    AYOE = "DirectCurrent Circuit Help \n Commands \n \n \n [m] > [fill 'ㅡ'wire] \n [n] > [fill 'ㅜ'wire] \n [s] > [fill 'ㄴ'wire] \n [+] > [fill '+'wire] \n [b] > [set battery]  \n [r] > [set resistance]  \n [space] > [rotate wire] \n [Esc] > [Exit] \n [Enter] > [Clear] \n [e] > [Erase] \n [1] > [Resistance1] \n [2] > [Resistance2] \n [3] > [Resistance3] \n [4] > [Resistance4] \n [5] > [Resistance5] \n [6] > [Resistance6] "
     LCHelp = Toplevel(tk)
     LCHelp.geometry("320x500+820+100")
     LCHelp.resizable(False, False)
@@ -649,27 +685,139 @@ def nihahaha():  #  NiHaHaHa!!!!
     print("Nihahaha!")
 
 def amugeona():                   #Most Valuable Code
-    global mapl, mapltf
+    global mapl, electron, isThisDone, ex, ey, direction, isThisAllDone
+
+    for garo in range(20):       #allocate new electron     //     list : [receive1, receive2, electron1, electron2(if exists)]
+        for sero in range(20):   #   zz;                           receive : 1-right 2-up 3-left 4-down
+            if mapl[garo][sero] != 0 and electron[garo][sero] == 0 :
+                electron[garo][sero] = [0, 0, 1]
 
 
-    for minski in range(20):
-        for manski in range(1, 20):
-            mapltf[minski][manski] = 0
+    for x in range(20): 
+        for y in range(20):
+            if mapl[y][x] == 'B' :
 
-    for x in range(20):
-        repeat=0
-        repeatlimit=0
-        for re in range(20):
-            if mapl[re][x] > 1 :
-                repeatlimit += 1
-        while repeat <= repeatlimit :
-            repeat+=1
-            for y in range(20):
-                if mapl[y][x] == 2 and mapltf[y][x] == 1 :       #wire
-                    mapltf[y][x+1] = 1
-                    # mapltf[y][x-1] = 1
-                    mapltf[y+1][x] = 1
-                    mapltf[y-1][x] = 1
+                isThisDone = False
+                isThisAllDone = False
+                ex = x-1
+                ey = y
+                direction = 'l'
+
+                ihatethisshit()
+
+def ihatethisshit():                 #while True 마춤뻡좀지켜주새요;; 엊절
+    global mapl, ex, ey, direction, isThisAllDone
+    while isThisDone == False and isThisAllDone == False:  
+        if mapl[ey][ex] == 'B' :
+            isThisAllDone = True
+            isThisDone = True
+
+        if mapl[ey][ex] == 'lr' :     #Just Straight Wire
+            if direction == 'l' :
+                ex-=1
+                direction == 'l'
+            elif direction == 'r' :
+                ex+=1
+                direction='r'
+        if mapl[ey][ex] == 'ud' :
+            if direction == 'u' :
+                ey-=1
+                direction == 'u'
+            elif direction == 'd' :
+                ey+=1
+                direction='d'
+
+        if mapl[ey][ex] == 'lu' :     #Turrnrrnrrnrnrnring wire
+            if direction == 'r' :
+                ey-=1
+                direction == 'u'
+            elif direction == 'd' :
+                ex-=1
+                direction='l'
+        if mapl[ey][ex] == 'ru' :
+            if direction == 'l' :
+                ey-=1
+                direction == 'u'
+            elif direction == 'd' :
+                ex+=1
+                direction='r'
+        if mapl[ey][ex] == 'rd' :
+            if direction == 'l' :
+                ey+=1
+                direction == 'd'
+            elif direction == 'u' :
+                ex+=1
+                direction='r'
+        if mapl[ey][ex] == 'ld' :
+            if direction == 'r' :
+                ey+=1
+                direction == 'd'
+            elif direction == 'u' :
+                ex-=1
+                direction='l'
+
+        if mapl[ey][ex] == 'lur' :       # When Meet SAMBARI starting point
+            if direction == 'r' :
+                sambari('u', 'r')
+            if direction == 'd' :
+                sambari('l', 'r')
+            if direction == 'l' :
+                sambari('l', 'u')
+        if mapl[ey][ex] == 'urd' :
+            if direction == 'u' :
+                sambari('u', 'r')
+            if direction == 'd' :
+                sambari('d', 'r')
+            if direction == 'l' :
+                sambari('u', 'd')
+        if mapl[ey][ex] == 'ldr' :
+            if direction == 'r' :
+                sambari('d', 'r')
+            if direction == 'u' :
+                sambari('l', 'r')
+            if direction == 'l' :
+                sambari('l', 'd')
+        if mapl[ey][ex] == 'uld' :
+            if direction == 'u' :
+                sambari('u', 'l')
+            if direction == 'd' :
+                sambari('d', 'l')
+            if direction == 'r' :
+                sambari('u', 'd')
+            
+        if mapl[ey][ex] == 'Rlr' :        # WHEN MEET RESISTORRRRRRR
+            resistorCalculator(ex, ey)
+            if direction == 'l' :
+                ex-=1
+                direction == 'l'
+            elif direction == 'r' :
+                ex+=1
+                direction='r'
+        if mapl[ey][ex] == 'Rud' :
+            resistorCalculator(ex, ey)
+            if direction == 'u' :
+                ey-=1
+                direction == 'u'
+            elif direction == 'd' :
+                ey+=1
+                direction='d'
+        
+        if mapl[ey][ex] == 'lur1' \
+            or mapl[ey][ex] == 'ldr1' \
+                or mapl[ey][ex] == 'urd1' \
+                    or mapl[ey][ex] == 'uld1':    # When MEET SAMBARI END
+            sambariEnd.append(direction)
+
+
+def sambari(dir1, dir2):
+    global direction, sambariEnd
+    print('hello world')
+    print(dir1, dir2)
+    sambariEnd = []
+
+
+def resistorCalculator(x, y):
+    print(x, y)
 
 
 
@@ -686,7 +834,7 @@ def setresistance(self):
     return valid
 
 def errorsetresistance(self):
-        unknowntext = str(self) + ' is invalid value \nvalid value: 0~100'  #  위쪽에 정의되지 않은 키 입력들을 unknowntext로 간주, <입력된 키값, 'is not a valid key'>로써 나타냄
+        unknowntext = str(self) + ' is invalid value \n valid value: 0~100'  #  위쪽에 정의되지 않은 키 입력들을 unknowntext로 간주, <입력된 키값, 'is not a valid key'>로써 나타냄
         toplevel = Toplevel(tk)
         toplevel.geometry("320x200+820+100")
         toplevel.resizable(False, False)
@@ -713,7 +861,7 @@ def setbattery(self):
     return valid
 
 def errorsetbattery(self):
-        unknowntext = str(self) + ' is invalid value \nvalid value: 0~100'  #  위쪽에 정의되지 않은 키 입력들을 unknowntext로 간주, <입력된 키값, 'is not a valid key'>로써 나타냄
+        unknowntext = str(self) + ' is invalid value \n valid value: 0~100'  #  위쪽에 정의되지 않은 키 입력들을 unknowntext로 간주, <입력된 키값, 'is not a valid key'>로써 나타냄
         toplevel = Toplevel(tk)
         toplevel.geometry("320x200+820+100")
         toplevel.resizable(False, False)
@@ -759,7 +907,7 @@ Button(ui, text = "WIRE[w]", command = MAKE_WIRE_LR).place(x = 30, y= 400, width
 # 저항값 설정
 explanationresistance = Label(inputjeo1, text = "▼저항값을 선택▼", height = 3)
 explanationresistance.pack(padx=4)
-
+#어쩔얼른코딩하셈ㅅㄱ
 validate_command = (inputjeo1.register(setresistance), '%P')
 invalid_command = (inputjeo1.register(errorsetresistance), '%P')
 
@@ -797,8 +945,22 @@ validate_command = (inputjeo2.register(setbattery), '%P')
 invalid_command = (inputjeo2.register(errorsetbattery), '%P')
 
 batteryspinbox = Spinbox(inputjeo2, width=10, from_=0, to=100, validate = 'all', validatecommand=validate_command, invalidcommand=invalid_command)
-batteryspinbox.pack(padx=4)
+batteryspinbox.pack(padx=4) 
 
+def BATTERYVALUECHECK(self):
+    explanationbattery.config(text='')
+    if self == '':
+        return True
+    
+    
+    valid = False
+    if self.isdigit():
+        if (int(self) != 0):
+            valid = True
+    return valid
+
+def BATTERTYVALUEERROR():
+    explanationbattery.config(text="0 is not valid value")
 
 
 resistancevalues = [r+1 for r in range(0)]
@@ -841,105 +1003,8 @@ menubar.add_cascade(label = "Help", menu = menu4)
 
 tk.config(menu = menubar)
 
-def whiletrue():                 #while True 마춤뻡좀지켜주새요;; 엊절
-    global mapl, electron
+#     tk.after(1000, whiletrue)
 
-    for garo in range(20):       #allocate new electron     //     list : [receive1, receive2, electron1, electron2(if exists)]
-        for sero in range(20):   #   zz;                           receive : 1-right 2-up 3-left 4-down
-            if mapl[garo][sero] != 0 and electron[garo][sero] == 0 :
-                electron[garo][sero] = [0, 0, 1]
-
-
-    for x in range(20):
-        for y in range(20):
-            if mapl[y][x] == 'B' :
-                electron[y][x-1][0] = 1
-                del electron[y][x][3]
-                electron[y][x-1].append(1)
-
-                isThisDone = False
-                ex = x-1
-                ey = y
-
-                while isThisDone == False:  #눈앞이아득해진다눈앞이아득해진다눈앞이아득해진다눈앞이아득
-                    if mapl[ey][ex] == 'lr' :
-                        if electron[ey][ex][0] == 3 :
-                            del electron[ey][ex][len(electron[ey][ex])-1]
-                            ex+=1
-                            electron[ey][ex].append(1)
-                            electron[ey][ex][0] = 3
-                        if electron[ey][ex][0] == 1 :
-                            del electron[ey][ex][len(electron[ey][ex])-1]
-                            ex-=1
-                            electron[ey][ex].append(1)
-                            electron[ey][ex][0] = 1
-
-                    if mapl[ey][ex] == 'ud' :
-                        if electron[ey][ex][0] == 4 :
-                            del electron[ey][ex][len(electron[ey][ex])-1]
-                            ey-=1
-                            electron[ey][ex].append(1)
-                            electron[ey][ex][0] = 4
-                        if electron[ey][ex][0] == 2 :
-                            del electron[ey][ex][len(electron[ey][ex])-1]
-                            ey+=1
-                            electron[ey][ex].append(1)
-                            electron[ey][ex][0] = 2
-
-
-                    if mapl[ey][ex] == 'lu' :
-                        if electron[ey][ex][0] == 3 :
-                            del electron[ey][ex][len(electron[ey][ex])-1]
-                            ey-=1
-                            electron[ey][ex].append(1)
-                            electron[ey][ex][0] = 4
-                        if electron[ey][ex][0] == 2 :
-                            del electron[ey][ex][len(electron[ey][ex])-1]
-                            ex-=1
-                            electron[ey][ex].append(1)
-                            electron[ey][ex][0] = 1
-
-                    if mapl[ey][ex] == 'ru' :
-                        if electron[ey][ex][0] == 1 :
-                            del electron[ey][ex][len(electron[ey][ex])-1]
-                            ey-=1
-                            electron[ey][ex].append(1)
-                            electron[ey][ex][0] = 4 #오늘은여기까지
-                        if electron[ey][ex][0] == 2 :
-                            del electron[ey][ex][len(electron[ey][ex])-1]
-                            ex+=1
-                            electron[ey][ex].append(1)
-                            electron[ey][ex][0] = 4
-
-                    if mapl[ey][ex] == 'rd' :
-                        if electron[ey][ex][0] == 1 :
-                            del electron[ey][ex][len(electron[ey][ex])-1]
-                            ex-=1
-                            electron[ey][ex].append(1)
-                            electron[ey][ex][0] = 1
-                        if electron[ey][ex][0] == 4 :
-                            del electron[ey][ex][len(electron[ey][ex])-1]
-                            ey+=1
-                            electron[ey][ex].append(1)
-                            electron[ey][ex][0] = 4
-
-                    if mapl[ey][ex] == 'ld' :
-                        if electron[ey][ex][0] == 1 :
-                            del electron[ey][ex][len(electron[ey][ex])-1]
-                            ex-=1
-                            electron[ey][ex].append(1)
-                            electron[ey][ex][0] = 1
-                        if electron[ey][ex][0] == 4 :
-                            del electron[ey][ex][len(electron[ey][ex])-1]
-                            ey+=1
-                            electron[ey][ex].append(1)
-                            electron[ey][ex][0] = 4
-
-
-
-
-    tk.after(1000, whiletrue)
-
-tk.after(1000, whiletrue)
+# tk.after(1000, whiletrue)
 
 tk.mainloop()    #i like thi
