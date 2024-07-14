@@ -76,18 +76,18 @@ def highlight():
     display.create_rectangle(userx*30, usery*30, userx*30+30, usery*30+30, outline = "red")
     if afteroperate == True :
         resultDisplayer(userx, usery)
-        print('imgonnadi') # 걍 죽셈 ㅋㅋ
+        #print('imgonnadi') # 걍 죽셈 ㅋㅋ
 
 
 def resultDisplayer(x, y):
     global mapl, finalResult, resultDisplay, electricCurrent
-    print('맵앨 :', mapl[y][x])
+    #print('맵앨 :', mapl[y][x])
     if mapl[y][x] == 'B':
         resultDisplay.config(text=f'X좌표 : {x+1}\nY좌표 : {y+1}\n전압 : {battery_value}\n전류 : {electricCurrent}')
-        print('im changed!!!!')
+        #print('im changed!!!!')
     elif "Rlr" in mapl[y][x] or "Rud" in mapl[y][x]:
         electricCurrentCalculation()
-        print(finalResult)
+        #print(finalResult)
         if finalResult[y][x] != NONE :
             resultDisplay.config(text=f'X좌표 : {x+1}\nY좌표 : {y+1}\n전위차 : {finalResult[y][x][1]}\n전류 : {finalResult[y][x][2]}\n저항 : {finalResult[y][x][0]}\n소비전력 : {finalResult[y][x][3]}')
     else:
@@ -575,9 +575,9 @@ def OPERATE():
         button.pack()
     else:
         amugeona()
-        print("앞으로 더 추가")
-        print(f"저항 리스트: {resistors}")
-        print(batteryspinbox)
+        print("전지 도달")
+        #print(f"저항 리스트: {resistors}")
+        #print(batteryspinbox)
         afteroperate=True
         
 
@@ -660,8 +660,8 @@ def keypressed(event):        #when keypressed ~~
     elif event.keysym == 'o' :
         OPERATE()
 
-    elif event.keysym == 'g':
-        print(battery_value)
+    # elif event.keysym == 'g':
+    #     print(battery_value)
 
     # 당신의 아무거나. 스타트로 대체되다. 불만 있습니까? Korean Heroes? !!!!!!!
 
@@ -781,7 +781,7 @@ def nihahaha():  #  NiHaHaHa!!!!
 
 def amugeona():                   #Most Valuable Code
     global mapl, electron, isThisDone, ex, ey, direction, isThisAllDone
-    print("아무거나함수 실행")
+    #print("아무거나함수 실행")
 
     for garo in range(20):       #allocate new electron     //     list : [receive1, receive2, electron1, electron2(if exists)]
         for sero in range(20):   #   zz;                           receive : 1-right 2-up 3-left 4-down
@@ -809,7 +809,7 @@ def printcurlocation():
 
 def ihatethisshit():                 #while True 마춤뻡좀지켜주새요;; 엊절;; 싫음ㅅㄱ
     global mapl, ex, ey, direction, isThisAllDone, resistors, isThisDone, resistorLocation
-    print("씠함수 실행")
+    #print("씠함수 실행")
     resistorLocation = []
     resistors = []
     
@@ -987,11 +987,11 @@ def sambari(dir1, dir2):
     만나는삼발이를만난방향들 = []
     sambari_x, sambari_y = ex, ey
 
-    print(f"삼발이에서 <{dir1}>방향으로 이동", end='\t')
+    print(f"삼발이에서 <{dir1}> 방향으로 이동", end='\t')
     printcurlocation()
     만나는삼발이를만날때까지전선타고이동(dir1, 만나는삼발이를만난방향들)
 
-    print(f"삼발이에서 <{dir2}>방향으로 이동", end='\t')
+    print(f"삼발이에서 다시 <{dir2}> 방향으로 이동", end='\t')
     printcurlocation()
     ex, ey = sambari_x, sambari_y
     만나는삼발이를만날때까지전선타고이동(dir2, 만나는삼발이를만난방향들)
@@ -1025,10 +1025,10 @@ def sambari(dir1, dir2):
                                 만나는삼발이를만난방향들))
     만나는삼발이 = mapl[ey][ex]
     for 만나는삼발이가향하는방향 in 만나는삼발이[:3]:
-        print(만나는삼발이가향하는방향, 만나는삼발이, 만나는삼발이를만난방향들)
+        #print(만나는삼발이가향하는방향, 만나는삼발이, 만나는삼발이를만난방향들)
         만나는삼발이색칠(만나는삼발이가향하는방향)
         if 만나는삼발이가향하는방향 not in 만나는삼발이를만난방향들:
-            print(f"방향을 {direction}으로 결정")
+            #print(f"방향을 {direction}으로 결정")
             direction = 만나는삼발이가향하는방향
     만나는삼발이화살표()
     
@@ -1062,7 +1062,7 @@ def 만나는삼발이를만날때까지전선타고이동(dir, 만나는삼발�
     만나는삼발이를만난방향들.append(direction)
     resistors.append(tmp1)
     resistorLocation.append(tmp2)
-    print(resistors, resistorLocation, 만나는삼발이를만난방향들)
+    #print(resistors, resistorLocation, 만나는삼발이를만난방향들)
 
 
 
@@ -1138,16 +1138,11 @@ def electricCurrentCalculation() -> list[list[int] | int]:
         elif type(resistors[k]) == list:
             skipNext = True
 
-            print(k)
             wire1, wire2 = resistors[k], resistors[k+1]
             wire1R, wire2R = map(sum, (wire1, wire2))
             wire1I, wire2I = map(lambda x: electricCurrent * x / (wire1R + wire2R), (wire2R, wire1R))
 
             for j in range(len(wire1)):
-                print(k)
-                print(resistors)
-                print(resistorLocation)
-                print(resistorLocation[k][j])
                 x, y = resistorLocation[k][j]
                 r = resistors[k][j]
                 i = wire1I
@@ -1164,7 +1159,7 @@ def electricCurrentCalculation() -> list[list[int] | int]:
                 finalResult[y][x] = [r, i, v, p]
             
 
-    print(f"final result generated: \n{finalResult}")
+    #print(f"final result generated: \n{finalResult}")
     
 
 def setresistance(self):
@@ -1303,7 +1298,7 @@ invalid_command = (inputjeo2.register(errorsetbattery), '%P')
 
 
 resultDisplay = Label(inputjeo3, text="nice")
-resultDisplay.pack(side='top')
+resultDisplay.pack(anchor='n')
 
 
 # 안되면 말좀
