@@ -6,10 +6,12 @@ tk.geometry("1200x600+0+0")
 tk.resizable(False,False)
 
 
-inputjeo1=Frame(tk, relief = "solid", width = 150, height = 600)
+inputjeo1=Frame(tk, relief = "solid", width = 150, height = 300)
 inputjeo1.place(x=0, y=0)
-inputjeo2=Frame(tk, relief = "solid", width = 146, height = 600)
+inputjeo2=Frame(tk, relief = "solid", width = 146, height = 300)
 inputjeo2.place(x=150, y=0)
+inputjeo3=Frame(tk, relief = "solid", width = 300, height = 300)
+inputjeo3.place(x=0, y=300)
 
 dp=Frame(tk, relief = "solid", bd = 2, width = 600, height = 600)    #divide window
 dp.place(x = 296, y = 0)
@@ -29,7 +31,7 @@ resistors = []
 for i in range(rows):
     row = []
     for j in range(cols):
-        row.append(0)
+        row.append('')
     mapl.append(row)
 
 rows1 = 20
@@ -45,6 +47,7 @@ for i in range(rows1):
 
 userx = 0          #func
 usery = 0
+afteroperate=False
 
 def draw_window():
     display.delete('all')
@@ -52,10 +55,10 @@ def draw_window():
         display.create_line(30*i, 0, 30*i, 600, fill = "gray")
     for i in range(20):
         display.create_line(0, 30*i, 600, 30*i, fill = "gray")
-    for i in range(4):
-        display.create_line(0, 150*i, 600, 150*i, fill = "black")
-    for i in range(4):
-        display.create_line(150*i, 0, 150*i, 600, fill = "black")
+    # for i in range(4):
+    #     display.create_line(0, 150*i, 600, 150*i, fill = "black")
+    # for i in range(4):
+    #     display.create_line(150*i, 0, 150*i, 600, fill = "black")
 
 draw_window()
 
@@ -69,15 +72,26 @@ def dehighlight():
 
 #이동 커서 표시(움직임)
 def highlight():
-    global userx, usery
+    global userx, usery, afteroperate
     display.create_rectangle(userx*30, usery*30, userx*30+30, usery*30+30, outline = "red")
+    if afteroperate == True :
+        resultDisplayer(userx, usery)
+        print('imgonnadi') # 걍 죽셈 ㅋㅋ
 
 
 def resultDisplayer(x, y):
-    global mapl, resultvalue1, finalResult
-    if mapl[y][x] == 'b':
-        resultDisplay = Message(inputjeo1, text='X좌표 : ' + str(x))
-        
+    global mapl, finalResult, resultDisplay, electricCurrent
+    print('맵앨 :', mapl[y][x])
+    if mapl[y][x] == 'B':
+        resultDisplay.config(text=f'X좌표 : {x+1}\nY좌표 : {y+1}\n전압 : {battery_value}\n전류 : {electricCurrent}')
+        print('im changed!!!!')
+    elif "Rlr" in mapl[y][x] or "Rud" in mapl[y][x]:
+        electricCurrentCalculation()
+        print(finalResult)
+        if finalResult[y][x] != NONE :
+            resultDisplay.config(text=f'X좌표 : {x+1}\nY좌표 : {y+1}\n전위차 : {finalResult[y][x][1]}\n전류 : {finalResult[y][x][2]}\n저항 : {finalResult[y][x][0]}\n소비전력 : {finalResult[y][x][3]}')
+    else:
+        resultDisplay.config(text='NONE')
 
 
 #이동: 상하좌우
@@ -116,7 +130,7 @@ def GO_RIGHT():
 #지우기
 def MAKE_VOID():
     global mapl, userx, usery
-    mapl[usery][userx] = 0
+    mapl[usery][userx] = ''
     display.create_rectangle(userx*30, usery*30, userx*30+30, usery*30+30,outline='gray', fill='whitesmoke')
 
 # 저항값 설정
@@ -377,7 +391,7 @@ def rightArrow(ex, ey):
 
 def MAKE_WIRE_LR():
     global mapl, userx, usery
-    if mapl[usery][userx] == 0 :
+    if mapl[usery][userx] == '' :
         mapl[usery][userx] = 'lr'
         display.create_line(userx*30, usery*30+15, userx*30+30, usery*30+15, fill='black')
     else:
@@ -386,7 +400,7 @@ def MAKE_WIRE_LR():
 
 def MAKE_WIRE_UD():
     global mapl, userx, usery
-    if mapl[usery][userx] == 0 :
+    if mapl[usery][userx] == '' :
         # print('iwant!!')
         mapl[usery][userx] = 'ud'
         up('black')
@@ -394,35 +408,35 @@ def MAKE_WIRE_UD():
 
 def MAKE_WIRE_LU():
     global mapl, userx, usery
-    if mapl[usery][userx] == 0 :
+    if mapl[usery][userx] == '' :
         mapl[usery][userx] = 'lu'
         left("black")
         up("black")
 
 def MAKE_WIRE_RU():
     global mapl, userx, usery
-    if mapl[usery][userx] == 0 :
+    if mapl[usery][userx] == '' :
         mapl[usery][userx] = 'ru'
         right("black")
         up("black")
 
 def MAKE_WIRE_RD():
     global mapl, userx, usery
-    if mapl[usery][userx] == 0 :
+    if mapl[usery][userx] == '' :
         mapl[usery][userx] = 'rd'
         right("black")
         down("black")
 
 def MAKE_WIRE_LD():
     global mapl, userx, usery
-    if mapl[usery][userx] == 0 :
+    if mapl[usery][userx] == '' :
         mapl[usery][userx] = 'ld'
         left("black")
         down('black')
 
 def MAKE_WIRE_LUR():
     global mapl, userx, usery
-    if mapl[usery][userx] == 0 :
+    if mapl[usery][userx] == '' :
         mapl[usery][userx] = 'lur'
         left("black")
         up("black")
@@ -430,7 +444,7 @@ def MAKE_WIRE_LUR():
         
 def MAKE_WIRE_URD():
     global mapl, userx, usery
-    if mapl[usery][userx] == 0 :
+    if mapl[usery][userx] == '' :
         mapl[usery][userx] = 'urd'
         up("black")
         right("black")
@@ -438,7 +452,7 @@ def MAKE_WIRE_URD():
 
 def MAKE_WIRE_LDR():
     global mapl, userx, usery
-    if mapl[usery][userx] == 0 :
+    if mapl[usery][userx] == '' :
         mapl[usery][userx] = 'ldr'
         left("black")
         down("black")
@@ -446,7 +460,7 @@ def MAKE_WIRE_LDR():
 
 def MAKE_WIRE_ULD():
     global mapl, userx, usery
-    if mapl[usery][userx] == 0 :
+    if mapl[usery][userx] == '' :
         mapl[usery][userx] = 'uld'
         up("black")
         left("black")
@@ -454,7 +468,7 @@ def MAKE_WIRE_ULD():
 
 def MAKE_WIRE_LUR1():
     global mapl, userx, usery
-    if mapl[usery][userx] == 0 :
+    if mapl[usery][userx] == '' :
         mapl[usery][userx] = 'lur.'
         left("black")
         up("black")
@@ -463,7 +477,7 @@ def MAKE_WIRE_LUR1():
         
 def MAKE_WIRE_URD1():
     global mapl, userx, usery
-    if mapl[usery][userx] == 0 :
+    if mapl[usery][userx] == '' :
         mapl[usery][userx] = 'urd.'
         up("black")
         right("black")
@@ -472,7 +486,7 @@ def MAKE_WIRE_URD1():
 
 def MAKE_WIRE_LDR1():
     global mapl, userx, usery
-    if mapl[usery][userx] == 0 :
+    if mapl[usery][userx] == '' :
         mapl[usery][userx] = 'ldr.'
         left("black")
         down("black")
@@ -481,7 +495,7 @@ def MAKE_WIRE_LDR1():
 
 def MAKE_WIRE_ULD1():
     global mapl, userx, usery
-    if mapl[usery][userx] == 0 :
+    if mapl[usery][userx] == '' :
         mapl[usery][userx] = 'uld.'
         up("black")
         left("black")
@@ -500,7 +514,7 @@ def MAKE_WIRE_ULD1():
 #저항 놓기
 def MAKE_RESISTOR_LR():
     global mapl, userx, usery
-    if mapl[usery][userx] == 0 :
+    if mapl[usery][userx] == '' :
         mapl[usery][userx] = 'Rlr'
         display.create_line(userx*30, usery*30+15, userx*30+3, usery*30+15)
 
@@ -516,7 +530,7 @@ def MAKE_RESISTOR_LR():
         
 def MAKE_RESISTOR_UD():
     global mapl, userx, usery
-    if mapl[usery][userx] == 0 :
+    if mapl[usery][userx] == '' :
         mapl[usery][userx] = 'Rud'
         display.create_line(userx*30+15, usery*30, userx*30+15, usery*30+3)
 
@@ -533,7 +547,12 @@ def MAKE_RESISTOR_UD():
 #전지 놓기
 def MAKE_BATTERY():
     global mapl, userx, usery
-    if mapl[usery][userx] == 0 :
+    baddery = True
+    for i in range(20):
+        for j in range(20):
+            if mapl[i][j] == 'B' :
+                baddery = False
+    if mapl[usery][userx] == '' and baddery == True:
         mapl[usery][userx] = 'B'
         display.create_line(userx*30, usery*30+15, userx*30+11, usery*30+15)
         display.create_line(userx*30+11, usery*30+25, userx*30+11, usery*30+5)
@@ -542,9 +561,9 @@ def MAKE_BATTERY():
 
 # 실행
 def OPERATE():
-    global batteryspinbox
+    global batteryspinbox, afteroperate
     # 전압 0이면 실행 안되게.
-    if batteryspinbox == 0:
+    if battery_value == 0:
         toplevel = Toplevel(tk)
         toplevel.geometry("320x200+820+100")
         toplevel.resizable(False, False)
@@ -559,6 +578,8 @@ def OPERATE():
         print("앞으로 더 추가")
         print(f"저항 리스트: {resistors}")
         print(batteryspinbox)
+        afteroperate=True
+        
 
 #나중에할거있으면여기다추가하기
 def 나중에할거있으면여기다추가():
@@ -638,6 +659,10 @@ def keypressed(event):        #when keypressed ~~
 
     elif event.keysym == 'o' :
         OPERATE()
+
+    elif event.keysym == 'g':
+        print(battery_value)
+
     # 당신의 아무거나. 스타트로 대체되다. 불만 있습니까? Korean Heroes? !!!!!!!
 
     # elif event.keysym == 'r' : # start(run) module
@@ -667,7 +692,7 @@ def clear():           # 19   clear the window
 
     for musaku in range(1, 20):
         for misaku in range(20):
-            mapl[misaku][musaku] = 0
+            mapl[misaku][musaku] = ''
 
     draw_window()
 
@@ -711,7 +736,7 @@ def closewarn():       # 00   close the window with warnning window \ tempwarn �
 # def undo(): 응~ 어차피 지우기 기능 있으니 안 할꺼야~
 
 def aboutlc():
-    AYOE = "About DirectCurrent Circuit \n Visualizing DirectCurrent Circuit And Experience It \n \n \n Editors: JunSeok.S HyunJune.J \n email: rkddkdus05@gmail.com"
+    AYOE = "About DirectCurrent Circuit \n Visualizing DirectCurrent Circuit And Experience It \n \n \n Editors: MinSu.L JunSeok.S HyunJune.J \n email: rkddkdus05@gmail.com"
     aboutLC = Toplevel(tk)
     aboutLC.geometry("320x200+820+100")
     aboutLC.resizable(False, False)
@@ -724,10 +749,10 @@ def aboutlc():
 def lchelp():
     AYOE = "DirectCurrent Circuit Help \n Commands \n \n \n [m(ㅡ)] > [fill 'ㅡ'wire] \n [l(ㅣ)] > [fill 'ㅣ'wire] \n \n derived from 'ㅡ' is fill Current Distribution wire \n [n(ㅜ)] > [fill 'ㅜ'wire] \n [h(ㅗ)] > [fill 'ㅗ'wire] \n \n derived from 'ㅣ' is fill Current Collecting wire \n [j(ㅓ)] > [fill 'ㅓ'wire] \n [k(ㅏ)] > [fill 'ㅏ'wire] \n \n [s(ㄴ)] > [fill 'ㄴ'wire] \n [b] > [set battery]  \n [r] > [set resistance]  \n [space] > [rotate wire] \n [Esc] > [Exit] \n [Enter] > [Clear] \n [e] > [Erase] \n [o] > [Operate] \n [1] > [Resistance1] \n [2] > [Resistance2] \n [3] > [Resistance3] \n [4] > [Resistance4] \n [5] > [Resistance5] \n [6] > [Resistance6] "
     LCHelp = Toplevel(tk)
-    LCHelp.geometry("320x500+820+100")
+    LCHelp.geometry("320x520+820+100")
     LCHelp.resizable(False, False)
     LCHelp.title("DirectCurrent Circuit Help")
-    lclabel = Label(LCHelp, text = AYOE, width = 300, height = 450, fg = "gold4", relief = "solid", bitmap = "info", compound = "top")
+    lclabel = Label(LCHelp, text = AYOE, width = 300, height = 470, fg = "gold4", relief = "solid", bitmap = "info", compound = "top")
     lclabel.pack()
     lcbutton = Button(LCHelp, width = 10, text = "close", overrelief = "solid", command = LCHelp.destroy)
     lcbutton.pack()
@@ -776,6 +801,8 @@ def amugeona():                   #Most Valuable Code
 
                 ihatethisshit()
 
+    resistorCalculation()
+
 def printcurlocation():
     global ex, ey, mapl, direction
     print(f"전류의 현재위치: ({ex}, {ey}); 전류의 현재맵앨: {mapl[ey][ex]}; 전류의 현재방향: {direction}")
@@ -794,7 +821,7 @@ def ihatethisshit():                 #while True 마춤뻡좀지켜주새요;; �
             isThisDone = True
 
         전선을만났을때이동()
-        저항을만났을때이동(resistors)
+        저항을만났을때이동(resistors, resistorLocation)
         삼발이를만났을때이동()
         
         if mapl[ey][ex][-1] == '.':    # When MEET SAMBARI END
@@ -858,11 +885,11 @@ def 전선을만났을때이동():
             ex-=1
             direction='l'
 
-def 저항을만났을때이동(저항을담을리스트):
+def 저항을만났을때이동(저항값을담을리스트, 저항위치를담을리스트):
     global mapl, ex, ey, direction, resistorLocation
-    resistorLocation.append((ex, ey))     # good
     if mapl[ey][ex][:3] == 'Rlr' :        # WHEN MEET RESISTORRRRRRR
-        저항을담을리스트.append(get_resistor_value(ex, ey))
+        저항값을담을리스트.append(get_resistor_value(ex, ey))
+        저항위치를담을리스트.append((ex, ey))
         if direction == 'l' :
             ex-=1
             direction == 'l'
@@ -870,7 +897,8 @@ def 저항을만났을때이동(저항을담을리스트):
             ex+=1
             direction='r'
     if mapl[ey][ex][:3] == 'Rud' :
-        저항을담을리스트.append(get_resistor_value(ex, ey))
+        저항값을담을리스트.append(get_resistor_value(ex, ey))
+        저항위치를담을리스트.append((ex, ey))
         if direction == 'u' :
             ey-=1
             direction == 'u'
@@ -993,16 +1021,18 @@ def sambari(dir1, dir2):
             case 'l':
                 left1('deepskyblue')
 
-    만나는삼발이를만난방향들 = map(lambda x: {'d': 'u', 'u': 'd', 'r': 'l', 'l': 'r'}[x], 
-                                만나는삼발이를만난방향들)
+    만나는삼발이를만난방향들 = list(map(lambda x: {'d': 'u', 'u': 'd', 'r': 'l', 'l': 'r'}[x], 
+                                만나는삼발이를만난방향들))
     만나는삼발이 = mapl[ey][ex]
     for 만나는삼발이가향하는방향 in 만나는삼발이[:3]:
+        print(만나는삼발이가향하는방향, 만나는삼발이, 만나는삼발이를만난방향들)
         만나는삼발이색칠(만나는삼발이가향하는방향)
         if 만나는삼발이가향하는방향 not in 만나는삼발이를만난방향들:
+            print(f"방향을 {direction}으로 결정")
             direction = 만나는삼발이가향하는방향
-
     만나는삼발이화살표()
     
+    printcurlocation()
     if direction == 'u': ey -= 1
     elif direction == 'd': ey += 1
     elif direction == 'l': ex -= 1
@@ -1022,16 +1052,17 @@ def 만나는삼발이를만날때까지전선타고이동(dir, 만나는삼발�
     else: raise Exception("미친놈아!!")
 
     printcurlocation()
-    tmp = []
+    tmp1, tmp2 = [], []
     while mapl[ey][ex][-1] != '.': #```만나는``` 삼발이를 ```만나는``` 상황까지반복
         전선을만났을때이동()
-        저항을만났을때이동(tmp)
+        저항을만났을때이동(tmp1, tmp2)
         #printcurlocation()
 
     print("만나는삼발이도달")
     만나는삼발이를만난방향들.append(direction)
-    resistors.append(tmp)
-    print(resistors, 만나는삼발이를만난방향들)
+    resistors.append(tmp1)
+    resistorLocation.append(tmp2)
+    print(resistors, resistorLocation, 만나는삼발이를만난방향들)
 
 
 
@@ -1051,7 +1082,6 @@ def get_resistor_value(x, y):
         raise Exception(f"({x}, {y}) 위치의 {mapl[y][x]}에 저항 값이 설정되어 있지 않습니다람쥐...")
     print(f"({x}, {y}) 위치의 {mapl[y][x]}의 저항 값: {Rvalues[int(n)-1]}")
     return Rvalues[int(n)-1]
-
 
 def resistorCalculation():
     global resistors, electricCurrent, totalResist
@@ -1088,48 +1118,51 @@ def deep_len(arr: list[list[int] | int]):
 
 def electricCurrentCalculation() -> list[list[int] | int]:
     global resistors, totalResist, electricCurrent, resistorLocation, finalResult
-    finalResult=[]   #[x, y, r, v, i, p]
-    
-    for i in range(len(resistors)):
-        if type(resistors[i]) == int:
-            x, y = resistorLocation[i]
-            r = resistors[i]
+    finalResult=[[None for _ in range(20)] for _ in range(20)]   #[r, v, i, p] 20*20
+
+    skipNext = False
+    for k in range(len(resistors)):
+        if skipNext:
+            skipNext = False
+            continue
+
+        if type(resistors[k]) == int:
+            skipNext = False
+            x, y = resistorLocation[k]
+            r = resistors[k]
             i = electricCurrent
             v = i * r
             p = v * i
-            finalResult.append((x, y, r, i, v, p))
+            finalResult[y][x] = [r, v, i, p]
             
-        elif type(resistors[i]) == list:
-            wire1, wire2 = resistors[i], resistors[i+1]
+        elif type(resistors[k]) == list:
+            skipNext = True
+
+            print(k)
+            wire1, wire2 = resistors[k], resistors[k+1]
             wire1R, wire2R = map(sum, (wire1, wire2))
             wire1I, wire2I = map(lambda x: electricCurrent * x / (wire1R + wire2R), (wire2R, wire1R))
 
-            wire1rslt = []
             for j in range(len(wire1)):
-                x, y = resistorLocation[i][j]
-                r = resistors[i][j]
+                print(k)
+                print(resistors)
+                print(resistorLocation)
+                print(resistorLocation[k][j])
+                x, y = resistorLocation[k][j]
+                r = resistors[k][j]
                 i = wire1I
                 v = i * r
                 p = v * i
-                wire1rslt.append((x, y, r, i, v, p))
-            finalResult.append(wire1rslt)
+                finalResult[y][x] = [r, i, v, p]
 
-            wire2rslt = []
             for j in range(len(wire2)):
-                x, y = resistorLocation[i+1][j]
-                r = resistors[i+1][j]
+                x, y = resistorLocation[k+1][j]   #genius
+                r = resistors[k+1][j]
                 i = wire2I
                 v = i * r
                 p = v * i
-                wire2rslt.append((x, y, r, i, v, p))
-            finalResult.append(wire2rslt)
-
-            i += 1 #한 번의 반복에서 2개의 병렬 도선을 모두 처리: 다다음으로 바로 넘김
-            '''
-            arr = [[1, 2, 3], [1, 2, 3], 1, 2, 3, 4, 5]
-            다음과 같은 리스트의 경우 arr[0]과 arr[1]을 한 번의 반복에서 읽음
-            -> idx0 이후 바로 idx2로 넘어감
-            '''
+                finalResult[y][x] = [r, i, v, p]
+            
 
     print(f"final result generated: \n{finalResult}")
     
@@ -1229,19 +1262,18 @@ invalid_command = (inputjeo1.register(errorsetresistance), '%P')
     
     # m.pack(padx=4)
 
-R1spinbox = Spinbox(inputjeo1, width=10, from_=0, to=100, validate = 'all', validatecommand=validate_command, invalidcommand=invalid_command)
+R1spinbox = Spinbox(inputjeo1, width=10, from_=1, to=100, validate = 'all', validatecommand=validate_command, invalidcommand=invalid_command)
 R1spinbox.pack(padx=4) 
-R2spinbox = Spinbox(inputjeo1, width=10, from_=0, to=100, validate = 'all', validatecommand=validate_command, invalidcommand=invalid_command)
+R2spinbox = Spinbox(inputjeo1, width=10, from_=1, to=100, validate = 'all', validatecommand=validate_command, invalidcommand=invalid_command)
 R2spinbox.pack(padx=4) 
-R3spinbox = Spinbox(inputjeo1, width=10, from_=0, to=100, validate = 'all', validatecommand=validate_command, invalidcommand=invalid_command)
+R3spinbox = Spinbox(inputjeo1, width=10, from_=1, to=100, validate = 'all', validatecommand=validate_command, invalidcommand=invalid_command)
 R3spinbox.pack(padx=4) 
-R4spinbox = Spinbox(inputjeo1, width=10, from_=0, to=100, validate = 'all', validatecommand=validate_command, invalidcommand=invalid_command)
+R4spinbox = Spinbox(inputjeo1, width=10, from_=1, to=100, validate = 'all', validatecommand=validate_command, invalidcommand=invalid_command)
 R4spinbox.pack(padx=4) 
-R5spinbox = Spinbox(inputjeo1, width=10, from_=0, to=100, validate = 'all', validatecommand=validate_command, invalidcommand=invalid_command)
+R5spinbox = Spinbox(inputjeo1, width=10, from_=1, to=100, validate = 'all', validatecommand=validate_command, invalidcommand=invalid_command)
 R5spinbox.pack(padx=4) 
-R6spinbox = Spinbox(inputjeo1, width=10, from_=0, to=100, validate = 'all', validatecommand=validate_command, invalidcommand=invalid_command)
+R6spinbox = Spinbox(inputjeo1, width=10, from_=1, to=100, validate = 'all', validatecommand=validate_command, invalidcommand=invalid_command)
 R6spinbox.pack(padx=4) 
-
 
 
 Rvalues = [R1spinbox.get(),
@@ -1250,7 +1282,7 @@ Rvalues = [R1spinbox.get(),
            R4spinbox.get(),
            R5spinbox.get(),
            R6spinbox.get()]
-
+finalResult = []
 
 # R7spinbox = Spinbox(inputjeo1, width=10, from_=0, to=100, validate = 'all', validatecommand=validate_command, invalidcommand=invalid_command)
 # R7spinbox.pack(padx=4)
@@ -1269,20 +1301,24 @@ explanationbattery.pack(padx=4)
 validate_command = (inputjeo2.register(setbattery), '%P')
 invalid_command = (inputjeo2.register(errorsetbattery), '%P')
 
-batteryspinbox = Spinbox(inputjeo2, width=10, from_=0, to=100, validate = 'all', validatecommand=validate_command, invalidcommand=invalid_command)
+
+resultDisplay = Label(inputjeo3, text="nice")
+resultDisplay.pack(side='top')
+
+
+# 안되면 말좀
+def update_variable(*args):
+    global battery_value
+    battery_value = battery_spinbox_var.get()
+
+battery_spinbox_var = IntVar()
+
+batteryspinbox = Spinbox(inputjeo2, width=10, from_=1, to=100, validate = 'all', validatecommand=validate_command, invalidcommand=invalid_command, textvariable=battery_spinbox_var)
 batteryspinbox.pack(padx=4) 
-battery_value = batteryspinbox.get()
-
-# /초기화 시켜야할 듯해서 해보는 중
-def update_variable():
-    global another_variable
-    another_variable = battery_spinbox_var.get()
-
-battery_spinbox_var = tk.IntVar()
 
 battery_spinbox_var.trace('w', update_variable)
+battery_value = battery_spinbox_var.get()
 
-another_variable = battery_spinbox_var.get()
 
 
 def BATTERYVALUECHECK(self):
