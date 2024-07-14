@@ -72,6 +72,14 @@ def highlight():
     global userx, usery
     display.create_rectangle(userx*30, usery*30, userx*30+30, usery*30+30, outline = "red")
 
+
+def resultDisplayer(x, y):
+    global mapl, resultvalue1, finalResult
+    if mapl[y][x] == 'b':
+        resultDisplay = Message(inputjeo1, text='X좌표 : ' + str(x))
+        
+
+
 #이동: 상하좌우
 def GO_UP():
     global usery
@@ -852,7 +860,7 @@ def 전선을만났을때이동():
 
 def 저항을만났을때이동(저항을담을리스트):
     global mapl, ex, ey, direction, resistorLocation
-    resistorLocation.append([ex, ey])     # good
+    resistorLocation.append((ex, ey))     # good
     if mapl[ey][ex][:3] == 'Rlr' :        # WHEN MEET RESISTORRRRRRR
         저항을담을리스트.append(get_resistor_value(ex, ey))
         if direction == 'l' :
@@ -1052,9 +1060,9 @@ def resistorCalculation():
     tempTotalResist2=0
     doThis=True
     for i in range(len(resistors)) :
-        if type(resistors[i]) == "<class 'int'>" and doThis==True:
+        if type(resistors[i]) == int and doThis==True:
             totalResist += resistors[i]
-        elif type(resistors[i]) == "<class 'list'>" and doThis==True :
+        elif type(resistors[i]) == list and doThis==True :
             for j in range(len(resistors[i])) :
                 tempTotalResist1+=resistors[i][j]
             for k in range(len(resistors[i+1])) :
@@ -1067,37 +1075,64 @@ def resistorCalculation():
             doThis=True
     electricCurrent = battery_value / totalResist   # I = V / R
 
-def electricCurrentCalculation():
-    global resistors, totalResist, electricCurrent, resistorLocation
+def deep_len(arr: list[list[int] | int]):
+    cnt = 0
+    for i in arr:
+        if type(i) == int:
+            cnt += 1
+        else:
+            cnt += len(i)
+            
+    return cnt
 
-    finalResult=[]   #[x, y, r, ]
+
+def electricCurrentCalculation() -> list[list[int] | int]:
+    global resistors, totalResist, electricCurrent, resistorLocation, finalResult
+    finalResult=[]   #[x, y, r, v, i, p]
     
-    for i in range(len(resistorLocation)):
-        finalResult.append(resistorLocation[i])
-        
-    for i in range(len(finalResult)) :
-        if type(resistors[i]) == "<class 'int'>" and doThis==0:
-            finalResult.append()
-        elif type(resistors[i]) == "<class 'list'>" and doThis==0 :
-            for j in range(len(resistors[i])) :
-                tempTotalResist1+=resistors[i][j]
-            for k in range(len(resistors[i+1])) :
-                tempTotalResist2+=resistors[i+1][k]
-            doThis=False
-            totalResist += (tempTotalResist1*tempTotalResist2) / (tempTotalResist2+tempTotalResist1)
-            tempTotalResist1=0
-            tempTotalResist2=0
-        elif doThis==False:
-            doThis=True
+    for i in range(len(resistors)):
+        if type(resistors[i]) == int:
+            x, y = resistorLocation[i]
+            r = resistors[i]
+            i = electricCurrent
+            v = i * r
+            p = v * i
+            finalResult.append((x, y, r, i, v, p))
+            
+        elif type(resistors[i]) == list:
+            wire1, wire2 = resistors[i], resistors[i+1]
+            wire1R, wire2R = map(sum, (wire1, wire2))
+            wire1I, wire2I = map(lambda x: electricCurrent * x / (wire1R + wire2R), (wire2R, wire1R))
 
+            wire1rslt = []
+            for j in range(len(wire1)):
+                x, y = resistorLocation[i][j]
+                r = resistors[i][j]
+                i = wire1I
+                v = i * r
+                p = v * i
+                wire1rslt.append((x, y, r, i, v, p))
+            finalResult.append(wire1rslt)
 
+            wire2rslt = []
+            for j in range(len(wire2)):
+                x, y = resistorLocation[i+1][j]
+                r = resistors[i+1][j]
+                i = wire2I
+                v = i * r
+                p = v * i
+                wire2rslt.append((x, y, r, i, v, p))
+            finalResult.append(wire2rslt)
 
+            i += 1 #한 번의 반복에서 2개의 병렬 도선을 모두 처리: 다다음으로 바로 넘김
+            '''
+            arr = [[1, 2, 3], [1, 2, 3], 1, 2, 3, 4, 5]
+            다음과 같은 리스트의 경우 arr[0]과 arr[1]을 한 번의 반복에서 읽음
+            -> idx0 이후 바로 idx2로 넘어감
+            '''
 
-
-
-
-
-
+    print(f"final result generated: \n{finalResult}")
+    
 
 def setresistance(self):
     explanationresistance.config(text = '저항 값을 선택')
@@ -1236,7 +1271,18 @@ invalid_command = (inputjeo2.register(errorsetbattery), '%P')
 
 batteryspinbox = Spinbox(inputjeo2, width=10, from_=0, to=100, validate = 'all', validatecommand=validate_command, invalidcommand=invalid_command)
 batteryspinbox.pack(padx=4) 
-battery_value = IntVar()
+battery_value = batteryspinbox.get()
+
+# /초기화 시켜야할 듯해서 해보는 중
+def update_variable():
+    global another_variable
+    another_variable = battery_spinbox_var.get()
+
+battery_spinbox_var = tk.IntVar()
+
+battery_spinbox_var.trace('w', update_variable)
+
+another_variable = battery_spinbox_var.get()
 
 
 def BATTERYVALUECHECK(self):
