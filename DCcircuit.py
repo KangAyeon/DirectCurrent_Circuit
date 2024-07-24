@@ -1,6 +1,193 @@
 from tkinter import *          #i like tkinter
 tk = Tk()
 
+class Point():
+    def __init__(self, x: int, y: int) -> None:
+        self.x = x
+        self.y = y
+
+    def __repr__(self) -> str:
+        return f"({self.x}, {self.y})"
+    
+    def isinarea(self, topleft: "Point", bottomright: "Point") -> bool: #inclusive
+        xinrange = topleft.x <= self.x <= bottomright.x
+        yinrange = topleft.y <= self.y <= bottomright.y
+
+        return xinrange and yinrange
+    
+# 크아악 모르겠다 << ㅋㅋ허접
+
+class ElectricityParts():
+    def __init__(self, position: Point, directions: str) -> None: 
+        assert all(map(lambda x: x in 'udlr', directions)),\
+            "directions는 u, d, l, r만으로 이루어진 문자열이여야 합니다"
+        assert len(set(directions)) == len(directions),\
+            "directions에는 중복된 문자가 없어야 합니다"
+        
+        self.position = position
+        self.directions = list(directions)
+
+    def rotateCW(self) -> None:
+        change = {'u': 'r', 'r': 'd', 'd': 'l', 'l': 'u'}
+        self.directions = list(map(lambda x: change[x], self.directions))
+
+    def isdirected(self, directions: str) -> bool:
+        return set(self.directions) == set(directions)
+     
+    def next_position(self, input_direction: str) -> list[Point]:
+        output_directions = self.directions.copy()
+        output_directions.remove(input_direction)
+
+        output_positions = []
+        for direction in output_directions:
+            x, y = self.position.x, self.position.y
+            match direction:
+                case 'u': y -= 1
+                case 'd': y += 1
+                case 'l': x -= 1
+                case 'r': x += 1
+            output_positions.append(Point(x, y))
+        
+        return output_positions
+
+'''testE = ElectricityParts(Point(1, 1), 'lr')
+print(testE.directions)
+testE.rotateCW()
+print(testE.directions)
+input()'''
+
+# Good << 심준석 유언임?깊은준석...                           심준석 죽었냐???? >>>>>
+class Wire(ElectricityParts):
+    def __init__(self, position: Point, directions: str) -> None:
+        super().__init__(position, directions)
+
+    def draw(self, color: str='black') -> None:
+        PROP = 30
+        x = self.position.x*PROP
+        y = self.position.y*PROP
+        
+        if 'l' in self.directions():
+            display.create_line(x, y+15, x+15, y+15, fill=color)
+
+        if 'r' in self.directions():
+            display.create_line(x+30, y+15, x+15, y+15, fill=color)
+        
+        if 'u' in self.directions():
+            display.create_line(x+15, y+15, x+15, y, fill=color)
+
+        if 'd' in self.directions():
+            display.create_line(x+15, y+15, x+15, y+30, fill=color)
+
+class Resistor(ElectricityParts):
+    def __init__(self, position: Point, directions: str) -> None:
+        super().__init__(position, directions)
+
+    def draw(self, linecolor: str='black', spikecolor: str='black') -> None:
+        PROP = 30
+        x = self.position.x*PROP
+        y = self.position.y*PROP
+        if self.isdirected('lr'):
+            display.create_line(x, y+15, x+3, y+15, fill=linecolor)
+            display.create_line(x+3, y+15, x+5, y+25, fill=spikecolor)
+            display.create_line(x+5, y+25, x+9, y+5, fill=spikecolor)
+            display.create_line(x+9, y+5, x+13, y+25, fill=spikecolor)
+            display.create_line(x+13, y+25, x+17, y+5, fill=spikecolor)
+            display.create_line(x+17, y+5, x+21, y+25, fill=spikecolor)
+            display.create_line(x+21, y+25, x+25, y+5, fill=spikecolor)
+            display.create_line(x+25, y+5, x+27, y+15, fill=spikecolor)
+            display.create_line(x+27, y+15, x+30, y+15, fill=linecolor)
+
+        elif self.isdirected('ud'):
+            display.create_line(x+15, y, x+15, y+3, fill=linecolor)
+            display.create_line(x+15, y+3, x+25, y+5, fill=spikecolor)
+            display.create_line(x+25, y+5, x+5, y+9, fill=spikecolor)
+            display.create_line(x+5, y+9, x+25, y+13, fill=spikecolor)
+            display.create_line(x+25, y+13, x+5, y+17, fill=spikecolor)
+            display.create_line(x+5, y+17, x+25, y+21, fill=spikecolor)
+            display.create_line(x+25, y+21, x+5, y+25, fill=spikecolor)
+            display.create_line(x+5, y+25, x+15, y+27, fill=spikecolor)
+            display.create_line(x+15, y+27, x+15, y+30, fill=linecolor)
+        
+class Battery(ElectricityParts):
+    def __init__(self, position: Point, directions: str) -> None:
+        super().__init__(position, directions)
+
+    def draw(self) -> None:
+        PROP = 30
+        x = self.position.x*PROP
+        y = self.position.y*PROP
+        display.create_line(x, y+15, x+11, y+15)
+        display.create_line(x+11, y+25, x+11, y+5)
+        display.create_line(x+19, y+20, x+19, y+11, width=3)
+        display.create_line(x+19, y+15, x+30, y+15)
+        
+
+class Diode(ElectricityParts):
+    def __init__(self, position: Point, directions: str) -> None:
+        super().__init__(position, directions)
+
+    def isdirected(self, directions: str) -> bool:
+        return self.directions == list(directions)
+
+    def draw(self, color: str='black') -> None:
+        PROP = 30
+        x = self.position.x*PROP
+        y = self.position.y*PROP
+        
+        if self.isdirected('lr'):
+            display.create_line(x, y+15, x+30, y+15, fill=color)
+            display.create_polygon(x+5, y+5, x+5, y+25, x+25, y+15)
+            display.create_line(x+25, y+5, x+25, y+25, width=2)
+
+        elif self.isdirected('ud'):
+            display.create_line(x+15, y, x+15, y+30, fill=color)
+            display.create_polygon(x+5, y+5, x+25, x+5, x+15, y+25)
+            display.create_line(x+5, y+25, x+25, y+25, width=2)
+
+        elif self.isdirected('rl'):
+            display.create_line(x, y+15, x+30, y+15, fill=color)
+            display.create_polygon(x+25, y+5, x+25, y+25, x+5, y+15)
+            display.create_line(x+5, y+5, x+5, y+25, width=2)
+
+        elif self.isdirected('du'):
+            display.create_line(x+15, y, x+15, y+30, fill=color)
+            display.create_polygon(x+5, y+25, x+25, y+25, x+15, y+5)
+            display.create_line(x+5, y+5, x+25, y+5, width=2)
+
+
+class Board():
+    def __init__(self, xsize: int, ysize: int) -> None:
+        self.xsize = xsize
+        self.ysize = ysize
+        self.__mapl = [[None]*xsize for _ in range(ysize)]
+        
+    def get_part(self, position: Point) -> ElectricityParts:
+        obj = self.__mapl[position.x][position.y]
+        assert obj != None, f"{position}에 객체가 존재하지 않습니다"
+        assert isinstance(obj, ElectricityParts), "{position}에 존재하는 객체가 전기 부품이 아닙니다"
+
+        return obj
+    
+    def put_part(self, obj: ElectricityParts, position: Point) -> None:
+        self.__mapl[position.x][position.y] = obj
+
+testB = Board(7, 7)
+testB.get_part(Point(3, 33))
+input()
+
+
+# 유희하는 인간 유희왕()
+
+# class atsui(): Atsui, AtsukuteHikarabisoUgoiteNaiNoniAtsuiYo~
+
+# class nihahaha()
+
+# class kufufu()
+
+# class mikomikonyannayn()
+
+# class sikanokonokonokokositantan() 시카노코노코노코코시탄탄
+
 tk.title('DCCOMICStm')           # 회로를 구현할 장(張) 만들기
 tk.geometry("1200x600+0+0")
 tk.resizable(False,False)
