@@ -33,7 +33,7 @@ class ElectricityParts():
 
     def isdirected(self, directions: str) -> bool:
         return set(self.directions) == set(directions)
-     
+    
     def next_position(self, input_direction: str) -> list[Point]:
         output_directions = self.directions.copy()
         output_directions.remove(input_direction)
@@ -56,7 +56,7 @@ testE.rotateCW()
 print(testE.directions)
 input()'''
 
-# Good << 심준석 유언임?깊은준석...                           심준석 죽었냐???? >>>>>
+# Good << 심준석 유언임?깊은深준석...                           심준석 죽었냐???? >>>>> Nihahaha
 class Wire(ElectricityParts):
     def __init__(self, position: Point, directions: str) -> None:
         super().__init__(position, directions)
