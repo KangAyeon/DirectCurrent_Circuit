@@ -171,6 +171,9 @@ class Board():
     def put_part(self, obj: ElectricityParts, position: Point) -> None:
         self.__mapl[position.x][position.y] = obj
 
+    def remove_part(self, position: Point) -> None:
+        self.__mapl[position.x][position.y] = None
+
 testB = Board(7, 7)
 testB.get_part(Point(3, 33))
 input()
