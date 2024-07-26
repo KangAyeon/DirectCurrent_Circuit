@@ -52,10 +52,10 @@ class ElectricityParts():
         self.position = position
         self.directions = list(directions)
         board.put_part(self, self.position)
-        self.draw()
+        self._draw()
 
 
-    def draw(self) -> None:
+    def _draw(self) -> None:
         raise AttributeError("ElectricityParts의 draw메소드는 반드시 오버라이드되어야 합니다\n"
             "지금 카사네 테토의 오버라이드 들으러 가기 >>> https://www.youtube.com/watch?v=LLjfal8jCYI")
 
@@ -67,7 +67,7 @@ class ElectricityParts():
 
         change = {'u': 'r', 'r': 'd', 'd': 'l', 'l': 'u'}
         self.directions = list(map(lambda x: change[x], self.directions))
-        self.draw()
+        self._draw()
 
     def isdirected(self, directions: str) -> bool:
         return set(self.directions) == set(directions)
@@ -88,6 +88,9 @@ class ElectricityParts():
         
         return output_positions
 
+    def __repr__(self) -> str:
+        return f'{self.position} 위치의 {self.__class__.__name__}'
+
 '''testE = ElectricityParts(Point(1, 1), 'lr')
 print(testE.directions)
 testE.rotateCW()
@@ -98,7 +101,7 @@ class Wire(ElectricityParts):
     def __init__(self, position: Point, directions: str) -> None:
         super().__init__(position, directions)
 
-    def draw(self, color: str='black') -> None:
+    def _draw(self, color: str='black') -> None:
         PROP = 30
         x = self.position.x*PROP
         y = self.position.y*PROP
@@ -123,8 +126,12 @@ class Resistor(ElectricityParts):
         self.__current = -1
         self.__resistance = -1 # 레지스탕스 히다리 에이 미기 비
 
+# name > 접근 제어자: Public, 모든 외부 접근 허용
+# _name > 접근 제어자: Protected, 자기 클래스, 자식 클래스 접근 허용
+# __name > 접근 제어자: Private, 자기 클래스 접근 허용
 
-    def draw(self, linecolor: str='black', spikecolor: str='black') -> None:
+
+    def _draw(self, linecolor: str='black', spikecolor: str='black') -> None:
         PROP = 30
         x = self.position.x*PROP
         y = self.position.y*PROP
@@ -158,7 +165,7 @@ class Battery(ElectricityParts):
     def isdirected(self, directions: str) -> bool:
         return self.directions == list(directions)
 
-    def draw(self, plus: str='black', minus: str='black') -> None:
+    def _draw(self, plus: str='black', minus: str='black') -> None:
         PROP = 30
         x = self.position.x*PROP
         y = self.position.y*PROP
@@ -195,7 +202,7 @@ class Diode(ElectricityParts):
     def isdirected(self, directions: str) -> bool:
         return self.directions == list(directions)
 
-    def draw(self, inputcolor: str='black', outputcolor: str='black') -> None:
+    def _draw(self, inputcolor: str='black', outputcolor: str='black') -> None:
         PROP = 30
         x = self.position.x*PROP
         y = self.position.y*PROP
@@ -244,6 +251,10 @@ class Board():
         self.__mapl[position.x][position.y] = obj
 
     def remove_part(self, position: Point) -> None:
+        if not self.isblank(position):
+            part = self.get_part(position)
+            print(f"deleted {part}")
+            del part
         self.__mapl[position.x][position.y] = None
         self.erase(position)
         
@@ -258,6 +269,9 @@ class Board():
         y = position.y*PROP
         display.create_rectangle(x, y, x+30, y+30,outline='gray', fill='whitesmoke')
         cursor.highlight()
+
+    def isblank(self, position: Point) -> bool:
+        return self.try_get_part(position) == None
 
     #  監獄 [[[>>>>>>>>>>⏧囚<<<<<<<<<<<]]]  Thou cannot escape
 
@@ -468,12 +482,12 @@ def keypressed(event):        #when keypressed ~~
         closewarn()
 
     elif event.keysym == 'space' : # 회전
-        part = board.get_part(cursor.position)
-        part.rotate_CW()
+        if not board.isblank(cursor.position):
+            part = board.get_part(cursor.position)
+            part.rotate_CW()
 
     elif event.keysym == 'm' : # 'ㅡ'or'ㅣ'자
         wire = Wire(cursor.position, 'lr')
-        
 
     elif event.keysym == 'l' :
         wire = Wire(cursor.position, 'ud')
@@ -675,15 +689,15 @@ def lchelp():
     lcbutton = Button(LCHelp, width = 10, text = "close", overrelief = "solid", command = LCHelp.destroy)
     lcbutton.pack()
 
-def showlist():
-    global mapl
-    Showlist = Toplevel(tk)
-    Showlist.geometry("8000x400")
-    Showlist.resizable(False, False)
-    Showlist.title("Let's check about it")
-    Showlabel = Label(Showlist, text = mapl)
-    Showlabel.pack()
-    print("Show my walkie talkie man")
+# def showlist():
+#     global mapl
+#     Showlist = Toplevel(tk)
+#     Showlist.geometry("8000x400")
+#     Showlist.resizable(False, False)
+#     Showlist.title("Let's check about it")
+#     Showlabel = Label(Showlist, text = mapl)
+#     Showlabel.pack()
+#     print("Show my walkie talkie man")
 
 
 def nihahaha():  #  NiHaHaHa!!!!
@@ -815,7 +829,7 @@ menubar.add_cascade(label = "Edit", menu = menu2)
 menu3 = Menu(menubar, tearoff = 0)
 
 menu3.add_checkbutton(label = "NA")
-menu3.add_checkbutton(label = "mapl", command = showlist)
+menu3.add_checkbutton(label = "status", command = ElectricityParts.showstatus)
 menu3.add_checkbutton(label = "nihahaha", command = nihahaha)
 menubar.add_cascade(label = "Run", menu = menu3)
 
