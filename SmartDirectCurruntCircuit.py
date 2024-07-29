@@ -54,6 +54,8 @@ class ElectricityParts():
         board.put_part(self, self.position)
         self._draw()
 
+        print(f"generated {self}")
+
 
     def _draw(self) -> None:
         raise AttributeError("ElectricityParts의 draw메소드는 반드시 오버라이드되어야 합니다\n"
@@ -61,6 +63,7 @@ class ElectricityParts():
 
     def show_status(self) -> None:
         '''이곳에 기구의 현재 상태를 표시'''
+
 
     def rotate_CW(self) -> None:
         board.erase(self.position)
@@ -89,13 +92,13 @@ class ElectricityParts():
         return output_positions
 
     def __repr__(self) -> str:
-        return f'{self.position} 위치의 {self.__class__.__name__}'
+        return f'{self.__class__.__name__} on {self.position}'
 
-'''testE = ElectricityParts(Point(1, 1), 'lr')
-print(testE.directions)
-testE.rotateCW()
-print(testE.directions)
-input()'''
+    def __del__(self) -> None:
+        print(f'deleted {self}')
+
+    # def ShirokoJumpscare(output_position):
+    #     print(output_positions)
 
 class Wire(ElectricityParts):
     def __init__(self, position: Point, directions: str) -> None:
@@ -253,7 +256,6 @@ class Board():
     def remove_part(self, position: Point) -> None:
         if not self.isblank(position):
             part = self.get_part(position)
-            print(f"deleted {part}")
             del part
         self.__mapl[position.x][position.y] = None
         self.erase(position)
@@ -350,7 +352,7 @@ def draw_window():
     # for i in range(4):
     #     display.create_line(0, 150*i, 600, 150*i, fill = "black")
     # for i in range(4):
-    #     display.create_line(150*i, 0, 150*i, 600, fill = "black")
+    #     display.create_line(150*i, 0, 150*i, 600, fill = "black")            asdfasdfasdfasdfasdfasfd
 
 draw_window()
 
@@ -783,10 +785,22 @@ texts.pack(padx=4)
 resultDisplay = Label(inputjeo3, text="nice")
 resultDisplay.pack(anchor='n')
 
+# class ShirokoJumpscare(ElectricityParts):
+#     def __init__(self, position: Point, directions: str) -> None:
+#         super().__init__(position, directions)
 
+#     def isdirected(self, directions: str) -> bool:
+#     return self.directions == list(directions)
+
+
+def ShirokoJumpscare():
+    print(resistors) # 'ElectricityParts' has no attribute 'output_positions'<<뭔개소리야있잖아;;진짜맞짱마렵네;;; 응아님
 
 def AtsuiAtsukuteHikrabisoUgoiteNaiNoniAtsuiYo():
     wire = Wire(Point(0, 0), 'lr')
+
+def DomoSenseiDomoMichiruDesu():
+    ElectricityParts.show_status
 
 #-------------------------------------------------------------------------Menu-------------------------------------------------------------------------
 
@@ -821,15 +835,15 @@ menubar.add_cascade(label = "File", menu = menu1)
 
 menu2 = Menu(menubar, tearoff = 0, selectcolor = "green")
 
-menu2.add_radiobutton(label = "Undo", state = "disable") # 미안한데 작동 안돼
+menu2.add_radiobutton(label = "Undo", state = "disable") # 미안한데 작동 안돼 ㅇㅇㄴㅇ
 menu2.add_radiobutton(label = "Redo") # 미안한데 작동 안돼
 menu2.add_radiobutton(label = "Cut") # 미안한데 작동 안돼
 menubar.add_cascade(label = "Edit", menu = menu2)
 
 menu3 = Menu(menubar, tearoff = 0)
 
-menu3.add_checkbutton(label = "NA")
-menu3.add_checkbutton(label = "status", command = ElectricityParts.showstatus)
+menu3.add_checkbutton(label = "R.S.", command = DomoSenseiDomoMichiruDesu) # Real Status
+menu3.add_checkbutton(label = "status", command = ShirokoJumpscare)
 menu3.add_checkbutton(label = "nihahaha", command = nihahaha)
 menubar.add_cascade(label = "Run", menu = menu3)
 
