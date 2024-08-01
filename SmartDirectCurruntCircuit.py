@@ -1,4 +1,4 @@
-from tkinter import *          #i like tkinter
+from tkinter import *          #i like tkinter  dddddddfdf
 import time
 tk = Tk()
 
@@ -23,7 +23,7 @@ display = Canvas(dp, bd=0, bg='whitesmoke')             #make display(canvas) Di
 display.place(x = 0, y = 0, width = 600, height = 600)
 
 
-class Point():
+class Point(): #location = Point(0, 0)
     def __init__(self, x: int, y: int) -> None:
         self.x = x
         self.y = y
@@ -39,8 +39,9 @@ class Point():
     
     def isinboard(self) -> bool:
         return self.isinarea(Point(0, 0), Point(board.xsize, board.ysize))
-    
+
 # 크아악 모르겠다 << ㅋㅋ허접
+# 마이크 이슈 해결해 봄 
 
 class ElectricityParts():
     def __init__(self, position: Point, directions: str) -> None: 
@@ -275,6 +276,7 @@ class Board():
     def isblank(self, position: Point) -> bool:
         return self.try_get_part(position) == None
 
+# __mapl => [None, None]
     #  監獄 [[[>>>>>>>>>>⏧囚<<<<<<<<<<<]]]  Thou cannot escape
 
 class Cursor():
@@ -282,10 +284,17 @@ class Cursor():
         self.position = Point(0, 0)
         self.highlight()
 
-    def go_left(self) -> None: self.__move_cursor(-1, 0)
-    def go_right(self) -> None: self.__move_cursor(1, 0)
-    def go_up(self) -> None: self.__move_cursor(0, -1)
-    def go_down(self) -> None: self.__move_cursor(0, 1)
+    def go_left(self) -> None:
+        self.__move_cursor(-1, 0)
+
+    def go_right(self) -> None:
+        self.__move_cursor(1, 0)
+
+    def go_up(self) -> None:
+        self.__move_cursor(0, -1)
+
+    def go_down(self) -> None:
+        self.__move_cursor(0, 1)
 
     def highlight(self) -> None: 
         self.__draw_rectangle(color='red')
@@ -311,11 +320,13 @@ class Cursor():
         self.dehighlight()
         self.position = new_pos
         self.highlight()
-        
+
 
 
 board = Board(20, 20) # ↘일과 열의 관계 左下向
 cursor = Cursor()
+
+
 
 rows = 20                #Making maplist Maeb Risutu Saing Seong
 cols = 20 
