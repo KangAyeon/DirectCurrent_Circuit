@@ -1,4 +1,5 @@
-from tkinter import *          #i like tkinter  dddddddfdf
+from tkinter import *          #i like tkinter
+import tkinter.font
 import time
 tk = Tk()
 
@@ -6,14 +7,14 @@ tk.title('DCCOMICStm')           # 회로를 구현할 장(張) 만들기
 tk.geometry("1200x600+0+0")
 tk.resizable(False,False)
 
-inputjeo1=Frame(tk, relief = "solid", width = 150, height = 300)
+inputjeo1=Frame(tk, relief = "solid", width = 150, height = 300)    #divide window
 inputjeo1.place(x=0, y=0)
 inputjeo2=Frame(tk, relief = "solid", width = 146, height = 300)
 inputjeo2.place(x=150, y=0)
 inputjeo3=Frame(tk, relief = "solid", width = 300, height = 300)
 inputjeo3.place(x=0, y=300)
 
-dp=Frame(tk, relief = "solid", bd = 2, width = 600, height = 600)    #divide window
+dp=Frame(tk, relief = "solid", bd = 2, width = 600, height = 600)
 dp.place(x = 296, y = 0)
 ui=Frame(tk, relief = "solid", width = 300, height = 600)
 ui.place(x = 900, y = 0)
@@ -139,6 +140,7 @@ class Resistor(ElectricityParts):
         PROP = 30
         x = self.position.x*PROP
         y = self.position.y*PROP
+        font=tkinter.font.Font(family='그래픽', size=10, slant='roman', weight='bold')
         if self.isdirected('lr'):
             display.create_line(x, y+15, x+3, y+15, fill=linecolor)
             display.create_line(x+3, y+15, x+5, y+25, fill=spikecolor)
@@ -149,6 +151,7 @@ class Resistor(ElectricityParts):
             display.create_line(x+21, y+25, x+25, y+5, fill=spikecolor)
             display.create_line(x+25, y+5, x+27, y+15, fill=spikecolor)
             display.create_line(x+27, y+15, x+30, y+15, fill=linecolor)
+            # display.create_text(x+23, y+23, text="83", font=font, fill='red')
 
         elif self.isdirected('ud'):
             display.create_line(x+15, y, x+15, y+3, fill=linecolor)
@@ -160,6 +163,7 @@ class Resistor(ElectricityParts):
             display.create_line(x+25, y+21, x+5, y+25, fill=spikecolor)
             display.create_line(x+5, y+25, x+15, y+27, fill=spikecolor)
             display.create_line(x+15, y+27, x+15, y+30, fill=linecolor)
+            # display.create_text(x+23, y+23, text="83", font=font, fill='red')
         
 
 class Battery(ElectricityParts):
@@ -212,24 +216,30 @@ class Diode(ElectricityParts):
         y = self.position.y*PROP
         
         if self.isdirected('lr'):
-            display.create_line(x, y+15, x+30, y+15, fill=inputcolor)
+            display.create_line(x, y+15, x+5, y+15, fill=inputcolor)
+            display.create_line(x+25, y+15, x+30, y+15, fill=outputcolor)
             display.create_polygon(x+5, y+5, x+5, y+25, x+25, y+15)
             display.create_line(x+25, y+5, x+25, y+25, width=2)
 
         elif self.isdirected('ud'):
-            display.create_line(x+15, y, x+15, y+30, fill=inputcolor)
+            display.create_line(x+15, y, x+15, y+5, fill=inputcolor)
+            display.create_line(x+15, y+25, x+15, y+30, fill=outputcolor)
             display.create_polygon(x+5, y+5, x+25, y+5, x+15, y+25)
             display.create_line(x+5, y+25, x+25, y+25, width=2)
 
         elif self.isdirected('rl'):
-            display.create_line(x, y+15, x+30, y+15, fill=inputcolor)
+            display.create_line(x+25, y+15, x+30, y+15, fill=inputcolor)
+            display.create_line(x, y+15, x+5, y+15, fill=outputcolor)
             display.create_polygon(x+25, y+5, x+25, y+25, x+5, y+15)
             display.create_line(x+5, y+5, x+5, y+25, width=2)
 
+
         elif self.isdirected('du'):
-            display.create_line(x+15, y, x+15, y+30, fill=inputcolor)
+            display.create_line(x+15, y+25, x+15, y+30, fill=inputcolor)
+            display.create_line(x+15, y, x+15, y+5, fill=outputcolor)
             display.create_polygon(x+5, y+25, x+25, y+25, x+15, y+5)
             display.create_line(x+5, y+5, x+25, y+5, width=2)
+
 
 
 class Board():
@@ -608,7 +618,6 @@ def OPERATE():
         button.pack()
     else:
         #amugeona()
-        print("전지 도달")
         #print(f"저항 리스트: {resistors}")
         #print(batteryspinbox)
         afteroperate=True
@@ -791,10 +800,11 @@ texts.insert(INSERT, "")
 texts.pack(padx=4)
 
 
-
-
-resultDisplay = Label(inputjeo3, text="nice")
-resultDisplay.pack(anchor='n')
+fontia=tkinter.font.Font(family='그래픽', size=10, slant='roman', weight='bold')
+resultAlimi = Message(inputjeo3, text='Result', width=121, justify='left', bg='black', fg='white', font=fontia)
+resultDisplay = Message(inputjeo3, text="result is not calculated yet", justify='left', bg='white', width=280, padx=5)
+resultAlimi.place(x=10, y=10, width=280, height=20)
+resultDisplay.place(x=10, y=40, width=280, height=250)
 
 # class ShirokoJumpscare(ElectricityParts):
 #     def __init__(self, position: Point, directions: str) -> None:
@@ -812,6 +822,9 @@ def AtsuiAtsukuteHikrabisoUgoiteNaiNoniAtsuiYo():
 
 def DomoSenseiDomoMichiruDesu():
     ElectricityParts.show_status
+
+# def Uwah囧():
+
 
 #-------------------------------------------------------------------------Menu-------------------------------------------------------------------------
 
