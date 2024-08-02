@@ -1,45 +1,22 @@
-class 갓겜:
-    def __init__(self, n: str) -> None:
-        self.name = n
-        self.총과금액 = 0
+import tkinter as tk
+from tkinter import ttk
 
-    def 현질(self, 액수: int):
-        self.총과금액 += 액수
+root = tk.Tk()
+root.geometry("300x200")
 
-game1 = 갓겜("메이플") #__init__의 n에 "메이플"할당
-game2 = 갓겜("몬스터디펜스")
+# 텍스트 위젯 생성
+text = tk.Text(root, wrap="none")
+text.place(x=10, y=10, width=260, height=150)
 
-game1.총과금액 #0
-game1.현질(20000000)
-game1.총과금액 # 20000000
+# 수직 스크롤바 생성
+vscrollbar = ttk.Scrollbar(root, orient="vertical", command=text.yview)
+vscrollbar.place(x=270, y=10, height=150)
 
-A = int(input())
-game1.현질(A)
-game2.현질(A//2)
-print(game1.총과금액)
+# 수평 스크롤바 생성
+hscrollbar = ttk.Scrollbar(root, orient="horizontal", command=text.xview)
+hscrollbar.place(x=10, y=160, width=260)
 
-class 알바:
-    def __init__(self, atsui: str) -> None:
-        self.알바이름 = atsui
-        self.녹봉 = 0
+# 스크롤바와 텍스트 위젯 연결
+text.configure(yscrollcommand=vscrollbar.set, xscrollcommand=hscrollbar.set)
 
-    def 돈주기(self, 미친돈):
-        self.녹봉 += 미친돈
-
-    def 돈뺏기(self, 미친돈):
-        self.녹봉 -= 미친돈
-
-알바1 = 알바("심준석")
-알바2 = 알바('진현준')
-
-print(알바1.녹봉)
-# >> 0
-알바1.돈주기(20051210)
-print(알바1.녹봉)
-# >> 20051210
-
-print(알바2.녹봉)
-# >> 0
-알바2.돈뺏기(20060222)
-print(알바2.녹봉)
-# >> -20060222
+root.mainloop()

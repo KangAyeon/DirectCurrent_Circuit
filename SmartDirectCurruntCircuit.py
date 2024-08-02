@@ -7,12 +7,12 @@ tk.title('DCCOMICStm')           # 회로를 구현할 장(張) 만들기
 tk.geometry("1200x600+0+0")
 tk.resizable(False,False)
 
-inputjeo1=Frame(tk, relief = "solid", width = 150, height = 300)    #divide window
+inputjeo1=Frame(tk, relief = "solid", width = 150, height = 250)    #divide window
 inputjeo1.place(x=0, y=0)
-inputjeo2=Frame(tk, relief = "solid", width = 146, height = 300)
+inputjeo2=Frame(tk, relief = "solid", width = 146, height = 250)
 inputjeo2.place(x=150, y=0)
-inputjeo3=Frame(tk, relief = "solid", width = 300, height = 300)
-inputjeo3.place(x=0, y=300)
+inputjeo3=Frame(tk, relief = "solid", width = 300, height = 350)
+inputjeo3.place(x=0, y=250)
 
 dp=Frame(tk, relief = "solid", bd = 2, width = 600, height = 600)
 dp.place(x = 296, y = 0)
@@ -56,7 +56,7 @@ class ElectricityParts():
         board.put_part(self, self.position)
         self._draw()
 
-        print(f"generated {self}")
+        add_log(f"generated {self}")
 
 
     def _draw(self) -> None:
@@ -97,7 +97,7 @@ class ElectricityParts():
         return f'{self.__class__.__name__} on {self.position}'
 
     def __del__(self) -> None:
-        print(f'deleted {self}')
+        add_log(f'deleted {self}')
 
     # def ShirokoJumpscare(output_position):
     #     print(output_positions)
@@ -484,7 +484,7 @@ def electricCurrentCalculation() -> list[list[int] | int]:
 def keypressed(event):        #when keypressed ~~
 
     if event.keysym == 'a' :
-        print('a')
+        add_log('a')
 
     elif event.keysym == 'Up' :
         cursor.go_up()
@@ -731,7 +731,7 @@ def nihahaha():  #  NiHaHaHa!!!!
     Label.image = imagenihaha #  because of Python gabagecollector works reference counting, so i have to 수동으로 참고 횟수 늘려주기.
     nilabel = Label(Nihahaha, image = imagenihaha, compound = "top")
     nilabel.pack(expand = 1, anchor = CENTER)
-    print("Nihahaha!")
+    add_log("Nihahaha!")
 
 
 explanationbattery = Label(inputjeo2, text = "▼전지 값을 선택▼", height = 3)
@@ -802,9 +802,27 @@ texts.pack(padx=4)
 
 fontia=tkinter.font.Font(family='그래픽', size=10, slant='roman', weight='bold')
 resultAlimi = Message(inputjeo3, text='Result', width=121, justify='left', bg='black', fg='white', font=fontia)
-resultDisplay = Message(inputjeo3, text="result is not calculated yet", justify='left', bg='white', width=280, padx=5)
-resultAlimi.place(x=10, y=10, width=280, height=20)
-resultDisplay.place(x=10, y=40, width=280, height=250)
+resultDisplay = Message(inputjeo3, text="result is not calculated yet", justify='left', bg='white', width=130, padx=5)
+logAlimi = Message(inputjeo3, text='Log', width=121, bg='black', fg='white', font=fontia)
+logDisplay = Text(inputjeo3, bg='white', width=130, padx=5)
+logDisplay.insert('current', "user log here\n")
+scrollia=Scrollbar(inputjeo3, width=5, command=logDisplay.yview)
+logDisplay.config(yscrollcommand=scrollia.set, state=DISABLED)
+
+resultAlimi.place(x=10, y=10, width=130, height=20)
+resultDisplay.place(x=10, y=40, width=130, height=250)
+logAlimi.place(x=150, y=10, width=140, height=20)
+logDisplay.place(x=150, y=40, width=140, height=250)
+scrollia.place(x=285, y=40, width=5, height=250)
+
+def add_log(newlog):
+    logDisplay.config(state=NORMAL)
+    logDisplay.insert(END, newlog+'\n')
+    logDisplay.see(END)
+    logDisplay.config(state=DISABLED)
+
+add_log('i like it')
+
 
 # class ShirokoJumpscare(ElectricityParts):
 #     def __init__(self, position: Point, directions: str) -> None:
@@ -815,7 +833,7 @@ resultDisplay.place(x=10, y=40, width=280, height=250)
 
 
 def ShirokoJumpscare():
-    print(resistors) # 'ElectricityParts' has no attribute 'output_positions'<<뭔개소리야있잖아;;진짜맞짱마렵네;;; 응아님
+    add_log(resistors) # 'ElectricityParts' has no attribute 'output_positions'<<뭔개소리야있잖아;;진짜맞짱마렵네;;; 응아님
 
 def AtsuiAtsukuteHikrabisoUgoiteNaiNoniAtsuiYo():
     wire = Wire(Point(0, 0), 'lr')
