@@ -4,7 +4,7 @@ import time
 tk = Tk()
 
 tk.title('DCCOMICStm')           # 회로를 구현할 장(張) 만들기
-tk.geometry("1200x600+0+0")
+tk.geometry("1150x600+0+0")
 tk.resizable(False,False)
 
 inputjeo1=Frame(tk, relief = "solid", width = 150, height = 250)    #divide window
@@ -16,12 +16,13 @@ inputjeo3.place(x=0, y=250)
 
 dp=Frame(tk, relief = "solid", bd = 2, width = 600, height = 600)
 dp.place(x = 296, y = 0)
-ui=Frame(tk, relief = "solid", width = 300, height = 600)
+ui=Frame(tk, relief = "solid", width = 250, height = 600)
 ui.place(x = 900, y = 0)
 
 
 display = Canvas(dp, bd=0, bg='whitesmoke')             #make display(canvas) Disupulayee Saing Seong
 display.place(x = 0, y = 0, width = 600, height = 600)
+Yukari='red'
 
 
 class Point(): #location = Point(0, 0)
@@ -41,8 +42,6 @@ class Point(): #location = Point(0, 0)
     def isinboard(self) -> bool:
         return self.isinarea(Point(0, 0), Point(board.xsize, board.ysize))
 
-# 크아악 모르겠다 << ㅋㅋ허접
-# 마이크 이슈 해결해 봄 
 
 class ElectricityParts():
     def __init__(self, position: Point, directions: str) -> None: 
@@ -77,7 +76,7 @@ class ElectricityParts():
     def isdirected(self, directions: str) -> bool:
         return set(self.directions) == set(directions)
     
-    def next_position(self, input_direction: str) -> list[Point]:
+    def next_positions(self, input_direction: str) -> list[Point]:
         output_directions = self.directions.copy()
         output_directions.remove(input_direction)
 
@@ -99,8 +98,6 @@ class ElectricityParts():
     def __del__(self) -> None:
         add_log(f'deleted {self}')
 
-    # def ShirokoJumpscare(output_position):
-    #     print(output_positions)
 
 class Wire(ElectricityParts):
     def __init__(self, position: Point, directions: str) -> None:
@@ -169,6 +166,18 @@ class Resistor(ElectricityParts):
 class Battery(ElectricityParts):
     def __init__(self, position: Point, directions: str) -> None:
         super().__init__(position, directions)
+        self.plus_direction = directions[0]
+        self.minus_direction = directions[1]
+
+    def next_positions(self) -> list[Point]:
+        x, y = self.position.x, self.position.y
+        match self.plus_direction:
+            case 'u': y -= 1
+            case 'd': y += 1
+            case 'l': x -= 1
+            case 'r': x += 1
+        
+        return [Point(x, y)]
 
     def isdirected(self, directions: str) -> bool:
         return self.directions == list(directions)
@@ -206,9 +215,23 @@ class Battery(ElectricityParts):
 class Diode(ElectricityParts):
     def __init__(self, position: Point, directions: str) -> None:
         super().__init__(position, directions)
+        self.input_direction = self.directions[0]
+        self.output_direction = self.directions[1]
 
     def isdirected(self, directions: str) -> bool:
         return self.directions == list(directions)
+
+    def next_positions(self, input_direction: str) -> list[Point|None]:
+        if input_direction != self.input_direction:
+            return [None]
+        x, y = self.position.x, self.position.y
+        match self.output_direction:
+            case 'u': y += 1
+            case 'd': y -= 1
+            case 'l': x += 1
+            case 'r': x -= 1
+        
+        return [Point(x, y)]
 
     def _draw(self, inputcolor: str='black', outputcolor: str='black') -> None:
         PROP = 30
@@ -265,11 +288,21 @@ class Board():
         self.__mapl[position.x][position.y] = obj
 
     def remove_part(self, position: Point) -> None:
-        if not self.isblank(position):
-            part = self.get_part(position)
+        try:
+            part = self.try_get_part(position)
             del part
-        self.__mapl[position.x][position.y] = None
-        self.erase(position)
+            self.__mapl[position.x][position.y] = None
+            self.erase(position)
+        except:
+            add_log(f'no ElectricityPart on {position}')
+
+    def rotate_part(self, position: Point) -> None:
+        try:
+            part = self.get_part(position)
+            part.rotate_CW()
+            add_log(f'rotated {part}')
+        except:
+            add_log(f'no ElectircityPart on {position}')
         
     def clear(self) -> None:
         for x in range(self.xsize):
@@ -286,12 +319,11 @@ class Board():
     def isblank(self, position: Point) -> bool:
         return self.try_get_part(position) == None
 
-# __mapl => [None, None]
-    #  監獄 [[[>>>>>>>>>>⏧囚<<<<<<<<<<<]]]  Thou cannot escape
 
 class Cursor():
     def __init__(self) -> None:
         self.position = Point(0, 0)
+        self.Yukari = 'red'
         self.highlight()
 
     def go_left(self) -> None:
@@ -306,16 +338,47 @@ class Cursor():
     def go_down(self) -> None:
         self.__move_cursor(0, 1)
 
+    def go_upleft(self) -> None:
+        self.__move_cursor(-1, -1)
+
+    def go_upright(self) -> None:
+        self.__move_cursor(1, -1)
+
+    def go_downleft(self) -> None:
+        self.__move_cursor(-1, 1)
+
+    def go_downright(self) -> None:
+        self.__move_cursor(1, 1)
+
+    def toggle(self) -> None:
+        if self.highlighted:
+            self.dehighlight()
+        else:
+            self.highlight()
+
+    def KadenokoujiYukari(self):
+        if self.Yukari == 'red':
+            self.Yukari='blue'
+        elif self.Yukari == 'blue':
+            self.Yukari='green'
+        elif self.Yukari == 'green':
+            self.Yukari='gray'
+        elif self.Yukari == 'gray':
+            self.Yukari='red'
+        self.__draw_rectangle(color=self.Yukari)
+
     def highlight(self) -> None: 
-        self.__draw_rectangle(color='red')
+        self.highlighted = True
+        self.__draw_rectangle(color=self.Yukari)
         part = board.try_get_part(self.position)
         if isinstance(part, ElectricityParts):
             part.show_status()
 
     def dehighlight(self) -> None:
+        self.highlighted = False
         self.__draw_rectangle(color='grey')
         
-    def __draw_rectangle(self, color: str='red') -> None:
+    def __draw_rectangle(self, color:str) -> None:
         PROP = 30
         x = self.position.x*PROP
         y = self.position.y*PROP
@@ -333,36 +396,39 @@ class Cursor():
 
 
 
+class CursorAction:
+    def generate_wire_line(self, dir: str='lr'):
+        Wire(cursor.position, dir)
+
+    def generate_wire_curved(self, dir: str='ru'):
+        Wire(cursor.position, dir)
+
+    def generage_wire_Tshape(self, dir: str='lur'):
+        Wire(cursor.position, dir)
+
+    def generate_diode(self, dir: str='lr'):
+        Diode(cursor.position, dir)
+
+    def generate_resistor(self, dir: str='lr'):
+        Resistor(cursor.position, dir)
+
+    def generate_battery(self, dir: str='lr'):
+        Battery(cursor.position, dir)
+
+    def remove_part(self):
+        board.remove_part(cursor.position)
+
+    def rotate_part(self):
+        board.rotate_part(cursor.position)
+
+
+class CurrentManager:
+    ...
+
+
 board = Board(20, 20) # ↘일과 열의 관계 左下向
 cursor = Cursor()
-
-
-
-rows = 20                #Making maplist Maeb Risutu Saing Seong
-cols = 20 
-mapl = []
-resistors = []
-
-for i in range(rows):
-    row = []
-    for j in range(cols):
-        row.append('')
-    mapl.append(row)
-
-rows1 = 20
-cols1 = 20 
-electron = []
-
-for i in range(rows1):
-    rowa = []
-    for j in range(cols1):
-        rowa.append(0)
-    electron.append(rowa)
-# 0.23 electron volts!
-
-userx = 0
-usery = 0
-afteroperate=False
+cursor_action = CursorAction()
 
 def draw_window():
     display.delete('all')
@@ -505,45 +571,43 @@ def keypressed(event):        #when keypressed ~~
         closewarn()
 
     elif event.keysym == 'space' : # 회전
-        if not board.isblank(cursor.position):
-            part = board.get_part(cursor.position)
-            part.rotate_CW()
+        cursor_action.rotate_part()
 
     elif event.keysym == 'm' : # 'ㅡ'or'ㅣ'자
-        wire = Wire(cursor.position, 'lr')
+        cursor_action.generate_wire_line(dir='lr')
 
     elif event.keysym == 'l' :
-        wire = Wire(cursor.position, 'ud')
+        cursor_action.generate_wire_line(dir='ud')
 
     elif event.keysym == 's' : # 'ㄴ'자
-        wire = Wire(cursor.position, 'ru')
+        cursor_action.generate_wire_curved(dir='ru')
 
     elif event.keysym == 'n' : # 갈라지는 삼발이:"ㅡ"계열. 'ㅜ'자
-        wire = Wire(cursor.position, 'lrd')
+        cursor_action.generage_wire_Tshape(dir='lrd')
 
     elif event.keysym == 'h' : # 갈라지는 삼발이:"ㅡ"계열. 'ㅗ'자
-        wire = Wire(cursor.position, 'lru')
+        cursor_action.generage_wire_Tshape(dir='lru')
 
     elif event.keysym == 'j': # 만나는 삼발이: "ㅣ"계열. 'ㅓ'자
-        wire = Wire(cursor.position, 'lud')
+        cursor_action.generage_wire_Tshape(dir='udl')
 
     elif event.keysym == 'k': # 만나는 삼발이: "ㅣ"계열. 'ㅏ'자
-        wire = Wire(cursor.position, 'rud')
+        cursor_action.generage_wire_Tshape(dir='udr')
 
     # elif event.keysym == 'equal' : # '+'자 lrud
     #     MAKE_WIRE_LRUD()
 
     elif event.keysym == 'b' : # 밧데리
-        battery = Battery(cursor.position, 'lr')
+        cursor_action.generate_battery(dir='lr')
 
     elif event.keysym == 'r' : # 저항
-        resistor = Resistor(cursor.position, 'lr')
+        cursor_action.generate_resistor(dir='lr')
 
     elif event.keysym == 'e' : # erase
-        board.remove_part(cursor.position) # 클래스 내부에서 사용: self.position | 클래스 외부에서 사용: cursor.position
+        cursor_action.remove_part() # 클래스 내부에서 사용: self.position | 클래스 외부에서 사용: cursor.position
 
     elif event.keysym == 'd' : # diode
-        diode = Diode(cursor.position, 'lr')
+        cursor_action.generate_diode(dir='lr')
 
     # elif event.keysym == '1' :
     #     SELECT_RESISTANCE1()
@@ -574,7 +638,7 @@ def keypressed(event):        #when keypressed ~~
     # elif event.keysym == 'r' : # start(run) module
     #     amugeona()
 
-    else:                      #Lee Sang Han Button Press >>> 비정의 커맨드 경고 창
+    else:                     #Lee Sang Han Button Press >>> 비정의 커맨드 경고 창
         unknowntext = event.keysym,'is not a valid key'  #  위쪽에 정의되지 않은 키 입력들을 unknowntext로 간주, <입력된 키값, 'is not a valid key'>로써 나타냄
         toplevel = Toplevel(tk)
         toplevel.geometry("320x200+820+100")
@@ -585,7 +649,7 @@ def keypressed(event):        #when keypressed ~~
 
         button = Button(toplevel, width = 10, text = "ok", overrelief = "solid", command = toplevel.destroy)  #  ok버튼 누르면 경고 창 삭제
         button.pack()
-        
+
 
 def clear():           # 19   clear the window
     global userx, usery, mapl
@@ -817,11 +881,11 @@ scrollia.place(x=285, y=40, width=5, height=250)
 
 def add_log(newlog):
     logDisplay.config(state=NORMAL)
-    logDisplay.insert(END, newlog+'\n')
+    logDisplay.insert(END, str(newlog)+'\n')
     logDisplay.see(END)
     logDisplay.config(state=DISABLED)
 
-add_log('i like it')
+# add_log('i like it')
 
 
 # class ShirokoJumpscare(ElectricityParts):
@@ -835,35 +899,93 @@ add_log('i like it')
 def ShirokoJumpscare():
     add_log(resistors) # 'ElectricityParts' has no attribute 'output_positions'<<뭔개소리야있잖아;;진짜맞짱마렵네;;; 응아님
 
-def AtsuiAtsukuteHikrabisoUgoiteNaiNoniAtsuiYo():
-    wire = Wire(Point(0, 0), 'lr')
+# def AtsuiAtsukuteHikrabisoUgoiteNaiNoniAtsuiYo():
+#     wire = Wire(cursor.position, 'lr')
 
 def DomoSenseiDomoMichiruDesu():
-    ElectricityParts.show_status
-
+    ElectricityParts.show_status()
+# def matsuii():
 # def Uwah囧():
+#     resistor = Resistor(cursor.position, 'lr')
+# # 무녀무녀냥냥
+# def MicoMicoNyanNyanJoItsukaraSokoniYasureteImasuru():
+#     # add_log("Serika")
+#     diode = Diode(cursor.position, 'lr')
+
+# def NyanIchiNiSan():
+#     wire = Wire(cursor.position, 'ru')
+
+# def KadenokoujiYukari():
+#     if not board.isblank(cursor.position):
+#         part = board.get_part(cursor.position)
+#         part.rotate_CW()
+
+# def Torya():
+#     battery = Battery(cursor.position, 'lr')
+
+# def shubababa():
+#     wire = Wire(cursor.position, 'rud')
+
+# def kuyashii():
+#     board.remove_part(cursor.position)
+
+# def KeisanToriKanpeki():
+
+# Kiryu Kikyou
+
+
+
+# def SunaookamiShiroko():
+
+# def KuromiSerika():
 
 
 #-------------------------------------------------------------------------Menu-------------------------------------------------------------------------
 
 
-Button(ui, text = "UP[↑]", command = cursor.go_up).place(x = 110, y = 50, width = 80, height = 80)  #make 이동 ui
+Button(ui, text = "UP[↑]", command = cursor.go_up).place(x = 90, y = 30, width = 70, height = 70)  #make 이동 ui
 
-Button(ui, text = "LEFT[←]", command = cursor.go_left).place(x = 30, y = 130, width = 80, height = 80)
+Button(ui, text = "LEFT[←]", command = cursor.go_left).place(x = 20, y = 100, width = 70, height = 70)
 
-Button(ui, text = "RIGHT[→]", command = cursor.go_right).place(x = 190, y = 130, width = 80, height = 80)
+Button(ui, text = "RIGHT[→]", command = cursor.go_right).place(x = 160, y = 100, width = 70, height = 70)
 
-Button(ui, text = "DOWN[↓]", command = cursor.go_down).place(x = 110, y = 210, width = 80, height = 80)
+Button(ui, text = "DOWN[↓]", command = cursor.go_down).place(x = 90, y = 170, width = 70, height = 70)
 
-Button(ui, text = 'EXIT[Esc]', command = closewarn).place(x = 120 , y = 500, width = 60, height = 60)
+Button(ui, text = "[↖]", command = cursor.go_upleft).place(x = 20, y = 30, width = 70, height = 70)  #make 이동 ui
 
-Button(ui, text = "CLEAR[Enter]", command = tempwarn).place(x = 190, y= 400, width = 80, height = 40)
+Button(ui, text = "[↗]", command = cursor.go_upright).place(x = 160, y = 30, width = 70, height = 70)
 
-Button(ui, text = "OPERATE[o]", command = OPERATE).place(x = 190, y= 350, width = 100, height = 40)
+Button(ui, text = "[↙]", command = cursor.go_downleft).place(x = 20, y = 170, width = 70, height = 70)
+
+Button(ui, text = "[↘]", command = cursor.go_downright).place(x = 160, y = 170, width = 70, height = 70)
+
+Button(ui, text = "highlight", command = cursor.KadenokoujiYukari).place(x = 90, y = 100, width = 70, height = 70)
+
+
+Button(ui, text = "Wire[m]", command = cursor_action.generate_wire_line).place(x=20, y=280, width=70, height=70) # wire lr
+
+Button(ui, text = "Resistor[r]", command = cursor_action.generate_resistor).place(x=90, y=280, width=70, height=70) # resistor lr
+
+Button(ui, text = "Diode[d]", command = cursor_action.generate_diode).place(x=160, y=280, width=70, height=70) # diode lr
+
+Button(ui, text = "ㄴ wire[s]", command = cursor_action.generate_wire_curved).place(x=20, y=350, width=70, height=70) # wire ㄴ
+
+Button(ui, text = "Rotate\n[space]", command = cursor_action.rotate_part).place(x=90, y=350, width=70, height=70) # rotate
+
+Button(ui, text = "Battey[b]", command = cursor_action.generate_battery).place(x=160, y=350, width=70, height=70) # battery lr
+
+Button(ui, text = "Sambari[s]", command = cursor_action.generage_wire_Tshape).place(x=20, y=420, width=70, height=70) # wire rud
+
+Button(ui, text = "Operate[o]", command = OPERATE).place(x = 160, y= 420, width = 70, height = 70) # gogogogogoogogogogogo!!!!!!
+
+Button(ui, text = "Erase[e]", command = cursor_action.remove_part).place(x=90, y=420, width=70, height=70) # erase   esraswefd
 
 # Button(ui, text = "RUN[r]", command = amugeona).place(x = 190, y= 350, width = 100, height = 40)
 
-Button(ui, text = "WIRE[w]", command = AtsuiAtsukuteHikrabisoUgoiteNaiNoniAtsuiYo).place(x = 30, y= 400, width = 80, height = 40)
+
+Button(ui, text = "CLEAR\n[Enter]", command = tempwarn).place(x = 20 , y = 520, width = 70, height = 50)
+
+Button(ui, text = 'EXIT[Esc]', command = closewarn).place(x = 160, y= 520, width = 70, height = 50)
 
 
 menubar = Menu(tk) # menubar is Menu
