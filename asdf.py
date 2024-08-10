@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk #as as as as as as as eefsd as as as sdf asdf asdf sdf df f df sdf asdf asdf sdf df f df
 
 
 root = tk.Tk()
