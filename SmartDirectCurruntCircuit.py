@@ -790,26 +790,6 @@ def keypressed(event):        #when keypressed ~~
         button.pack()
 
 
-
-def OPERATE():
-    global batteryspinbox, afteroperate
-    # 전압 0이면 실행 안되게.
-    if battery_value == 0:
-        toplevel = Toplevel(tk)
-        toplevel.geometry("320x200+450+200")
-        toplevel.resizable(False, False)
-        toplevel.title("ERROR: not a valid battery값")  # 창 이름
-        label = Label(toplevel, text = "battery is 0 please set battery값", width = 200, height = 50, fg = "red", relief = "solid", bitmap = "error", compound = "top")  #  unknowntext출력, i마크 표시(붉은색) 할 창 생성
-        label.pack()
-
-        button = Button(toplevel, width = 10, text = "ok", overrelief = "solid", command = toplevel.destroy)  #  ok버튼 누르면 경고 창 삭제
-        button.pack()
-    else:
-        #amugeona()
-        #print(f"저항 리스트: {resistors}")
-        #print(batteryspinbox)
-        afteroperate=True
-
 def setbattery(self):
     explanationbattery.config(text = '▼전지 값을 선택▼')
     if self == '':
