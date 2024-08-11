@@ -622,12 +622,14 @@ class CurrentManager:
     def __calculate_overall_resistance(self) -> float:
         start_pos = board.get_battery().get_next_position()
         overall_resistance, _ = self.__calculate_curline_resistance(start_pos)
-        add_log(f"overall resistance: {overall_resistance}")
+        add_log(f"overall resistance: {overall_resistance:.3f}")
         return overall_resistance
 
     def __calculate_start_current(self) -> float:
         battery = board.get_battery()
-        return battery.voltage / self.__calculate_overall_resistance()
+        start_current = battery.voltage / self.__calculate_overall_resistance()
+        add_log(f"start current: {start_current:.3f}")
+        return start_current
 
     def __assign_properties_to_resistors(self, startpos: Point, current: int) -> None:
         #각 저항에 전압, 전력, 소비전력 속성값을 계산해 부여
@@ -659,7 +661,6 @@ class CurrentManager:
     def __assign_properties_to_all_resistors(self) -> None:
         start_pos = board.get_battery().get_next_position()
         start_current = self.__calculate_start_current()
-        add_log(f"start current: {start_current}")
         self.__assign_properties_to_resistors(start_pos, start_current)
 
 
