@@ -419,6 +419,7 @@ class Board:
         for x in range(self.xsize):
             for y in range(self.ysize):
                 self.remove_part(Point(x, y))
+        add_log('board cleared!')
 
     def erase(self, position: Point) -> None:
         PROP = 30
@@ -1084,6 +1085,8 @@ def add_result(newresult):
     printResult=resultLock.get()
     if printResult == 0:
         resultDisplay.config(state=NORMAL)
+        # resultDisplay.insert(END, '----------------\n')
+        # resultDisplay.insert(END, '')
         resultDisplay.insert(END, str(newresult)+'\n')
         resultDisplay.see(END)
         resultDisplay.config(state=DISABLED)
@@ -1125,13 +1128,13 @@ Button(ui, text = "Resistor[r]", command = cursor_action.generate_resistor, bg='
 
 Button(ui, text = "Diode[d]", command = cursor_action.generate_diode, bg='gainsboro').place(x=160, y=280, width=70, height=70) # diode lr
 
-Button(ui, text = "└ wire[s]", command = cursor_action.generate_wire_curved, bg='gainsboro').place(x=20, y=350, width=70, height=70) # wire ㄴ
+Button(ui, text = "└ Wire[s]", command = cursor_action.generate_wire_curved, bg='gainsboro').place(x=20, y=350, width=70, height=70) # wire ㄴ
 
 Button(ui, text = "RotateCW\n[space]", command = cursor_action.rotate_part, bg='gainsboro').place(x=90, y=350, width=70, height=70) # rotate
 
 Button(ui, text = "Battey[b]", command = cursor_action.generate_battery, bg='gainsboro').place(x=160, y=350, width=70, height=70) # battery lr
 
-Button(ui, text = "┴ Sambari[h]", command = cursor_action.generate_wire_Tshape, bg='gainsboro').place(x=20, y=420, width=70, height=70) # wire rud
+Button(ui, text = "┴ Wire[h]", command = cursor_action.generate_wire_Tshape, bg='gainsboro').place(x=20, y=420, width=70, height=70) # wire rud
 
 operationButton = Button(ui, text = "Operate[o]", command = current_manager.operate, bg='skyblue',  cursor='gumby') # gogogogogoogogogogogo!!!!!!
 operationButton.place(x = 160, y= 420, width = 70, height = 70)
