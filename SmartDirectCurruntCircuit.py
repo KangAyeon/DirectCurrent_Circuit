@@ -53,7 +53,7 @@ class ElectricityParts():
         
         self.position = position
         self.directions = list(directions)
-        self.real_next_positions: None | list = None
+        self.real_next_positions: None|list[Point] = None
         self.current = -1
         self.current_ratio = 1
         
@@ -318,7 +318,7 @@ class Diode(ElectricityParts):
     def isdirected(self, directions: str) -> bool:
         return self.directions == list(directions)
 
-    def get_next_positions(self, input_direction: str) -> list[Point|None]:
+    def get_next_positions(self, input_direction: str) -> list[Point|None, str]:
         if input_direction != self.input_direction:
             return [None]
         x, y = self.position.x, self.position.y
@@ -614,7 +614,8 @@ class CurrentManager:
                 curpos = next_positions[0]
 
     
-    def __assign_current_ratio_to_curline(curpos: Point, ratio: int):
+    def __assign_current_ratio_to_curline(self, curpos: Point, ratio: int):
+        curpart = board.get_part(curpos)
         while True:
             if isinstance(curpart, Wire) and curpart.issambari and not curpart.isdivider:
                 return
@@ -659,7 +660,7 @@ class CurrentManager:
             next_positions = curpart.real_next_positions
             if len(next_positions) > 1:
                 for next_pos in next_positions:
-                    next_part = board.get_part(next_part)
+                    next_part = board.get_part(next_pos)
                     self.__assign_properties_to_resistors(next_pos, curcurrent * next_part.current_ratio)
                     
                 curpos = curpart.teleport_pos
