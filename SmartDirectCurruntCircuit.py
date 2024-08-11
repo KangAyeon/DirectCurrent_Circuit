@@ -1,4 +1,4 @@
-from tkinter import *          #i like tkinter
+from tkinter import *          #i like tkinter module libarary
 import tkinter.font
 import tkinter.ttk
 import time
@@ -25,8 +25,7 @@ display = Canvas(dp, bd=0, bg='whitesmoke')             #make display(canvas) Di
 display.place(x = 0, y = 0, width = 600, height = 600)
 Yukari='red'
 
-
-class Point(): #location = Point(0, 0)
+class Point: #location = Point(0, 0)
     def __init__(self, x: int, y: int) -> None:
         self.x = x
         self.y = y
@@ -44,7 +43,7 @@ class Point(): #location = Point(0, 0)
         return self.isinarea(Point(0, 0), Point(board.xsize, board.ysize))
 
 
-class ElectricityParts():
+class ElectricityParts:
     def __init__(self, position: Point, directions: str) -> None: 
         assert all(map(lambda x: x in 'udlr', directions)),\
             "directions는 u, d, l, r만으로 이루어진 문자열이여야 합니다"
@@ -109,22 +108,13 @@ class ElectricityParts():
     def __del__(self) -> None:
         add_log(f'deleted {self}')
 
-'''    @property
-    def real_next_positions(self):
-        if self.__real_next_positions == None:
-            raise AttributeError("call fkdsjl before dsalkfj;")
-        return self.__real_next_positions
-
-    @real_next_positions.setter
-    def real_next_positions(self, value: list[Point]):
-        self.__real_next_positions = value'''
-
 
 class Wire(ElectricityParts):
     def __init__(self, position: Point, directions: str) -> None:
         super().__init__(position, directions)
         self.__issambari = len(directions) == 3
-        self.teleport_pos: Point | None = None
+        self.__isdivider = False
+        self.teleport_pos: Point|None = None
 
     def _draw(self, color: str='black') -> None:
         PROP = 30
@@ -148,8 +138,9 @@ class Wire(ElectricityParts):
         try:
             if self.issambari:
                 add_result(f"isdivider: {self.isdivider}")
+            add_log(f"ratio: {self.current_ratio:.3f}")
         except:
-            ...
+            pass
 
     @property
     def issambari(self):
@@ -157,9 +148,7 @@ class Wire(ElectricityParts):
 
     @property
     def isdivider(self):
-        if self.__issambari:
-            return self.__isdivider
-        raise NameError("__isdivider property exists only when __issambari is True")
+        return self.__isdivider
 
     @isdivider.setter
     def isdivider(self, isdivider):
@@ -167,22 +156,23 @@ class Wire(ElectricityParts):
 
 
 class Resistor(ElectricityParts):
-    def __init__(self, position: Point, directions: str, resistance: int=1) -> None:
+    def __init__(self, position: Point, directions: str, resistance: float=1) -> None:
         super().__init__(position, directions)
-        self.__voltage = -1
-        self.__resistance = resistance
-        self.__power_consumption = -1
+        self.__voltage: float = -1
+        self.__resistance: float = resistance
+        self.__power_consumption: float = -1
 
 
     def show_status(self) -> None:
         super().show_status()
         try:
-            add_result(f"voltage: {self.voltage}")
-            add_result(f"current: {self.current}")
-            add_result(f"resistance: {self.resistance}")
-            add_result(f"power_consumption: {self.power_consumption}")
+            add_result(f"voltage: {self.voltage:.3f}")
+            add_result(f"current: {self.current:.3f}")
+            add_result(f"resistance: {self.resistance:.3f}")
+            add_result(f"power_consumption: {self.power_consumption:.3f}")
+            add_log(f"ratio: {self.current_ratio:.3f}")
         except:
-            ...
+            pass
 
 
     def _draw(self, linecolor: str='black', spikecolor: str='black') -> None:
@@ -212,8 +202,8 @@ class Resistor(ElectricityParts):
             display.create_line(x+5, y+25, x+15, y+27, fill=spikecolor)
             display.create_line(x+15, y+27, x+15, y+30, fill=linecolor)
 
-        # fontiana=tkinter.font.Font(family='맑은 고딕', size=10, slant='roman', weight='bold')
-        # display.create_text(x+30, y+30, text=self.resistance, font=fontiana, fill='red', anchor=SE)
+        fontiana=tkinter.font.Font(family='맑은 고딕', size=10, slant='roman', weight='bold')
+        display.create_text(x+30, y+30, text=resistance_value, font=fontiana, fill='red', anchor=SE)
         
     @property
     def voltage(self):
@@ -239,20 +229,20 @@ class Resistor(ElectricityParts):
 
 
 class Battery(ElectricityParts):
-    def __init__(self, position: Point, directions: str, voltage: int=1) -> None:
+    def __init__(self, position: Point, directions: str, voltage: float=1) -> None:
         super().__init__(position, directions)
         self.__voltage = voltage
         self.plus_direction = directions[0]
         self.minus_direction = directions[1]
         self.real_next_position = self.get_next_position()
-        batteryGaeSoo = board.find_battery_count()
-        if batteryGaeSoo > 1:
+        battery_count = board.find_battery_count()
+        if battery_count > 1:
             add_log('battery already exist!')
             board.remove_part(position)
 
     def show_status(self) -> None:
         super().show_status()
-        add_result(f"battery voltage: {self.voltage}")
+        add_result(f"battery voltage: {self.voltage:.3f}")
 
     def get_next_position(self) -> Point:
         x, y = self.position.x, self.position.y
@@ -304,7 +294,7 @@ class Battery(ElectricityParts):
         return self.__voltage
 
     @voltage.setter
-    def voltage(self, value: int):
+    def voltage(self, value: float):
         assert value > 0, "전지의 전압 값은 양수여야 합니다."
         self.__voltage = value
     
@@ -362,7 +352,7 @@ class Diode(ElectricityParts):
 
 
 
-class Board():
+class Board:
     def __init__(self, xsize: int, ysize: int) -> None:
         self.xsize = xsize
         self.ysize = ysize
@@ -441,7 +431,7 @@ class Board():
         return self.try_get_part(position) == None
 
 
-class Cursor():
+class Cursor:
     def __init__(self) -> None:
         self.position = Point(0, 0)
         self.Yukari = 'red'
@@ -516,7 +506,6 @@ class Cursor():
         self.highlight()
 
 
-
 class CursorAction:
     def generate_wire_line(self, dir: str='lr'):
         Wire(cursor.position, dir)
@@ -534,7 +523,7 @@ class CursorAction:
         Resistor(cursor.position, dir, resistance_value)
 
     def generate_battery(self, dir: str='lr'):
-        Battery(cursor.position, dir)
+        Battery(cursor.position, dir, battery_value)
 
     def remove_part(self):
         board.remove_part(cursor.position)
@@ -544,15 +533,15 @@ class CursorAction:
 
 
 class CurrentManager:
-    def __assign_realnextways_to_each_parts(self):
-        #각 Part에 real_next_positions 속성을, 각 삼발이에 isdivider 속성을 부여
+    def __assign_realnextways_to_each_parts(self) -> None:
+        #각 Part에 real_next_positions 속성을, 각 삼발이에 isdivider 속성을 부여(가장 먼저 호출돼야 함)
         visited = [[False]*board.xsize for _ in range(board.ysize)]
         start = board.find_battery_pos()
         if start == None:
             add_log("no battery found")
             return
 
-        def dfs(point, direction): #Battery까지 길이 존재하는 경우만 True를 리턴
+        def dfs(point: Point, direction: str) -> bool: #Battery까지 길이 존재하는 경우만 True를 리턴
             curpart = board.try_get_part(point)
             if not isinstance(curpart, ElectricityParts):
                 return False
@@ -572,7 +561,7 @@ class CurrentManager:
                 curpart.real_next_positions = realnexts
             #add_log(f"{curpart.position, curpart.real_next_positions}")
             if isinstance(curpart, Wire) and curpart.issambari:
-                curpart.isdivider = len(realnexts) == 2
+                curpart.isdivider |= (len(realnexts) == 2)
 
             return bool(realnexts)
         
@@ -580,7 +569,7 @@ class CurrentManager:
         dfs(battery.get_next_position(), battery.plus_direction)
 
 
-    def __calculate_curline_resistance(self, startpos: Point) -> tuple[int, Point]: #籤
+    def __calculate_curline_resistance(self, startpos: Point) -> tuple[float, Point]: #籤
         #현재 도선의 전체저항과 도선의 끝 위치를 튜플 형태로 반환
         curline_resistance = 0
         curpos = startpos
@@ -596,27 +585,30 @@ class CurrentManager:
             if isinstance(curpart, Resistor):
                 curline_resistance += curpart.resistance
 
-            if len(next_positions) > 1:
-                nextlines_resistances = []
+            if len(next_positions) > 1: #도선이 갈라질 경우(병렬) - 재귀적으로 처리
+                nextlines_conductances: list[int] = []
                 for next_pos in next_positions:
                     nextline_resistance, nextline_endpos = self.__calculate_curline_resistance(next_pos)
-                    nextlines_resistances.append(nextline_resistance)
-                    
+                    nextlines_conductances.append(1 / nextline_resistance)
+                
+                conductance_sum = sum(nextlines_conductances)
                 for i in range(len(next_positions)):
                     next_pos = next_positions[i]
-                    current_ratio = nextlines_resistances[i]/sum(nextlines_resistances)
+                    current_ratio = nextlines_conductances[i] / conductance_sum
                     self.__assign_current_ratio_to_curline(next_pos, current_ratio)
 
-                curline_resistance += 1 / sum(map(lambda x: 1/x, nextlines_resistances))
+                curline_resistance += 1 / conductance_sum
                 curpos = curpart.teleport_pos = board.get_part(nextline_endpos).real_next_positions[0]
                 
             else:
                 curpos = next_positions[0]
 
     
-    def __assign_current_ratio_to_curline(self, curpos: Point, ratio: int):
-        curpart = board.get_part(curpos)
+    def __assign_current_ratio_to_curline(self, curpos: Point, ratio: int) -> None:
         while True:
+            curpart = board.get_part(curpos)
+            curpart.current_ratio = ratio
+
             if isinstance(curpart, Wire) and curpart.issambari and not curpart.isdivider:
                 return
             
@@ -624,20 +616,19 @@ class CurrentManager:
                 curpos = curpart.real_next_positions[0]
             else:
                 curpos = curpart.teleport_pos
-            curpart = board.get_part(curpos)
-
-            curpart.current_ratio = ratio
         
 
-    def __calculate_overall_resistance(self):
-        overall_resistance, _ = self.__calculate_curline_resistance(board.get_battery().get_next_position())
+    def __calculate_overall_resistance(self) -> float:
+        start_pos = board.get_battery().get_next_position()
+        overall_resistance, _ = self.__calculate_curline_resistance(start_pos)
+        add_log(f"overall resistance: {overall_resistance}")
         return overall_resistance
 
-    def __calculate_start_current(self):
+    def __calculate_start_current(self) -> float:
         battery = board.get_battery()
         return battery.voltage / self.__calculate_overall_resistance()
 
-    def __assign_properties_to_resistors(self, startpos: Point, current: int):
+    def __assign_properties_to_resistors(self, startpos: Point, current: int) -> None:
         #각 저항에 전압, 전력, 소비전력 속성값을 계산해 부여
         curpos = startpos
         curcurrent = current
@@ -646,9 +637,6 @@ class CurrentManager:
 
             if isinstance(curpart, Resistor):
                 curpart.current = curcurrent
-                add_log(curpart.current)
-                add_log(curcurrent)
-                add_log(curpart.resistance)
                 curpart.voltage = curpart.current * curpart.resistance
                 curpart.power_consumption = curpart.current * curpart.voltage
 
@@ -658,7 +646,7 @@ class CurrentManager:
                 return
 
             next_positions = curpart.real_next_positions
-            if len(next_positions) > 1:
+            if len(next_positions) > 1:  #도선이 갈라질 경우(병렬) - 재귀적으로 처리
                 for next_pos in next_positions:
                     next_part = board.get_part(next_pos)
                     self.__assign_properties_to_resistors(next_pos, curcurrent * next_part.current_ratio)
@@ -667,10 +655,11 @@ class CurrentManager:
             else:
                 curpos = next_positions[0]
                 
-    def __assign_properties_to_all_resistors(self):
-        battery = board.get_battery()
+    def __assign_properties_to_all_resistors(self) -> None:
+        start_pos = board.get_battery().get_next_position()
         start_current = self.__calculate_start_current()
-        self.__assign_properties_to_resistors(battery.get_next_position(), start_current)
+        add_log(f"start current: {start_current}")
+        self.__assign_properties_to_resistors(start_pos, start_current)
 
 
     def operate(self) -> None:
@@ -780,14 +769,11 @@ def keypressed(event):        #when keypressed ~~
     else:                     #Lee Sang Han Button Press >>> 비정의 커맨드 경고 창
         unknowntext = event.keysym,'is not a valid key'  #  위쪽에 정의되지 않은 키 입력들을 unknowntext로 간주, <입력된 키값, 'is not a valid key'>로써 나타냄
         toplevel = Toplevel(tk)
-        toplevel.geometry("320x200+450+200")
+        toplevel.geometry("250x125+450+200")
         toplevel.resizable(False, False)
-        toplevel.title("ERROR: not a valid key")  # 창 이름
-        label = Label(toplevel, text = unknowntext, width = 200, height = 50, fg = "red", relief = "solid", bitmap = "error", compound = "top")  #  unknowntext출력, i마크 표시(붉은색) 할 창 생성
-        label.pack()
-
-        button = Button(toplevel, width = 10, text = "ok", overrelief = "solid", command = toplevel.destroy)  #  ok버튼 누르면 경고 창 삭제
-        button.pack()
+        toplevel.title("ERROR!")  # 창 이름
+        Label(toplevel, text = unknowntext, width = 200, height = 50, fg = "red", relief = "solid", bitmap = "error", compound = "top").place(x=20, y=20, width=210, height=50)  #  unknowntext출력, i마크 표시(붉은색) 할 창 생성
+        Button(toplevel, width = 10, text = "okay", overrelief = "solid", command = toplevel.destroy).place(x=90, y=80, width=70)  #  ok버튼 누르면 경고 창 삭제
 
 
 def setbattery(self):
@@ -920,9 +906,9 @@ def nihahaha():  #  NiHaHaHa!!!!
     nilabel.pack(expand = 1, anchor = CENTER)
     add_log("Nihahaha!")
 
+# --------------------------------------------------------User Interface(left)---------------------------------------------------------------
 
 explanationbattery = Label(inputjeo2, text = "▼전지 값을 선택▼", height = 3)
-explanationbattery.pack(padx=4)
 
 validate_command = (inputjeo2.register(setbattery), '%P')
 invalid_command = (inputjeo2.register(errorsetbattery), '%P')
@@ -931,10 +917,10 @@ def update_variable(*args):
     global battery_value
     battery_value = battery_spinbox_var.get()
 
-battery_spinbox_var = IntVar()
+battery_spinbox_var = DoubleVar()
 
-batteryspinbox = Spinbox(inputjeo2, width=10, from_=1, to=100, validate = 'all', bd=3, validatecommand=validate_command, invalidcommand=invalid_command, textvariable=battery_spinbox_var, state='readonly')
-batteryspinbox.pack(padx=4) 
+batteryspinbox = Spinbox(inputjeo2, width=10, from_=1, to=100, increment=0.1, validate = 'all', bd=3, validatecommand=validate_command, invalidcommand=invalid_command, textvariable=battery_spinbox_var, state='readonly')
+
 
 battery_spinbox_var.trace('w', update_variable)
 battery_value = battery_spinbox_var.get()
@@ -944,13 +930,12 @@ battery_value = battery_spinbox_var.get()
 
 
 explanationresistance = Label(inputjeo2, text = "▼저항 값을 선택▼", height = 3)
-explanationresistance.pack(padx=4)
+
 
 def BATTERYVALUECHECK(self):
     explanationbattery.config(text='')
     if self == '':
         return True
-    
     
     valid = False
     if self.isdigit():
@@ -1024,16 +1009,31 @@ def update_variable(*args):
     global resistance_value
     resistance_value = resistance_spinbox_var.get()
 
-resistance_spinbox_var = IntVar()
+resistance_spinbox_var = DoubleVar()
 
-resistancespinbox = Spinbox(inputjeo2, width=10, from_=1, to=100, validate = 'all', bd=3, validatecommand=validate_command, invalidcommand=invalid_command, textvariable=resistance_spinbox_var, state='readonly')
-resistancespinbox.pack(padx=4) 
+resistancespinbox = Spinbox(inputjeo2, width=10, from_=1, to=100, increment=0.1, validate = 'all', bd=3, validatecommand=validate_command, invalidcommand=invalid_command, textvariable=resistance_spinbox_var, state='readonly')
 
 resistance_spinbox_var.trace('w', update_variable)
 resistance_value = battery_spinbox_var.get()
 
+resultLock=IntVar()
+logLock=IntVar()
 
-# -----------------------------------------------------------------------------------------------------------------------
+explanationbattery.place(x=25, y=20, width=100, height=30)
+
+batteryspinbox.place(x=30, y=50, width=90, height=25)
+
+explanationresistance.place(x=25, y=90, width=100, height=30) 
+
+resistancespinbox.place(x=30, y=120, width=90, height=25)
+
+tkinter.ttk.Separator(inputjeo2, orient=HORIZONTAL).place(x=25, y=168, width=100)
+
+Checkbutton(inputjeo2, text='Result Lock', justify=LEFT, variable=resultLock).place(x=25, y=185, width=100, height=25)
+
+Checkbutton(inputjeo2, text='Log Lock   ', justify=LEFT, variable=logLock).place(x=25, y=215, width=100, height=25)
+
+# --------------------------------------------------------Log & Result---------------------------------------------------------------
 
 def clear_result():
     resultDisplay.config(state=NORMAL)
@@ -1047,7 +1047,7 @@ def clear_log():
     logDisplay.insert(END, 'log successfully erased'+'\n')
     logDisplay.config(state=DISABLED)
 
-def real_clear_result(): # 확인창 만들기 위해 사용
+def real_clear_result(): # 확인창 만들기 위해 사용d
     global areyouokaytoclearRESULT
     clear_result()
     areyouokaytoclearRESULT.destroy()
@@ -1081,19 +1081,23 @@ resultClearButton.place(x=10, y=295)
 logClearButton.place(x=150, y=295)
 
 def add_result(newresult):
-    resultDisplay.config(state=NORMAL)
-    resultDisplay.insert(END, str(newresult)+'\n')
-    resultDisplay.see(END)
-    resultDisplay.config(state=DISABLED)
+    printResult=resultLock.get()
+    if printResult == 0:
+        resultDisplay.config(state=NORMAL)
+        resultDisplay.insert(END, str(newresult)+'\n')
+        resultDisplay.see(END)
+        resultDisplay.config(state=DISABLED)
 
 def add_log(newlog):
-    logDisplay.config(state=NORMAL)
-    logDisplay.insert(END, str(newlog)+'\n')
-    logDisplay.see(END)
-    logDisplay.config(state=DISABLED)
+    printLog=logLock.get()
+    if printLog == 0:
+        logDisplay.config(state=NORMAL)
+        logDisplay.insert(END, str(newlog)+'\n')
+        logDisplay.see(END)
+        logDisplay.config(state=DISABLED)
 
 
-#-------------------------------------------------------------------------User Interface-------------------------------------------------------------------------
+#-------------------------------------------------------------------------User Interface(right)-------------------------------------------------------------------------
 
 Button(ui, text = "UP[↑]", command = cursor.go_up, bg='gainsboro', repeatdelay=200, repeatinterval=40, cursor='top_side').place(x = 90, y = 30, width = 70, height = 70)  #make 이동 ui
 
@@ -1129,7 +1133,7 @@ Button(ui, text = "Battey[b]", command = cursor_action.generate_battery, bg='gai
 
 Button(ui, text = "┴ Sambari[h]", command = cursor_action.generate_wire_Tshape, bg='gainsboro').place(x=20, y=420, width=70, height=70) # wire rud
 
-operationButton = Button(ui, text = "Operate[o]", command = current_manager.operate, bg='gainsboro',  cursor='gumby') # gogogogogoogogogogogo!!!!!!
+operationButton = Button(ui, text = "Operate[o]", command = current_manager.operate, bg='skyblue',  cursor='gumby') # gogogogogoogogogogogo!!!!!!
 operationButton.place(x = 160, y= 420, width = 70, height = 70)
 
 Button(ui, text = "Erase[e]", command = cursor_action.remove_part, bg='gainsboro').place(x=90, y=420, width=70, height=70) # erase   esraswefd

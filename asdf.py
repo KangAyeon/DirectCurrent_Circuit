@@ -1,13 +1,25 @@
-import tkinter as tk
-from tkinter import ttk #as as as as as as as eefsd as as as sdf asdf asdf sdf df f df sdf asdf asdf sdf df f df
+import tkinter
 
+window=tkinter.Tk()
+window.title("YUN DAE HEE")
+window.geometry("640x480+100+100")
+window.resizable(False, False)
 
-root = tk.Tk()
-root.title("읽기 전용 Spinbox")
+def flash():
+    checkbutton1.flash()
 
-spinbox = ttk.Spinbox(root, from_=0, to=100, state='readonly')
-spinbox.set(0)  # 초기값 설정
-spinbox.pack(padx=10, pady=10)
+CheckVariety_1=tkinter.IntVar()
+CheckVariety_2=tkinter.IntVar()
+sendyes=CheckVariety_1.get()
 
+checkbutton1=tkinter.Checkbutton(window, text="O", variable=CheckVariety_1, activebackground="blue")
+checkbutton2=tkinter.Checkbutton(window, text="△", variable=CheckVariety_2)
+checkbutton3=tkinter.Checkbutton(window, text="X", variable=CheckVariety_2, command=flash)
 
-root.mainloop()
+checkbutton1.pack()
+checkbutton2.pack()
+checkbutton3.pack()
+
+print(sendyes)
+
+window.mainloop()
