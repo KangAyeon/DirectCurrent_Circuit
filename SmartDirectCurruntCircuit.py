@@ -1,4 +1,4 @@
-from tkinter import *          #i like tkinter module libarary
+from tkinter import *          #i like tkinter module libarary ddddd
 import tkinter.font
 import tkinter.ttk
 import time
@@ -64,6 +64,10 @@ class ElectricityParts:
 
     def _draw(self) -> None:
         raise AttributeError("ElectricityParts의 draw메소드는 반드시 오버라이드되어야 합니다\n"
+            "지금 카사네 테토의 오버라이드 들으러 가기 >>> https://www.youtube.com/watch?v=LLjfal8jCYI")
+
+    def paint_color(self) -> None:
+        raise AttributeError("ElectricityParts의 paint_color메소드는 반드시 오버라이드되어야 합니다\n"
             "지금 카사네 테토의 오버라이드 들으러 가기 >>> https://www.youtube.com/watch?v=LLjfal8jCYI")
 
     def show_status(self) -> None:
@@ -140,7 +144,10 @@ class Wire(ElectricityParts):
                 add_result(f"isdivider: {self.isdivider}")
             add_log(f"ratio: {self.current_ratio:.3f}")
         except:
-            pass
+            add_log(f"un error occurred")
+
+    def paint_color(self, fill) -> None:
+        self._draw(color=fill) # AoOni Part
 
     @property
     def issambari(self):
@@ -204,6 +211,9 @@ class Resistor(ElectricityParts):
 
         fontiana=tkinter.font.Font(family='맑은 고딕', size=10, slant='roman', weight='bold')
         display.create_text(x+30, y+30, text=resistance_value, font=fontiana, fill='red', anchor=SE)
+
+    def paint_color(self, fill) -> None:
+        self._draw(linecolor=fill)
         
     @property
     def voltage(self):
@@ -289,6 +299,9 @@ class Battery(ElectricityParts):
         fontiana=tkinter.font.Font(family='그래픽', size=10, slant='roman', weight='bold')
         display.create_text(x+30, y+30, text=battery_value, font=fontiana, fill='red', anchor=SE)
 
+    def paint_color(self, fill) -> None:
+        self._draw(plus=fill, minus=fill)
+
     @property
     def voltage(self):
         return self.__voltage
@@ -349,6 +362,10 @@ class Diode(ElectricityParts):
             display.create_line(x+15, y, x+15, y+5, fill=outputcolor)
             display.create_polygon(x+5, y+25, x+25, y+25, x+15, y+5)
             display.create_line(x+5, y+5, x+25, y+5, width=2)
+
+    def paint_color(self, fill) -> None:
+        self._draw(inputcolor=fill)
+        self._draw(outputcolor=fill)
 
 
 
@@ -431,6 +448,15 @@ class Board:
     def isblank(self, position: Point) -> bool:
         return self.try_get_part(position) == None
 
+    def UjawaReisa(self) -> ElectricityParts: # Part들 확인 + 파일 쓰기
+        Ujawa = str(self.__mapl)
+        Reisa = open("CheckElectricityParts.txt", "w+")
+        Reisa.write(Ujawa)
+        Reisa.close()
+
+    # def KyouyamaKazusa(self) -> ElectricityParts:
+        # CathPalug = open("CheckElectricityParts.txt", "r+")
+        # CathPalug.
 
 class Cursor:
     def __init__(self) -> None:
@@ -438,7 +464,7 @@ class Cursor:
         self.Yukari = 'red'
         self.highlight()
 
-    def go_left(self) -> None:
+    def go_left(self) -> None: 
         self.__move_cursor(-1, 0)
 
     def go_right(self) -> None:
@@ -468,7 +494,7 @@ class Cursor:
         else:
             self.highlight()
 
-    def KadenokoujiYukari(self):
+    def KadenokoujiYukari(self): #bread-ricecake
         if self.Yukari == 'red':
             self.Yukari='blue'
         elif self.Yukari == 'blue':
@@ -489,7 +515,7 @@ class Cursor:
     def dehighlight(self) -> None:
         self.highlighted = False
         self.__draw_rectangle(color='grey')
-        
+
     def __draw_rectangle(self, color:str) -> None:
         PROP = 30
         x = self.position.x*PROP
@@ -544,6 +570,7 @@ class CurrentManager:
 
         def dfs(point: Point, direction: str) -> bool: #Battery까지 길이 존재하는 경우만 True를 리턴
             curpart = board.try_get_part(point)
+            
             if not isinstance(curpart, ElectricityParts):
                 return False
             if isinstance(curpart, Battery):
@@ -552,7 +579,7 @@ class CurrentManager:
             realnexts = []
             for nextpoint, inputdirection in curpart.get_next_positions(direction):
                 if visited[nextpoint.y][nextpoint.x]: continue
-                
+
                 visited[nextpoint.y][nextpoint.x] = True
                 if dfs(nextpoint, inputdirection):
                     realnexts.append(nextpoint)
@@ -560,6 +587,10 @@ class CurrentManager:
 
             if not curpart.real_next_positions:
                 curpart.real_next_positions = realnexts
+                if len(realnexts) > 0: #파랑파랑파랑파랑파랑파랑파랑파랑파랑파랑파랑파랑파랑새
+                    curpart.paint_color(fill='deepskyblue') #파랑파랑파랑파랑파랑파랑파랑파랑새
+                else:
+                    curpart.paint_color(fill='black')
             #add_log(f"{curpart.position, curpart.real_next_positions}")
             if isinstance(curpart, Wire) and curpart.issambari:
                 curpart.isdivider |= (len(realnexts) == 2)
@@ -577,7 +608,7 @@ class CurrentManager:
         while True:
             curpart = board.try_get_part(curpos)
             next_positions = curpart.real_next_positions
-            
+
             if isinstance(curpart, Battery):
                 return curline_resistance, curpos
             if isinstance(curpart, Wire) and curpart.issambari and not curpart.isdivider:
@@ -591,7 +622,7 @@ class CurrentManager:
                 for next_pos in next_positions:
                     nextline_resistance, nextline_endpos = self.__calculate_curline_resistance(next_pos)
                     nextlines_conductances.append(1 / nextline_resistance)
-                
+
                 conductance_sum = sum(nextlines_conductances)
                 for i in range(len(next_positions)):
                     next_pos = next_positions[i]
@@ -600,7 +631,7 @@ class CurrentManager:
 
                 curline_resistance += 1 / conductance_sum
                 curpos = curpart.teleport_pos = board.get_part(nextline_endpos).real_next_positions[0]
-                
+
             else:
                 curpos = next_positions[0]
 
@@ -661,6 +692,7 @@ class CurrentManager:
     def __assign_properties_to_all_resistors(self) -> None:
         start_pos = board.get_battery().get_next_position()
         start_current = self.__calculate_start_current()
+        
         self.__assign_properties_to_resistors(start_pos, start_current)
 
 
@@ -692,9 +724,11 @@ def draw_window():
 
 draw_window()
 
+# def Toriya():
+#     board.UjawaReisa()
+#     Reisa = open("ElectricParts.txt", "w+")
 
-
-def keypressed(event):        #when keypressed ~~
+def keypressed(event):        # when keypressed ~~
 
     if event.keysym == 'a' :
         add_log('a')
@@ -759,8 +793,14 @@ def keypressed(event):        #when keypressed ~~
     # elif event.keysym == 'g':
     #     print(battery_value)
 
+
+# 진현준 군은 저주받아버렸다!
+
     # elif event.keysym == 'r' : # start(run) module
     #     amugeona()
+
+    elif event.keysym == 'u' :
+        board.UjawaReisa()
 
     elif event.keysym == 'minus' :
         add_log(resistance_value)
