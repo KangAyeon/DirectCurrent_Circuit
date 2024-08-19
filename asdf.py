@@ -1,25 +1,20 @@
-import tkinter
+import tkinter as tk
 
-window=tkinter.Tk()
-window.title("YUN DAE HEE")
-window.geometry("640x480+100+100")
-window.resizable(False, False)
+def show_focus_widget():
+    focused_widget = root.focus_get()
+    if focused_widget:
+        print(f"현재 포커스를 받고 있는 위젯: {focused_widget}")
+        print(type(focused_widget))
+    else:
+        print("포커스를 받고 있는 위젯이 없습니다.")
 
-def flash():
-    checkbutton1.flash()
+root = tk.Tk()
+entry1 = tk.Entry(root)
+entry2 = tk.Entry(root)
+button = tk.Button(root, text="포커스 확인", command=show_focus_widget)
 
-CheckVariety_1=tkinter.IntVar()
-CheckVariety_2=tkinter.IntVar()
-sendyes=CheckVariety_1.get()
+entry1.pack()
+entry2.pack()
+button.pack()
 
-checkbutton1=tkinter.Checkbutton(window, text="O", variable=CheckVariety_1, activebackground="blue")
-checkbutton2=tkinter.Checkbutton(window, text="△", variable=CheckVariety_2)
-checkbutton3=tkinter.Checkbutton(window, text="X", variable=CheckVariety_2, command=flash)
-
-checkbutton1.pack()
-checkbutton2.pack()
-checkbutton3.pack()
-
-print(sendyes)
-
-window.mainloop()
+root.mainloop()

@@ -1,0 +1,62 @@
+{
+	"parts": [
+		{
+			"name": "Wire",
+			"x": 4,
+			"y": 3,
+			"directions": [
+				"d",
+				"r"
+			]
+		},
+		{
+			"name": "Wire",
+			"x": 4,
+			"y": 4,
+			"directions": [
+				"r",
+				"u"
+			]
+		},
+		{
+			"name": "Resistor",
+			"x": 5,
+			"y": 3,
+			"directions": [
+				"l",
+				"r"
+			],
+			"resistance": 1.5
+		},
+		{
+			"name": "Battery",
+			"x": 5,
+			"y": 4,
+			"directions": [
+				"l",
+				"r"
+			],
+			"voltage": 1.0
+		},
+		{
+			"name": "Wire",
+			"x": 6,
+			"y": 3,
+			"directions": [
+				"l",
+				"d"
+			]
+		},
+		{
+			"name": "Wire",
+			"x": 6,
+			"y": 4,
+			"directions": [
+				"u",
+				"l"
+			]
+		}
+	],
+	"xsize": 20,
+	"ysize": 20
+}

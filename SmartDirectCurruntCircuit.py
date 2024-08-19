@@ -172,12 +172,14 @@ class Resistor(ElectricityParts):
 
 
     def show_status(self) -> None:
+        add_result('----------------')
+        add_result(f'{cursor.position}, 저항')
         super().show_status()
         try:
-            add_result(f"voltage: {self.voltage:.3f}")
-            add_result(f"current: {self.current:.3f}")
-            add_result(f"resistance: {self.resistance:.3f}")
-            add_result(f"power_consumption: {self.power_consumption:.3f}")
+            add_result(f"전압: {self.voltage:.3f}")
+            add_result(f"전류: {self.current:.3f}")
+            add_result(f"저항: {self.resistance:.3f}")
+            add_result(f"소비전력: {self.power_consumption:.3f}")
             add_log(f"ratio: {self.current_ratio:.3f}")
         except:
             pass
@@ -230,13 +232,18 @@ class Resistor(ElectricityParts):
         return self.__power_consumption
     
     @power_consumption.setter
-    def power_consumption(self, value: int):
+    def power_consumption(self, value: float):
         assert value > 0, "저항의 소비전력 값은 양수여야 합니다."
         self.__power_consumption = value
     
     @property
     def resistance(self):
         return self.__resistance
+    
+    @resistance.setter
+    def resistance(self, value: float):
+        assert value > 0, "저항 값은 양수여야 합니다."
+        self.__resistance = value
 
 
 class Battery(ElectricityParts):
@@ -252,8 +259,10 @@ class Battery(ElectricityParts):
             board.remove_part(position)
 
     def show_status(self) -> None:
+        add_result('----------------')
+        add_result(f'{cursor.position}, 전지')
         super().show_status()
-        add_result(f"battery voltage: {self.voltage:.3f}")
+        add_result(f"배터리 전압: {self.voltage:.3f}")
 
     def get_next_position(self) -> Point:
         x, y = self.position.x, self.position.y
@@ -517,6 +526,7 @@ class Cursor:
         self.highlighted = True
         self.__draw_rectangle(color=self.Yukari)
         part = board.try_get_part(self.position)
+        
         if isinstance(part, ElectricityParts):
             part.show_status()
 
@@ -719,9 +729,9 @@ class FileManager:
         file_data['parts'] = []
         file_data['xsize'] = board.xsize
         file_data['ysize'] = board.ysize
-        file_name=self.fileNameLoader()
+        file_name = self.fileNameLoader()
 
-        add_log('file saved : '+file_name)
+        add_log(f'file saved: {file_name}')
 
         for x in range(board.xsize):
             for y in range(board.ysize):
@@ -743,31 +753,46 @@ class FileManager:
         with open(file_name, 'w', encoding='utf-8') as make_file:
             json.dump(file_data, make_file, ensure_ascii=False, indent='\t')
 
+    def loadwarn(self):
+        self.warning_box = Toplevel(tk)
+        self.warning_box.geometry("250x125+450+200")
+        self.warning_box.resizable(False, False)
+        self.warning_box.title("Are You Okay?")
+        Label(self.warning_box, text=f"Loading a file will delete current file. OK?", width=300, height=50, fg="red", relief="solid", bitmap="error", compound="top").place(x=20, y=20, width=220, height=50)
+        Button(self.warning_box, width = 10, text = "yes", overrelief = "solid", command = self.load , bg='firebrick', fg='white').place(x=20, y=80, width=70)  #  yes 누르면 경고 창 삭제, clear실행
+        Button(self.warning_box, width = 10, text = "no", overrelief = "solid", command = self.warning_box.destroy).place(x=160, y=80, width=70)  #  no 누르면 경고 창만 삭제
+    
 
     def load(self) -> None:
-        file_name=self.fileNameLoader()
-
-        add_log('file loaded : '+file_name)
+        file_name = self.fileNameLoader()
+        add_log(f'file loading: {file_name}')
+        self.warning_box.destroy()
         
-        with open(file_name, 'r', encoding='utf-8') as read_file:
-            part_class = {'Wire': Wire,
-                          'Resistor': Resistor,
-                          'Battery': Battery}
-            
-            board.xsize = read_file['xsize']
-            board.ysize = read_file['ysize']
-            for part in read_file['parts']:
-                pos = Point(part['x'], part['y'])
-                directions = part['directions']
-                new_part = part_class[part['name']](pos, directions)
+        board.clear()
+        with open(file_name, 'r', encoding='utf-8') as f:
+            read_file = json.load(f)
 
-                if isinstance(new_part, Resistor):
-                    new_part.resistance = part['resistance']
-                elif isinstance(new_part, Battery):
-                    new_part.voltage = part['voltage']
+        part_class = {'Wire': Wire,
+                        'Resistor': Resistor,
+                        'Battery': Battery}
+        
+        board.xsize = read_file['xsize']
+        board.ysize = read_file['ysize']
+        for part in read_file['parts']:
+            pos = Point(part['x'], part['y'])
+            directions = part['directions']
+            new_part = part_class[part['name']](pos, directions)
+
+            if isinstance(new_part, Resistor):
+                new_part.resistance = part['resistance']
+            elif isinstance(new_part, Battery):
+                new_part.voltage = part['voltage']
+
+        add_log(f'file loaded: {file_name}')
+
 
     def fileNameLoader(self) -> None:
-        file_name=fileNameInputBox.get(1.0, END).strip()
+        file_name = "data/" + fileNameInputBox.get(1.0, END).strip() + ".json"
         return file_name
 
 
@@ -795,69 +820,69 @@ draw_window()
 #     Reisa = open("ElectricParts.txt", "w+")
 
 def keypressed(event):        # when keypressed ~~
+    if tk.focus_get() != fileNameInputBox:
+        if event.keysym == 'a' :
+            add_log('a')
 
-    if event.keysym == 'a' :
-        add_log('a')
+        elif event.keysym == 'Up' :
+            cursor.go_up()
 
-    elif event.keysym == 'Up' :
-        cursor.go_up()
+        elif event.keysym == 'Left' :
+            cursor.go_left()
 
-    elif event.keysym == 'Left' :
-        cursor.go_left()
+        elif event.keysym == 'Down' :
+            cursor.go_down()
 
-    elif event.keysym == 'Down' :
-        cursor.go_down()
+        elif event.keysym == 'Right' :
+            cursor.go_right()
 
-    elif event.keysym == 'Right' :
-        cursor.go_right()
+        elif event.keysym == 'Return' :
+            tempwarn()
 
-    elif event.keysym == 'Return' :
-        tempwarn()
+        elif event.keysym == 'Escape' :
+            closewarn()
 
-    elif event.keysym == 'Escape' :
-        closewarn()
+        elif event.keysym == 'space' : # 회전
+            cursor_action.rotate_part()
 
-    elif event.keysym == 'space' : # 회전
-        cursor_action.rotate_part()
+        elif event.keysym == 'm' : # 'ㅡ'or'ㅣ'자
+            cursor_action.generate_wire_line(dir='lr')
 
-    elif event.keysym == 'm' : # 'ㅡ'or'ㅣ'자
-        cursor_action.generate_wire_line(dir='lr')
+        elif event.keysym == 'l' :
+            cursor_action.generate_wire_line(dir='ud')
 
-    elif event.keysym == 'l' :
-        cursor_action.generate_wire_line(dir='ud')
+        elif event.keysym == 's' : # 'ㄴ'자
+            cursor_action.generate_wire_curved(dir='ru')
 
-    elif event.keysym == 's' : # 'ㄴ'자
-        cursor_action.generate_wire_curved(dir='ru')
+        elif event.keysym == 'n' : # 갈라지는 삼발이:"ㅡ"계열. 'ㅜ'자
+            cursor_action.generate_wire_Tshape(dir='lrd')
 
-    elif event.keysym == 'n' : # 갈라지는 삼발이:"ㅡ"계열. 'ㅜ'자
-        cursor_action.generate_wire_Tshape(dir='lrd')
+        elif event.keysym == 'h' : # 갈라지는 삼발이:"ㅡ"계열. 'ㅗ'자
+            cursor_action.generate_wire_Tshape(dir='lru')
 
-    elif event.keysym == 'h' : # 갈라지는 삼발이:"ㅡ"계열. 'ㅗ'자
-        cursor_action.generate_wire_Tshape(dir='lru')
+        elif event.keysym == 'j': # 만나는 삼발이: "ㅣ"계열. 'ㅓ'자
+            cursor_action.generate_wire_Tshape(dir='udl')
 
-    elif event.keysym == 'j': # 만나는 삼발이: "ㅣ"계열. 'ㅓ'자
-        cursor_action.generate_wire_Tshape(dir='udl')
+        elif event.keysym == 'k': # 만나는 삼발이: "ㅣ"계열. 'ㅏ'자
+            cursor_action.generate_wire_Tshape(dir='udr')
 
-    elif event.keysym == 'k': # 만나는 삼발이: "ㅣ"계열. 'ㅏ'자
-        cursor_action.generate_wire_Tshape(dir='udr')
+        elif event.keysym == 'b' : # 밧데리
+            cursor_action.generate_battery(dir='lr')
 
-    elif event.keysym == 'b' : # 밧데리
-        cursor_action.generate_battery(dir='lr')
+        elif event.keysym == 'r' : # 저항
+            cursor_action.generate_resistor(dir='lr')
 
-    elif event.keysym == 'r' : # 저항
-        cursor_action.generate_resistor(dir='lr')
+        elif event.keysym == 'e' : # erase
+            cursor_action.remove_part() # 클래스 내부에서 사용: self.position | 클래스 외부에서 사용: cursor.position
 
-    elif event.keysym == 'e' : # erase
-        cursor_action.remove_part() # 클래스 내부에서 사용: self.position | 클래스 외부에서 사용: cursor.position
+        # elif event.keysym == 'd' : # diode is dieode
+        #     cursor_action.generate_diode(dir='lr')
 
-    elif event.keysym == 'd' : # diode
-        cursor_action.generate_diode(dir='lr')
+        elif event.keysym == 'o' :
+            current_manager.operate()
 
-    elif event.keysym == 'o' :
-        current_manager.operate()
-
-    # elif event.keysym == 'g':
-    #     print(battery_value)
+        # elif event.keysym == 'g':
+        #     print(battery_value)
 
 
 # 진현준 군은 저주받아버렸다!
@@ -876,14 +901,15 @@ def keypressed(event):        # when keypressed ~~
     elif event.keysym == 'plus' :
         add_log(battery_value)
 
-    else:                     #Lee Sang Han Button Press >>> 비정의 커맨드 경고 창
-        unknowntext = event.keysym,'is not a valid key'  #  위쪽에 정의되지 않은 키 입력들을 unknowntext로 간주, <입력된 키값, 'is not a valid key'>로써 나타냄
-        toplevel = Toplevel(tk)
-        toplevel.geometry("250x125+450+200")
-        toplevel.resizable(False, False)
-        toplevel.title("ERROR!")  # 창 이름
-        Label(toplevel, text = unknowntext, width = 200, height = 50, fg = "red", relief = "solid", bitmap = "error", compound = "top").place(x=20, y=20, width=210, height=50)  #  unknowntext출력, i마크 표시(붉은색) 할 창 생성
-        Button(toplevel, width = 10, text = "okay", overrelief = "solid", command = toplevel.destroy).place(x=90, y=80, width=70)  #  ok버튼 누르면 경고 창 삭제
+    # 정상화
+    # else:                     #Lee Sang Han Button Press >>> 비정의 커맨드 경고 창
+    #     unknowntext = event.keysym,'is not a valid key'  #  위쪽에 정의되지 않은 키 입력들을 unknowntext로 간주, <입력된 키값, 'is not a valid key'>로써 나타냄
+    #     toplevel = Toplevel(tk)
+    #     toplevel.geometry("250x125+450+200")
+    #     toplevel.resizable(False, False)
+    #     toplevel.title("ERROR!")  # 창 이름
+    #     Label(toplevel, text = unknowntext, width = 200, height = 50, fg = "red", relief = "solid", bitmap = "error", compound = "top").place(x=20, y=20, width=210, height=50)  #  unknowntext출력, i마크 표시(붉은색) 할 창 생성
+    #     Button(toplevel, width = 10, text = "okay", overrelief = "solid", command = toplevel.destroy).place(x=90, y=80, width=70)  #  ok버튼 누르면 경고 창 삭제
 
 
 def setbattery(self):
@@ -1152,7 +1178,7 @@ fileNameInputBox.place(x=25, y=55, width=100, height=30)
 
 Button(inputjeo1, text='save', command=file_manager.save).place(x=40, y=90, width=70, height=30)
 
-Button(inputjeo1, text='load', command=file_manager.load).place(x=40, y=125, width=70, height=30)
+Button(inputjeo1, text='load', command=file_manager.loadwarn).place(x=40, y=125, width=70, height=30)
 
 # --------------------------------------------------------Log & Result---------------------------------------------------------------
 
