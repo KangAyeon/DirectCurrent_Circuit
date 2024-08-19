@@ -450,13 +450,20 @@ class Board:
 
     def UjawaReisa(self) -> ElectricityParts: # Part들 확인 + 파일 쓰기
         Ujawa = str(self.__mapl)
-        Reisa = open("CheckElectricityParts.txt", "w+")
+        Reisa = open("CheckElectricityParts.json", "w+")
         Reisa.write(Ujawa)
         Reisa.close()
 
-    # def KyouyamaKazusa(self) -> ElectricityParts:
-        # CathPalug = open("CheckElectricityParts.txt", "r+")
-        # CathPalug.
+    def KyouyamaKazusa(self) -> ElectricityParts:
+        CathPalug = open("CheckElectricityParts.json", "r+")
+        Kyouyama = CathPalug.read()
+        #tempwarn()
+        self.__mapl = str(Kyouyama)
+        obj = str(Kyouyama)
+        CathPalug.close
+        add_log(self.__mapl)
+        
+         
 
 class Cursor:
     def __init__(self) -> None:
@@ -801,6 +808,8 @@ def keypressed(event):        # when keypressed ~~
 
     elif event.keysym == 'u' :
         board.UjawaReisa()
+    elif event.keysym == 'c' :
+        board.KyouyamaKazusa()
 
     elif event.keysym == 'minus' :
         add_log(resistance_value)
