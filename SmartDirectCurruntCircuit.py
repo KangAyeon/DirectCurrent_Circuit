@@ -1,7 +1,8 @@
+import json
+from collections import OrderedDict
 from tkinter import *          #i like tkinter module libarary ddddd
 import tkinter.font
 import tkinter.ttk
-import time
 tk = Tk()
 
 tk.title('SmartDirectCurruntCircuit-Yes')           # 회로를 구현할 장(張) 만들기
@@ -712,11 +713,69 @@ class CurrentManager:
         operationButton.config(cursor='gumby')
 
 
+class FileManager:
+    def save(self) -> None:
+        file_data = OrderedDict()
+        file_data['parts'] = []
+        file_data['xsize'] = board.xsize
+        file_data['ysize'] = board.ysize
+        file_name=self.fileNameLoader()
+
+        add_log('file saved : '+file_name)
+
+        for x in range(board.xsize):
+            for y in range(board.ysize):
+                part = board.try_get_part(Point(x, y))
+                if not isinstance(part, ElectricityParts): continue
+
+                part_data = OrderedDict()
+                part_data['name'] = part.__class__.__name__
+                part_data['x'] = part.position.x
+                part_data['y'] = part.position.y
+                part_data['directions'] = part.directions
+                if isinstance(part, Battery):
+                    part_data['voltage'] = part.voltage
+                elif isinstance(part, Resistor):
+                    part_data['resistance'] = part.resistance
+                
+                file_data['parts'].append(part_data)
+
+        with open(file_name, 'w', encoding='utf-8') as make_file:
+            json.dump(file_data, make_file, ensure_ascii=False, indent='\t')
+
+
+    def load(self) -> None:
+        file_name=self.fileNameLoader()
+
+        add_log('file loaded : '+file_name)
+        
+        with open(file_name, 'r', encoding='utf-8') as read_file:
+            part_class = {'Wire': Wire,
+                          'Resistor': Resistor,
+                          'Battery': Battery}
+            
+            board.xsize = read_file['xsize']
+            board.ysize = read_file['ysize']
+            for part in read_file['parts']:
+                pos = Point(part['x'], part['y'])
+                directions = part['directions']
+                new_part = part_class[part['name']](pos, directions)
+
+                if isinstance(new_part, Resistor):
+                    new_part.resistance = part['resistance']
+                elif isinstance(new_part, Battery):
+                    new_part.voltage = part['voltage']
+
+    def fileNameLoader(self) -> None:
+        file_name=fileNameInputBox.get(1.0, END).strip()
+        return file_name
+
 
 board = Board(20, 20)
 cursor = Cursor()
 cursor_action = CursorAction()
 current_manager = CurrentManager()
+file_manager = FileManager()
 
 def draw_window():
     display.delete('all')
@@ -1084,6 +1143,17 @@ Checkbutton(inputjeo2, text='Result Lock', justify=LEFT, variable=resultLock).pl
 
 Checkbutton(inputjeo2, text='Log Lock   ', justify=LEFT, variable=logLock).place(x=25, y=215, width=100, height=25)
 
+#left left
+
+Label(inputjeo1, text='파일 제목을 입력▼').place(x=25, y=20, width=100, height=30)
+
+fileNameInputBox=Text(inputjeo1, bg='white', wrap=NONE)
+fileNameInputBox.place(x=25, y=55, width=100, height=30)
+
+Button(inputjeo1, text='save', command=file_manager.save).place(x=40, y=90, width=70, height=30)
+
+Button(inputjeo1, text='load', command=file_manager.load).place(x=40, y=125, width=70, height=30)
+
 # --------------------------------------------------------Log & Result---------------------------------------------------------------
 
 def clear_result():
@@ -1150,7 +1220,7 @@ def add_log(newlog):
         logDisplay.config(state=DISABLED)
 
 
-#-------------------------------------------------------------------------User Interface(right)-------------------------------------------------------------------------
+#-------------------------------------------------------------------------User Interface(right)--------------------------------------------------------------------------
 
 Button(ui, text = "UP[↑]", command = cursor.go_up, bg='gainsboro', repeatdelay=200, repeatinterval=40, cursor='top_side').place(x = 90, y = 30, width = 70, height = 70)  #make 이동 ui
 
@@ -1176,7 +1246,7 @@ Button(ui, text = "─ Wire[m]", command = cursor_action.generate_wire_line, bg=
 
 Button(ui, text = "Resistor[r]", command = cursor_action.generate_resistor, bg='gainsboro').place(x=90, y=280, width=70, height=70) # resistor lr
 
-Button(ui, text = "Diode[d]", command = cursor_action.generate_diode, bg='gainsboro').place(x=160, y=280, width=70, height=70) # diode lr
+# Button(ui, text = "Diode[d]", command = cursor_action.generate_diode, bg='gainsboro').place(x=160, y=280, width=70, height=70) # diode lr
 
 Button(ui, text = "└ Wire[s]", command = cursor_action.generate_wire_curved, bg='gainsboro').place(x=20, y=350, width=70, height=70) # wire ㄴ
 
@@ -1187,9 +1257,9 @@ Button(ui, text = "Battey[b]", command = cursor_action.generate_battery, bg='gai
 Button(ui, text = "┴ Wire[h]", command = cursor_action.generate_wire_Tshape, bg='gainsboro').place(x=20, y=420, width=70, height=70) # wire rud
 
 operationButton = Button(ui, text = "Operate[o]", command = current_manager.operate, bg='skyblue',  cursor='gumby') # gogogogogoogogogogogo!!!!!!
-operationButton.place(x = 160, y= 420, width = 70, height = 70)
+operationButton.place(x = 90, y= 420, width = 140, height = 70)
 
-Button(ui, text = "Erase[e]", command = cursor_action.remove_part, bg='gainsboro').place(x=90, y=420, width=70, height=70) # erase   esraswefd
+Button(ui, text = "Erase[e]", command = cursor_action.remove_part, bg='gainsboro').place(x=160, y=280, width=70, height=70) # erase   esraswefd
 
 # Button(ui, text = "RUN[r]", command = amugeona).place(x = 190, y= 350, width = 100, height = 40)
 

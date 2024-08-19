@@ -1,0 +1,66 @@
+{
+	"parts": [
+		{
+			"name": "Resistor",
+			"x": 2,
+			"y": 2,
+			"directions": [
+				"l",
+				"r"
+			],
+			"resistance": 1.0
+		},
+		{
+			"name": "Resistor",
+			"x": 3,
+			"y": 2,
+			"directions": [
+				"l",
+				"r"
+			],
+			"resistance": 1.0
+		},
+		{
+			"name": "Resistor",
+			"x": 4,
+			"y": 2,
+			"directions": [
+				"l",
+				"r"
+			],
+			"resistance": 1.0
+		},
+		{
+			"name": "Resistor",
+			"x": 5,
+			"y": 2,
+			"directions": [
+				"l",
+				"r"
+			],
+			"resistance": 1.0
+		},
+		{
+			"name": "Resistor",
+			"x": 6,
+			"y": 2,
+			"directions": [
+				"l",
+				"r"
+			],
+			"resistance": 1.0
+		},
+		{
+			"name": "Wire",
+			"x": 8,
+			"y": 2,
+			"directions": [
+				"l",
+				"r",
+				"d"
+			]
+		}
+	],
+	"xsize": 20,
+	"ysize": 20
+}
