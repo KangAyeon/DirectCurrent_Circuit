@@ -764,9 +764,10 @@ class FileManager:
     
 
     def load(self) -> None:
+        self.warning_box.destroy()
+        
         file_name = self.fileNameLoader()
         add_log(f'file loading: {file_name}')
-        self.warning_box.destroy()
         
         board.clear()
         with open(file_name, 'r', encoding='utf-8') as f:
