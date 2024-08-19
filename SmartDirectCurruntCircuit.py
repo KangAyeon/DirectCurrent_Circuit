@@ -1040,6 +1040,18 @@ def nihahaha():  #  NiHaHaHa!!!!
     nilabel.pack(expand = 1, anchor = CENTER)
     add_log("Nihahaha!")
 
+def Kufufu():  #  NiHaHaHa!!!!
+    Kufufu = Toplevel(tk)
+    Kufufu.geometry("400x400+400+100")
+    Kufufu.resizable(False, False)
+    Kufufu.title("KuFuFu💢💢💢~")
+    imageKufufu = PhotoImage(file = "kufufufu.PNG")
+    Label.image = imageKufufu #  because of Python gabagecollector works reference counting, so i have to 수동으로 참고 횟수 늘려주기.
+    nilabel = Label(Kufufu, image = imageKufufu, compound = "top")
+    nilabel.pack(expand = 1, anchor = CENTER)
+    add_log("kufufu💢💢💢~")
+
+
 # --------------------------------------------------------User Interface(left)---------------------------------------------------------------
 
 explanationbattery = Label(inputjeo2, text = "▼전지 값을 선택▼", height = 3)
@@ -1273,21 +1285,31 @@ menubar = Menu(tk) # menubar is Menu
 
 menu1 = Menu(menubar, tearoff = 0) # menu1은 첫 번째 Menu, tearoff = 0: 하위 메뉴 분리 기능 사용 유무 판단
 
-menu1.add_command(label = "Clear", command = tempwarn)
+menu1.add_command(label = "Open...", command = file_manager.loadwarn)
 menu1.add_separator()
+menu1.add_command(label = "Save", command = file_manager.save)
+menu1.add_separator()
+menu1.add_command(label = "Clear", command = tempwarn)
 menu1.add_command(label = "Exit", command = closewarn)
 menubar.add_cascade(label = "File", menu = menu1)
 
-menu2 = Menu(menubar, tearoff = 0, selectcolor = "green")
+menu2 = Menu(menubar, tearoff = 0) # , selectcolor = "green")
 
-menu2.add_radiobutton(label = "Undo", state = "disable") # 미안한데 작동 안돼 ㅇㅇㄴㅇ
-menu2.add_radiobutton(label = "Redo") # 미안한데 작동 안돼
-menu2.add_radiobutton(label = "Cut") # 미안한데 작동 안돼
+# menu2.add_radiobutton(label = "Undo", state = "disable") # 미안한데 작동 안돼 ㅇㅇㄴㅇ
+# menu2.add_radiobutton(label = "Redo", state = "disable") # 미안한데 작동 안돼
+# menu2.add_radiobutton(label = "Cut", state = "disable") # 미안한데 작동 안돼
+menu2.add_command(label = "Undo", state = "disable")
+menu2.add_command(label = "Redo", state = "disable")
+menu2.add_command(label = "Cut", state = "disable")
 menubar.add_cascade(label = "Edit", menu = menu2)
 
 menu3 = Menu(menubar, tearoff = 0)
 
-menu3.add_checkbutton(label = "nihahaha", command = nihahaha)
+menu3.add_command(label = "Run", command = current_manager.operate)
+menu3.add_separator()
+menu3.add_command(label = "nihahaha", command = nihahaha)
+menu3.add_command(label = "kufufu", command = Kufufu)
+# menu3.add_checkbutton(label = "nihahaha", command = nihahaha)
 menubar.add_cascade(label = "Run", menu = menu3)
 
 menu4 = Menu(menubar, tearoff = 0)
