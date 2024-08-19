@@ -464,7 +464,7 @@ class Board:
         Reisa.write(Ujawa)
         Reisa.close()
 
-    def KyouyamaKazusa(self) -> ElectricityParts:
+    def KyouyamaKazusa(self) -> ElectricityParts: # Part들 확인 + 파일 불러오기
         CathPalug = open("CheckElectricityParts.json", "r+")
         Kyouyama = CathPalug.read()
         #tempwarn()
@@ -758,7 +758,7 @@ class FileManager:
         self.warning_box.geometry("250x125+450+200")
         self.warning_box.resizable(False, False)
         self.warning_box.title("Are You Okay?")
-        Label(self.warning_box, text=f"Loading a file will delete current file. OK?", width=300, height=50, fg="red", relief="solid", bitmap="error", compound="top").place(x=20, y=20, width=220, height=50)
+        Label(self.warning_box, text=f"Loading a file will delete current file. OK?", width=300, height=50, fg="red", relief="solid", bitmap="error", compound="top").place(x=10, y=20, width=230, height=50)
         Button(self.warning_box, width = 10, text = "yes", overrelief = "solid", command = self.load , bg='firebrick', fg='white').place(x=20, y=80, width=70)  #  yes 누르면 경고 창 삭제, clear실행
         Button(self.warning_box, width = 10, text = "no", overrelief = "solid", command = self.warning_box.destroy).place(x=160, y=80, width=70)  #  no 누르면 경고 창만 삭제
     
@@ -803,22 +803,19 @@ cursor_action = CursorAction()
 current_manager = CurrentManager()
 file_manager = FileManager()
 
-def draw_window():
+def draw_window(): #draw display
     display.delete('all')
-    for i in range(20):                                          #draw display
+    for i in range(20):
         display.create_line(30*i, 0, 30*i, 600, fill = "gray")
     for i in range(20):
         display.create_line(0, 30*i, 600, 30*i, fill = "gray")
     # for i in range(4):
     #     display.create_line(0, 150*i, 600, 150*i, fill = "black")
     # for i in range(4):
-    #     display.create_line(150*i, 0, 150*i, 600, fill = "black")            asdfasdfasdfasdfasdfasfd
+    #     display.create_line(150*i, 0, 150*i, 600, fill = "black")
 
 draw_window()
 
-# def Toriya():
-#     board.UjawaReisa()
-#     Reisa = open("ElectricParts.txt", "w+")
 
 def keypressed(event):        # when keypressed ~~
     if tk.focus_get() != fileNameInputBox:
@@ -1113,34 +1110,6 @@ def errorsetresistance(self):
 validate_command = (inputjeo2.register(setresistance), '%P')
 invalid_command = (inputjeo2.register(errorsetresistance), '%P')
 
-def 헬보이2골든아미VALUECHECK(self):
-    explanationresistance.config(text='')
-    if self == '':
-        return True
-    
-    
-    valid = False
-    if self.isdigit():
-        if (int(self) != 0):
-            valid = True
-    return valid
-
-def 헬보이2골든아미VALUEERROR():
-    explanationresistance.config(text="0 이면 전선 불타다")
-
-def MicoMicoNyanNyanJoItsukaraSokoniYasureteImasuru(self):
-    explanationresistance.config(text = '|저항 값을 선택|')
-    if self == '':
-        return True
-    
-    valid = False
-    
-    if self.isdigit():
-        if (int(self) >= 0 and int(self) <= 100):
-            valid = True
-    return valid
-
-
 
 def update_variable(*args):
     global resistance_value
@@ -1180,6 +1149,8 @@ fileNameInputBox.place(x=25, y=55, width=100, height=30)
 Button(inputjeo1, text='save', command=file_manager.save).place(x=40, y=90, width=70, height=30)
 
 Button(inputjeo1, text='load', command=file_manager.loadwarn).place(x=40, y=125, width=70, height=30)
+
+Button(inputjeo1, text='i feel lucky').place(x=25, y=220, width=100, height=20)
 
 # --------------------------------------------------------Log & Result---------------------------------------------------------------
 
