@@ -3,6 +3,7 @@
 ★파이썬 직류 회로 구현★
 방향키(←↑↓→)로 붉은색 정사각형 커서를 이동시킬 수 있고 특정 단축키를 누르면 그 커서 내에 회로 구성 요소가 그려집니다.
 각 회로의 특정 단축키들은 프로그램 좌측 상단 탭[Help >> D.C. Help]을 클릭하면 나오는 창을 참고하세요.
+본 코드는 내장 라이브러리인 tkinter 라이브러리를 사용하기에 별도 설치가 필수일 수도 있고 아닐 수도 있고
 
 저항
 >좌측의 1열의 5개 박스로 저항 값(최대 6개까지)을 설정할 수 있습니다.
@@ -55,7 +56,7 @@
 >
 >o(Operate) 실행 시킬 수 있다.
 >
->┌ ┐─├ ┬ ┤
+>레전드 한글 덕분에 ┌ ┐─├ ┬ ┤란 특수문자를 쓰지 않아도 되었어요 나이스 리스펙투킹세종
 
 좌측 상단의 Help 탭의 About DirectCurrentCircuit으로 만든 사람들을 기억할 수 있다.
->Made This Program By. MinSu.L, JunSeok.S, HyeonJune.J
+>Made This Program By. MinSu.L, JunSeok.S, HyunJune.J
